@@ -1,11 +1,11 @@
 // ESLint 检查 .vue 文件需要单独配置编辑器：
 // https://eslint.vuejs.org/user-guide/#editor-integrations
-{
+module.exports = {
   // 此项是用来告诉eslint找当前配置文件不能往父级查找
-  "root": true,
+  root: true,
   // 全局环境
-  "env": {
-    "node": true
+  env: {
+    node: true,
   },
   // 指定如何解析语法。可以为空，但若不为空，只能配该值
   // "parser": "@typescript-eslint/parser",
@@ -24,20 +24,28 @@
   //   // extraFileExtensions: [".vue"],
   // },
   // "plugins": ["@typescript-eslint"],
-  "extends": ["taro/vue3"],
-  "rules": {
-    "indent": ["error", 2], //缩进
+  extends: ["taro/vue3"],
+  /*
+  "off"或者0    //关闭规则关闭
+  "warn"或者1    //在打开的规则作为警告（不影响退出代码）
+  "error"或者2    //把规则作为一个错误（退出代码触发时为1）
+  */
+  rules: {
+    indent: ["error", 2], //缩进
     "linebreak-style": ["error", "unix"], //换行符风格 |unix|windows|
-    "quotes": ["error", "double"], //使用双引号或单引号
-    "semi": ["error", "always"], //语句末尾使用分号
+    quotes: ["error", "double"], //使用双引号或单引号
+    semi: ["error", "always"], //语句末尾使用分号
     "comma-dangle": ["error", "always-multiline"], //禁止使用拖尾逗号
-    "curly": "warn", //强制所有控制语句使用一致的括号风格
-    "eqeqeq": "off", //需要使用 `===` and `!==`
+    curly: "warn", //强制所有控制语句使用一致的括号风格
+    eqeqeq: "off", //需要使用 `===` and `!==`
     "no-unused-vars": "error",
     "no-undef": "error",
     "no-useless-escape": "error",
-    "no-console": "error",
-    "no-throw-literal": "warn" //禁止抛出异常字面量
+    // "no-console": "error",
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-throw-literal": "warn", //禁止抛出异常字面量
+    // "@typescript-eslint/no-explicit-any": ["off"] //关闭any类型的警告
   },
-  "ignorePatterns": ["dist", "**/*.d.ts"]
-}
+  ignorePatterns: ["dist", "**/*.d.ts"],
+};
