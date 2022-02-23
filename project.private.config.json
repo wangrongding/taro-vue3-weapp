@@ -1,0 +1,23 @@
+{
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "报表",
+          "pathName": "pages/dashboard/index",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

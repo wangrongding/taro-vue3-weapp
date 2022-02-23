@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import Counter from "../../components/Counter.vue";
-import "./index.scss";
 const state = reactive({
   text: "Hello i'am rongding！",
 });
 </script>
 
 <template>
-  <view class="page-container"> <Counter /> {{ state.text }}</view>
+  <view class="page-container"> {{ state.text }}</view>
 </template>
 
 <style lang="scss"></style>
