@@ -1,3 +1,11 @@
+<template>
+  <view class="page-container">
+    {{ state.text }}
+    <view @tap="state.jumpTo" class="btn"> 跳转首页 </view>
+  </view>
+</template>
+
+
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
@@ -24,13 +32,6 @@ const state = reactive({
   },
 });
 </script>
-
-<template>
-  <view class="page-container">
-    {{ state.text }}
-    <view @tap="state.jumpTo" class="btn"> 跳转首页 </view>
-  </view>
-</template>
 
 <style lang="scss">
 .btn {
