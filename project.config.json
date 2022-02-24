@@ -4,7 +4,7 @@
   "description": "一个睡眠相关的小程序",
   "appid": "wx88e21b66bf121a95",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": false,
     "enhance": true,
     "postcss": false,
@@ -31,7 +31,7 @@
       "outputPath": ""
     },
     "enableEngineNative": false,
-    "useIsolateContext": true,
+    "useIsolateContext": false,
     "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
