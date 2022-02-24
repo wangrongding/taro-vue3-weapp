@@ -1,5 +1,8 @@
 // ESLint 检查 .vue 文件需要单独配置编辑器：
 // https://eslint.vuejs.org/user-guide/#editor-integrations
+
+// EsLint 规则表
+// http://eslint.cn/docs/rules/
 module.exports = {
   // 此项是用来告诉eslint找当前配置文件不能往父级查找
   root: true,
@@ -37,12 +40,12 @@ module.exports = {
     semi: ["error", "always"], //语句末尾使用分号
     "comma-dangle": ["error", "always-multiline"], //禁止使用拖尾逗号
     curly: "warn", //强制所有控制语句使用一致的括号风格
-    eqeqeq: "off", //需要使用 `===` and `!==`
-    "no-unused-vars": "error",
-    "no-undef": "error",
-    "no-useless-escape": "error",
-    // "no-console": "error",
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    eqeqeq: "error", //需要使用 `===` and `!==`
+    "no-unused-vars": "off", //禁止出现未使用过的变量
+    "no-undef": "error", // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
+    "no-useless-escape": "error", // 禁用不必要的转义字符
+    "no-console": "error",
+    // "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-throw-literal": "warn", //禁止抛出异常字面量
     // "@typescript-eslint/no-explicit-any": ["off"] //关闭any类型的警告
