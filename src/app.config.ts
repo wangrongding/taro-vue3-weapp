@@ -1,6 +1,5 @@
 export default {
-  pages: [
-    "pages/startPage/startPage",
+  pages: [ 
     "pages/guide/index",
     "pages/index/index",
     "pages/target/index",
