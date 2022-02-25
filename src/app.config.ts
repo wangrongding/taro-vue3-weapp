@@ -1,5 +1,5 @@
 export default {
-  pages: [ 
+  pages: [
     "pages/guide/index",
     "pages/index/index",
     "pages/target/index",
@@ -8,8 +8,9 @@ export default {
   ],
   window: {
     backgroundTextStyle: "light",
-    navigationBarBackgroundColor: "#fff",
+    // navigationBarBackgroundColor: "#fff",
     navigationBarTitleText: "WeChat",
     navigationBarTextStyle: "black",
+    navigationStyle: "custom",
   },
 };
