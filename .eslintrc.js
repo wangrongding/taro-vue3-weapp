@@ -11,22 +11,22 @@ module.exports = {
     node: true,
   },
   // 指定如何解析语法。可以为空，但若不为空，只能配该值
-  // "parser": "@typescript-eslint/parser",
+  parser: "vue-eslint-parser",
   // 优先级低于parse的语法解析配置
-  // "parserOptions": {
-  //   // 允许使用ES语法
-  //   "ecmaVersion": 6,
-  //   // 指定ESlint的解析器
-  //   "parser": "@typescript-eslint/parser",
-  //   // 允许使用import
-  //   "sourceType": "module",
-  //   // 允许解析JSX
-  //   "ecmaFeatures": {
-  //     "jsx": true
-  //   }
-  //   // extraFileExtensions: [".vue"],
-  // },
-  // "plugins": ["@typescript-eslint"],
+  parserOptions: {
+    // 指定ESlint的解析器
+    parser: "@typescript-eslint/parser",
+    // 允许使用import
+    sourceType: "module",
+    // // 允许使用ES语法
+    // ecmaVersion: 6,
+    // // 允许解析JSX
+    // ecmaFeatures: {
+    //   jsx: true,
+    // },
+    // // extraFileExtensions: [".vue"],
+  },
+  // plugins: ["@typescript-eslint/eslint-plugin"],
   extends: ["taro/vue3"],
   /*
   "off"或者0    //关闭规则关闭
@@ -44,9 +44,8 @@ module.exports = {
     "no-unused-vars": "off", //禁止出现未使用过的变量
     "no-undef": "error", // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
     "no-useless-escape": "error", // 禁用不必要的转义字符
-    "no-console": "error",
-    // "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": "error", // 提交的代码禁止出现console
+    "no-debugger": "error", // 提交的代码禁止出现debugger
     "no-throw-literal": "warn", //禁止抛出异常字面量
     // "@typescript-eslint/no-explicit-any": ["off"] //关闭any类型的警告
   },
