@@ -1,15 +1,41 @@
 // https://pinia.esm.dev/introduction.html
 import { defineStore } from "pinia";
 import Taro from "@tarojs/taro";
+import { getUserInfo } from "@/api/preload/index";
 export const useStore = defineStore("counter", {
   state: () => {
-    return { userInfo: {} };
+    return {
+      userInfo: { token: "" },
+      //临时资源
+      assets: {
+        icon: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452915.png",
+        bear1:
+          "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281513430.png",
+        bear: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203021508736.gif",
+        background:
+          "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281550467.png",
+      },
+    };
   },
   getters: {
     // getUserInfo: (state) => state.navigatorInfo,
   },
   actions: {
-    // test(data: any) {},
-    async setUserInfo(data?: any) {},
+    //设置用户信息
+    setUserInfo(data?: any) {
+      this.userInfo = data;
+    },
+    //用户登录(wx.login->拿到code去后台换取openId)
+    async wxLogin() {
+      const { code } = await Taro.login();
+      //根据code获取openId等用户信息
+      const info = (await getUserInfo({ code })) as any;
+      //todo 后端暂时给出的临时token
+      info.token =
+        "bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiLmnY7lpKkiLCJyZWFsX25hbWUiOiLmnY7lpKkiLCJhdmF0YXIiOiIiLCJhdXRob3JpdGllcyI6WyJhZG1pbiJdLCJjbGllbnRfaWQiOiJzdHVkZW50Iiwicm9sZV9uYW1lIjoiYWRtaW4iLCJsaWNlbnNlIjoicG93ZXJlZCBieSBwbGF0Zm9ybXgiLCJ1c2VyX2lkIjoxLCJyb2xlX2lkIjoiMSIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2ODIxODYwMjMsImp0aSI6IjY3YzM3ZjNiLTBiYWUtNDliOS05ODIxLWYxNTQyYzkwNjc5NCIsImFjY291bnQiOiIxNzY3MTc4MTYyMCIsInRlbmFudF9jb2RlIjoiMDAwMDAwIn0.U-kTSxb3XBdpdu0kkRWw3-v7ujcFsDRP4ht5JO2Yw-s";
+      this.setUserInfo(info);
+    },
+    //获取静态资源
+    getAssets() {},
   },
 });

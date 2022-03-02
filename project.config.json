@@ -2,7 +2,7 @@
   "miniprogramRoot": "dist/",
   "projectname": "mp-sleep",
   "description": "一个睡眠相关的小程序",
-  "appid": "wx88e21b66bf121a95",
+  "appid": "wx4ab50547a3f1c4bc",
   "setting": {
     "urlCheck": false,
     "es6": false,
@@ -31,7 +31,7 @@
       "outputPath": ""
     },
     "enableEngineNative": false,
-    "useIsolateContext": false,
+    "useIsolateContext": true,
     "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],

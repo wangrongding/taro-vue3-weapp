@@ -34,13 +34,13 @@ module.exports = {
   "error"或者2    //把规则作为一个错误（退出代码触发时为1）
   */
   rules: {
-    indent: ["error", 2], //缩进
+    indent: ["error", 2, { SwitchCase: 1 }], //缩进
     "linebreak-style": ["error", "unix"], //换行符风格 |unix|windows|
     quotes: ["error", "double"], //使用双引号或单引号
     semi: ["error", "always"], //语句末尾使用分号
     "comma-dangle": ["error", "always-multiline"], //禁止使用拖尾逗号
-    curly: "warn", //强制所有控制语句使用一致的括号风格
     eqeqeq: "error", //需要使用 `===` and `!==`
+    curly: ["error", "multi-line"], //需要遵循花括号约定,括号风格
     "no-unused-vars": "off", //禁止出现未使用过的变量
     "no-undef": "error", // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
     "no-useless-escape": "error", // 禁用不必要的转义字符
