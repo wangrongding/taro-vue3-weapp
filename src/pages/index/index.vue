@@ -1,17 +1,39 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-// import Taro from "@tarojs/taro";
+import { getIntimacy } from "@/api/home/index";
+import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import "./index.scss";
+import { useStore } from "@/stores";
+const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
-  assets: {
-    icon: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452915.png",
-    bear: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281513430.png",
-    background:
-      "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png",
+  assets: store.assets,
+  //获取亲密度
+  getIntimacy() {
+    getIntimacy();
+  },
+  //熊旅行
+  travel() {
+    Taro.showToast({
+      title: "开发中",
+      icon: "error",
+      duration: 1000,
+    });
   },
 });
+
+function execSomeThing(type: number) {
+  switch (type) {
+    case 1: {
+      state.travel();
+      break;
+    }
+    default:
+      state.travel();
+      break;
+  }
+}
 </script>
 
 <template>
@@ -19,31 +41,38 @@ const state = reactive({
     <NavBar>首页</NavBar>
     <view class="main">
       <view class="operation-bar">
-        <image :src="state.assets.icon" alt="" />
-        <image :src="state.assets.icon" alt="" />
+        <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
+        <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
       </view>
       <view class="operation-bar">
-        <image :src="state.assets.icon" alt="" />
-        <image :src="state.assets.icon" alt="" />
+        <image :src="state.assets.icon" alt="" @tap="state.travel" />
+        <image :src="state.assets.icon" alt="" @tap="state.travel" />
       </view>
       <view class="bear-area">
         <image class="bear" :src="state.assets.bear" alt="" />
-        <view class="honeypot"> 蜜罐 </view>
+        <view class="honeypot" @tap="state.travel"> 蜜罐 </view>
       </view>
       <view class="operation-bar bottom-bar">
-        <image :src="state.assets.icon" alt="" />
-        <image :src="state.assets.icon" alt="" />
-        <image :src="state.assets.icon" alt="" />
-        <image :src="state.assets.icon" alt="" />
-        <image :src="state.assets.icon" alt="" /> </view
-    ></view>
+        <image
+          :src="state.assets.icon"
+          alt=""
+          @tap="execSomeThing(index)"
+          v-for="(item, index) in 5"
+          :key="index"
+        />
+      </view>
+    </view>
   </view>
 </template>
 
 <style lang="scss">
 .page-container {
-  background: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png");
+  background-image: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281552325.png");
+  background-color: #48c77d;
+  // background-size: 100% 100%;
   background-size: 100% auto;
+  // background-position: center bottom;
+  background-position: center top;
   background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
@@ -76,8 +105,8 @@ const state = reactive({
       // justify-content: center;
       text-align: center;
       .bear {
-        width: 300px;
-        height: 400px;
+        width: 280px;
+        height: 320px;
         align-items: center;
       }
       .honeypot {
@@ -95,7 +124,6 @@ const state = reactive({
       width: 100%;
       box-sizing: border-box;
       bottom: 0px;
-      // margin-bottom: 70px;
     }
   }
 }

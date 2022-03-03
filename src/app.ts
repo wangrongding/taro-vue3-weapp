@@ -1,22 +1,14 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
-import Taro from "@tarojs/taro";
 import "./app.scss";
-
-//微信登录
-const WxLogin = () => {
-  Taro.login().then((res) => {
-    // console.log("🚀login", res.code);
-    const store = useStore();
-  });
-};
 
 const App = createApp({
   // 生命周期回调——监听小程序初始化。
-  onLaunch(options) {
-    // console.log("🚀 / onLaunch", options);
-    WxLogin();
+  async onLaunch(options) {
+    const store = useStore();
+    //微信登录
+    await store.wxLogin();
   },
   //生命周期回调——监听小程序启动或切前台。
   onShow(options) {
