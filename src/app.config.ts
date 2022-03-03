@@ -1,8 +1,8 @@
 export default {
   pages: [
     "pages/guide/index",
-    "pages/findAnimals/index",
-    "pages/animalName/index",
+    "pages/guide/findAnimals/index",
+    "pages/guide/guidingProcess/index",
     "pages/index/index",
     "pages/target/index",
     "pages/me/index",
