@@ -14,7 +14,7 @@ import "./index.scss";
 const state = reactive({
   jumpTo() {
     Taro.redirectTo({
-      url: "/pages/animalName/index",
+      url: "/pages/guide/guidingProcess/index",
       success() {},
     });
   },

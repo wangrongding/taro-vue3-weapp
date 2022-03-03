@@ -18,7 +18,7 @@ const state = reactive({
   logo:"https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   jumpTo() {
     Taro.redirectTo({
-      url: "/pages/findAnimals/index",
+      url: "/pages/guide/findAnimals/index",
       success() {},
     });
   },
