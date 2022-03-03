@@ -18,35 +18,75 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     // 允许使用import
     sourceType: "module",
-    // // 允许使用ES语法
-    // ecmaVersion: 6,
-    // // 允许解析JSX
-    // ecmaFeatures: {
-    //   jsx: true,
-    // },
+    // 允许使用ES语法
+    ecmaVersion: 2020,
+    // 允许解析JSX
+    ecmaFeatures: {
+      jsx: true,
+    },
     // // extraFileExtensions: [".vue"],
   },
   // plugins: ["@typescript-eslint/eslint-plugin"],
-  extends: ["taro/vue3"],
+  extends: ["taro/vue3", "plugin:vue/vue3-strongly-recommended"],
   /*
+  "规则名": [规则值, 规则配置]
   "off"或者0    //关闭规则关闭
   "warn"或者1    //在打开的规则作为警告（不影响退出代码）
   "error"或者2    //把规则作为一个错误（退出代码触发时为1）
   */
   rules: {
-    indent: ["error", 2, { SwitchCase: 1 }], //缩进
-    "linebreak-style": ["error", "unix"], //换行符风格 |unix|windows|
-    quotes: ["error", "double"], //使用双引号或单引号
-    semi: ["error", "always"], //语句末尾使用分号
-    "comma-dangle": ["error", "always-multiline"], //禁止使用拖尾逗号
-    eqeqeq: "error", //需要使用 `===` and `!==`
-    curly: ["error", "multi-line"], //需要遵循花括号约定,括号风格
-    "no-unused-vars": "off", //禁止出现未使用过的变量
-    "no-undef": "error", // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
-    "no-useless-escape": "error", // 禁用不必要的转义字符
-    "no-console": "error", // 提交的代码禁止出现console
-    "no-debugger": "error", // 提交的代码禁止出现debugger
-    "no-throw-literal": "warn", //禁止抛出异常字面量
+    // 强制每行的最大属性数 (在vue中，每个标签的属性数量不能超过该值)
+    "vue/max-attributes-per-line": [
+      "error",
+      {
+        singleline: {
+          max: 3,
+        },
+        multiline: {
+          max: 1,
+        },
+      },
+    ],
+    //在标签的右括号之前需要或不允许有空格
+    "vue/html-closing-bracket-spacing": [
+      "error",
+      {
+        startTag: "never",
+        endTag: "never",
+        selfClosingTag: "always",
+      },
+    ],
+    //在单行元素的内容之前和之后需要换行符
+    "vue/singleline-html-element-content-newline": 0,
+    // 关闭any类型的警告
+    // "@typescript-eslint/no-explicit-any": ["off"]
+    //========================================================
+    //缩进
+    indent: [2, 2, { SwitchCase: 1 }],
+    //换行符风格 |unix|windows|
+    "linebreak-style": [2, "unix"],
+    //使用双引号或单引号
+    quotes: [2, "double"],
+    //语句末尾使用分号
+    semi: [2, "always"],
+    //禁止使用拖尾逗号
+    "comma-dangle": [2, "always-multiline"],
+    //需要使用 `===` and `!==`
+    eqeqeq: 2,
+    //需要遵循花括号约定,括号风格
+    curly: [2, "multi-line"],
+    //禁止出现未使用过的变量
+    "no-unused-vars": "off",
+    // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
+    "no-undef": 2,
+    // 禁用不必要的转义字符
+    "no-useless-escape": 2,
+    // 提交的代码禁止出现console
+    "no-console": 2,
+    // 提交的代码禁止出现debugger
+    "no-debugger": 2,
+    //禁止抛出字面量错误 throw "error"
+    "no-throw-literal": 2,
     //禁用行尾空白
     "no-trailing-spaces": [
       2,
@@ -57,8 +97,66 @@ module.exports = {
         ignoreComments: false,
       },
     ],
-    "no-whitespace-before-property": "error", //禁止在对象字面量中禁止空白
-    // "@typescript-eslint/no-explicit-any": ["off"] //关闭any类型的警告
+    //禁止在对象字面量中禁止空白
+    "no-whitespace-before-property": 2,
+    //不能有不规则的空格
+    "no-irregular-whitespace": 2,
+    //禁止混用tab和空格
+    "no-mixed-spaces-and-tabs": [2, false],
+    //不能用多余的空格
+    "no-multi-spaces": 2,
+    //空行最多不能超过2行
+    "no-multiple-empty-lines": [1, { max: 2 }],
+    //禁止使用alert confirm prompt
+    "no-alert": 2,
+    //禁止在条件中使用常量表达式 if(true) if(1)
+    "no-constant-condition": 2,
+    //在创建对象字面量时不允许键重复 {a:1,a:1}
+    "no-dupe-keys": 2,
+    //switch中的case标签不能重复
+    "no-duplicate-case": 2,
+    //禁止省略浮点数中的0 .5 3.
+    "no-floating-decimal": 2,
+    //禁止使用eval
+    "no-eval": 2,
+    //禁止使用隐式eval
+    "no-implied-eval": 2,
+    //禁止扩展native对象
+    "no-extend-native": 2,
+    //变量初始化时不能直接给它赋值为undefined
+    "no-undef-init": 2,
+    //禁用var，用let和const代替
+    "no-var": 2,
+    //禁用with
+    "no-with": 2,
+    //是否允许非空数组里面有多余的空格
+    "array-bracket-spacing": [2, "never"],
+    //强制驼峰法命名
+    camelcase: [
+      2,
+      {
+        // (默认) 强制驼峰法命名
+        properties: "always",
+        // 允许使用下划线的命名(string[])
+        allow: [],
+      },
+    ],
+    //回调嵌套深度
+    "max-nested-callbacks": [2, { max: 2 }],
+    //禁止在代码后使用内联注释
+    "no-inline-comments": 0,
+    //函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
+    "new-cap": 2,
+    // 强制在花括号中使用一致的空格
+    "object-curly-spacing": ["error", "always"],
+    // 强制在注释中使用一致的空格
+    "spaced-comment": ["error", "always"],
+    //对象字面量中冒号的前后空格
+    "key-spacing": [2, { beforeColon: false, afterColon: true }],
+    //小括号里面要不要有空格
+    "space-in-parens": [0, "never"],
+    //中缀操作符周围要不要有空格==>(a + b)
+    "space-infix-ops": 2,
   },
   ignorePatterns: ["dist", "**/*.d.ts"],
 };

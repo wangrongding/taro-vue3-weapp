@@ -9,11 +9,11 @@ const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
   assets: store.assets,
-  //获取亲密度
+  // 获取亲密度
   getIntimacy() {
     getIntimacy();
   },
-  //熊旅行
+  // 熊旅行
   travel() {
     Taro.showToast({
       title: "开发中",
@@ -22,7 +22,7 @@ const state = reactive({
     });
   },
 });
-
+// 获取亲密度
 function execSomeThing(type: number) {
   switch (type) {
     case 1: {
@@ -99,7 +99,7 @@ function execSomeThing(type: number) {
       height: 400px;
       width: 100%;
       position: absolute;
-      bottom: 350px;
+      bottom: 300px;
       // display: flex;
       // flex-direction: row;
       // justify-content: center;

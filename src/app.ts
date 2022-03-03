@@ -7,10 +7,10 @@ const App = createApp({
   // 生命周期回调——监听小程序初始化。
   async onLaunch(options) {
     const store = useStore();
-    //微信登录
+    // 微信登录
     await store.wxLogin();
   },
-  //生命周期回调——监听小程序启动或切前台。
+  // 生命周期回调——监听小程序启动或切前台。
   onShow(options) {
     // console.log("🚀 / onShow", options);
   },
@@ -21,11 +21,11 @@ const App = createApp({
   onError(e) {
     // console.error("🚀 onError", e);
   },
-  //监听系统主题变化
+  // 监听系统主题变化
   onThemeChange() {
     // console.log("🚀 onThemeChange");
   },
-  //页面不存在监听函数。
+  // 页面不存在监听函数。
   onPageNotFound() {
     // console.log("🚀 onPageNotFound");
   },
