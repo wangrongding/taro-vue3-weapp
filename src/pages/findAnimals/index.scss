@@ -1,0 +1,43 @@
+.page-container {
+  background: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .page-main {
+    position: relative;
+    height: 100%;
+
+    .page-name {
+      writing-mode: vertical-lr;
+      font-size: 44px;
+      font-family: PingFang-SC-Bold, PingFang-SC;
+      font-weight: bold;
+      color: #FFFFFF;
+      line-height: 60px;
+      margin: 288px auto 0 auto;
+      letter-spacing: 10px;
+    }
+
+    .page-btn {
+      width: 284px;
+      height: 116px;
+      background: #FFFFFF;
+      border-radius: 30px;
+      font-size: 30px;
+      font-family: PingFang-SC-Bold, PingFang-SC;
+      font-weight: bold;
+      color: #60D394;
+      line-height: 116px;
+      text-align: center;
+      margin-left: 234px;
+      position: absolute;
+      bottom: 100px;
+    }
+  }
+
+}

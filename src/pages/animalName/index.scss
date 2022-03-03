@@ -1,0 +1,46 @@
+.page-container {
+  text-align: center;
+  margin: 0 auto;
+  background-color: #60D394;
+  width: 100%;
+  height: 100vh;
+
+  .page-main {
+    position: relative;
+    height: 100%;
+
+    image {
+      margin: 224px 0 30px 0;
+      width: 210px;
+      height: 240px;
+    }
+
+    .logo-name {
+      font-size: 28px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #FFFFFF;
+      line-height: 40px;
+
+      .name {
+        font-size: 24px;
+        margin-top: 10px;
+      }
+    }
+ 
+    .page-btn {
+      width: 284px;
+      height: 116px;
+      background: #FFFFFF;
+      border-radius: 30px;
+      font-size: 30px;
+      font-family: PingFang-SC-Bold, PingFang-SC;
+      font-weight: bold;
+      color: #60D394;
+      line-height: 116px;
+      position: absolute;
+      bottom: 100px;
+      margin-left: 233px;
+    }
+  }
+}

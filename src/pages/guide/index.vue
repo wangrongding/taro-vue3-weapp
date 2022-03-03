@@ -1,31 +1,26 @@
 <template>
-  <view class="page-container">
-    {{ state.text }}
-    <view @tap="state.jumpTo" class="btn"> 跳转首页 </view>
+  <view class="page-container">      
+    <view class="page-logo"> 
+      <image :src="state.logo" alt="" />
+      <view class="logo-name">梦琦</view>
+      <view @tap="state.jumpTo" class="page-btn"> 开始旅程 </view>
+    </view>
+    
   </view>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
-const state = reactive({
-  text: "引导页，点击跳首页！",
+import Taro from "@tarojs/taro";  
+import NavBar from "@/components/NavBar.vue";
+import "./index.scss";
+const state = reactive({ 
+  logo:"https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   jumpTo() {
     Taro.redirectTo({
-      url: "/pages/index/index?id=1",
+      url: "/pages/findAnimals/index",
       success() {},
     });
-  },
-});
+  }, 
+}); 
 </script>
-
-<style lang="scss">
-.btn {
-  background-color: bisque;
-  text-align: center;
-  width: 400px;
-  height: 400px;
-  line-height: 400px;
-  margin: 0 auto;
-}
-</style>
