@@ -13,7 +13,7 @@ module.exports = {
   rangeStart: 0, // 每个文件格式化的范围是文件的全部内容
   bracketSpacing: true, // 对象文字中的括号之间打印空格
   jsxSingleQuote: false, // 在JSX中是否使用单引号
-  // jsxBracketSameLine: false,// 将 > 多行 JSX 元素放在最后一行的末尾，而不是单独放在下一行（不适用于自闭元素）,默认false,这里选择>不另起一行
+  bracketSameLine: false, //将HTML元素的闭括号放在最后一行的末尾（不适用于自闭合元素）。
   arrowParens: "always", // 箭头函数，只有一个参数的时候，也需要括号 always|avoid
   htmlWhitespaceSensitivity: "strict", // html中换行规则 |strict|ignore|
   vueIndentScriptAndStyle: false, // vue中script与style里的第一条语句是否空格

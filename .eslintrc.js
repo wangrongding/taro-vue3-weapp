@@ -47,6 +47,17 @@ module.exports = {
     "no-console": "error", // 提交的代码禁止出现console
     "no-debugger": "error", // 提交的代码禁止出现debugger
     "no-throw-literal": "warn", //禁止抛出异常字面量
+    //禁用行尾空白
+    "no-trailing-spaces": [
+      2,
+      {
+        //(默认) 禁止在空行使用空白符
+        skipBlankLines: false,
+        // (默认) 禁止在注释块中使用空白符
+        ignoreComments: false,
+      },
+    ],
+    "no-whitespace-before-property": "error", //禁止在对象字面量中禁止空白
     // "@typescript-eslint/no-explicit-any": ["off"] //关闭any类型的警告
   },
   ignorePatterns: ["dist", "**/*.d.ts"],
