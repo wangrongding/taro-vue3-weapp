@@ -13,6 +13,7 @@
       margin: 224px 0 30px 0;
       width: 210px;
       height: 240px;
+      background: #fff;
     }
 
     .logo-name {
@@ -21,13 +22,24 @@
       font-weight: 400;
       color: #FFFFFF;
       line-height: 40px;
-
-      .name {
-        font-size: 24px;
-        margin-top: 10px;
-      }
+      height: 83px;
+      margin-bottom: 20px;
+      white-space:pre-wrap;
     }
- 
+    .animal-name{
+      width: 670px;
+      height: 116px;
+      background: #FFFFFF;
+      box-shadow: 0px 10px 25px 0px rgba(96, 211, 148, 0.3);
+      border-radius: 30px;
+      margin-left:40px;
+      font-size: 34px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #333333;
+
+    }
+
     .page-btn {
       width: 284px;
       height: 116px;
@@ -40,7 +52,7 @@
       line-height: 116px;
       position: absolute;
       bottom: 100px;
-      margin-left: 233px; 
+      margin-left: 233px;
     }
   }
 }
