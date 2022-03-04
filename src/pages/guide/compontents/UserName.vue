@@ -1,15 +1,20 @@
 <template>
-      <image class="logo-image" :src="state.logo" alt="" />
-      <view class="logo-name">
-        “啊~谢谢你把我放出来~外面好明亮，你是？”
-      </view>
-      <input class="animal-name" type="text" cursor-spacing="50" maxlength="10"/>
+  <image class="logo-image" :src="state.logo" alt="" />
+  <view class="logo-name">
+    “啊~谢谢你把我放出来~外面好明亮，你是？”
+  </view>
+  <input
+    class="animal-name"
+    type="text"
+    cursor-spacing="50"
+    maxlength="10"
+  >
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 const state = reactive({
-  logo:"https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
 });
 </script>
