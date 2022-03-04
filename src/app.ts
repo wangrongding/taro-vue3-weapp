@@ -3,11 +3,8 @@ import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
 import "./app.scss";
 
-// =========================================================
-import { Button } from "@nutui/nutui";
-// 注意：这种方式将会导入所有组件
-import "@nutui/nutui/dist/style.css";
-// =========================================================
+import "@nutui/nutui-taro/dist/style.css";
+import NutUI from "@nutui/nutui-taro";
 
 const App = createApp({
   // 生命周期回调——监听小程序初始化。
@@ -39,6 +36,6 @@ const App = createApp({
 });
 
 App.use(createPinia())
-  .use(Button);
+  .use(NutUI);
 
 export default App;

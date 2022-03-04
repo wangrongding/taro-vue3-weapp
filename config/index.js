@@ -4,20 +4,31 @@ const config = {
   projectName: "mp-sleep",
   // 项目创建日期
   date: "2022-2-17",
-  // 设计稿尺寸
-  designWidth: 750,
-  // 设计稿尺寸换算规则
+  // // 设计稿尺寸
+  // designWidth: 750,
+  // // 设计稿尺寸换算规则
+  // deviceRatio: {
+  //   640: 2.34 / 2,
+  //   750: 1,
+  //   828: 1.81 / 2,
+  // },
+  designWidth: 375,
   deviceRatio: {
     640: 2.34 / 2,
     750: 1,
     828: 1.81 / 2,
+    375: 2 / 1,
   },
   // 项目源码目录
   sourceRoot: "src",
   // 项目产出目录
   outputRoot: "dist",
   // Taro 插件配置
-  plugins: ["taro-plugin-pinia"],
+  plugins: ["taro-plugin-pinia", "@tarojs/plugin-html"],
+  // 给 sass-loader 传递选项 ！！！！ 按需加载方式必须配置
+  scss: {
+    data: "@import '@nutui/nutui-taro/dist/styles/variables.scss';",
+  },
   // 全局变量设置
   defineConstants: {},
   // 文件 copy 配置

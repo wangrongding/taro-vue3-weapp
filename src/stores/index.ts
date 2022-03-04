@@ -2,7 +2,7 @@
 import { defineStore } from "pinia";
 import Taro from "@tarojs/taro";
 import { getUserInfo } from "@/api/preload/index";
-export const useStore = defineStore("counter", {
+export const useStore = defineStore("user", {
   state: () => {
     return {
       userInfo: { token: "" },

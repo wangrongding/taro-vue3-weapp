@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/index";
 export interface RequestBase {
   // 字符串
   url: string;

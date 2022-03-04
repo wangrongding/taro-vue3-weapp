@@ -5,6 +5,7 @@ import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import "./index.scss";
 import { useStore } from "@/stores";
+// import { Toast } from "@nutui/nutui-taro";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
@@ -15,11 +16,11 @@ const state = reactive({
   },
   // 熊旅行
   travel() {
-    Taro.showToast({
-      title: "开发中",
-      icon: "error",
-      duration: 1000,
-    });
+    // Taro.showToast({
+    //   title: "开发中",
+    //   icon: "error",
+    //   duration: 1000,
+    // });
   },
 });
 // 获取亲密度
@@ -81,43 +82,43 @@ function execSomeThing(type: number) {
   flex-direction: column;
   justify-content: flex-start;
   .main {
-    margin-top: 20px;
+    margin-top: 10px;
     height: 100%;
     position: relative;
     flex: 1;
     .operation-bar {
       // width: 100%;
-      padding: 0 42px;
-      margin-bottom: 36px;
+      padding: 0 21px;
+      margin-bottom: 18px;
       display: flex;
       justify-content: space-between;
       image {
-        width: 88px;
-        height: 108px;
+        width: 44px;
+        height: 54px;
       }
     }
     .bear-area {
-      height: 400px;
+      height: 200px;
       width: 100%;
       position: absolute;
-      bottom: 300px;
+      bottom: 150px;
       // display: flex;
       // flex-direction: row;
       // justify-content: center;
       text-align: center;
       .bear {
-        width: 280px;
-        height: 320px;
+        width: 140px;
+        height: 160px;
         align-items: center;
       }
       .honeypot {
         position: absolute;
-        right: 50px;
-        bottom: 50px;
+        right: 25px;
+        bottom: 25px;
         border-radius: 50%;
         border: 1px solid red;
-        width: 100px;
-        height: 100px;
+        width: 50px;
+        height: 50px;
       }
     }
     .bottom-bar {
