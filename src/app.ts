@@ -3,6 +3,12 @@ import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
 import "./app.scss";
 
+// =========================================================
+import { Button } from "@nutui/nutui";
+// 注意：这种方式将会导入所有组件
+import "@nutui/nutui/dist/style.css";
+// =========================================================
+
 const App = createApp({
   // 生命周期回调——监听小程序初始化。
   async onLaunch(options) {
@@ -32,6 +38,7 @@ const App = createApp({
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 });
 
-App.use(createPinia());
+App.use(createPinia())
+  .use(Button);
 
 export default App;

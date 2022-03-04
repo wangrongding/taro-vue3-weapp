@@ -51,6 +51,7 @@ function execSomeThing(type: number) {
       <view class="bear-area">
         <image class="bear" :src="state.assets.bear" alt="" />
         <view class="honeypot" @tap="state.travel"> 蜜罐 </view>
+        <nut-button type="primary">主要按钮</nut-button>
       </view>
       <view class="operation-bar bottom-bar">
         <image
