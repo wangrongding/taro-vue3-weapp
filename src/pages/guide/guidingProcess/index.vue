@@ -22,7 +22,13 @@ import DailyView from "../compontents/DailyView.vue";
 
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-  componentList: shallowRef([AnimalName, UserName, IntimacyValue, Partner, DailyView]),
+  componentList: shallowRef([
+    AnimalName,
+    UserName,
+    IntimacyValue,
+    Partner,
+    DailyView,
+  ]),
   index: 0,
   jumpTo() {
     // Taro.redirectTo({

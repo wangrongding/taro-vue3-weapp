@@ -157,6 +157,16 @@ module.exports = {
     "space-in-parens": [0, "never"],
     //中缀操作符周围要不要有空格==>(a + b)
     "space-infix-ops": 2,
+    //强制数组元素间出现换行
+    "array-element-newline": [2, { multiline: true, minItems: 3 }],
+    //数组括号换行
+    "array-bracket-newline": [2, { multiline: true }],
+    //要求方法链中每个调用都有一个换行符
+    "newline-per-chained-call": ["error", { ignoreChainWithDepth: 1 }],
+    // 强制在花括号内使用一致的换行符
+    // "object-curly-newline": ["error", { minProperties: 1 }],
+    //强制将对象的属性放在不同的行上
+    // "object-property-newline": "error",
   },
   ignorePatterns: ["dist", "**/*.d.ts"],
 };
