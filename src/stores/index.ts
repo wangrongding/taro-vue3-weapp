@@ -39,6 +39,7 @@ export const useStore = defineStore("user", {
     // 用户登录(wx.login->拿到code去后台换取openId)
     async wxLogin() {
       const { code } = await Taro.login();
+      // console.log("🚀🚀🚀 / code", code);
       // 根据code获取openId等用户信息
       const info = (await getUserInfo({ code })) as any;
       // todo 后端暂时给出的临时token

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import { getIntimacy } from "@/api/home/index";
 import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
@@ -46,7 +46,7 @@ function execSomeThing(type: string) {
   switch (type) {
     case "audio": {
       // state.travel();
-      state.showTeleport = true;
+      state.showTeleport = !state.showTeleport;
       break;
     }
     default:
@@ -54,13 +54,51 @@ function execSomeThing(type: string) {
       break;
   }
 }
+
+// 一个计算属性 ref
+const getSize: any = computed(() => {
+  let systemInfo = {};
+  Taro.getSystemInfoAsync({
+    success(res) {
+      systemInfo = res;
+    },
+  });
+  return systemInfo;
+});
+// eslint-disable-next-line
+// console.log(getSize.value, "😀😀😀😀😀");
+// console.log(getSize.value.devicePixelRatio, "😀😀😀😀😀");
+// console.log(getSize.value.screenWidth, "😀😀😀😀😀");
+// console.log(getSize.value.windowWidth, "😀😀😀😀😀");
 </script>
 
 <template>
   <view class="page-container">
     <NavBar>首页</NavBar>
     <!-- 公用的首页弹窗组件 -->
-    <nut-popup
+
+    <view
+      class="pop"
+      v-show="state.showTeleport"
+      @tap="execSomeThing('audio')"
+      style="
+        z-index: 9999;
+        background-color: #fff;
+        width: 100vw;
+        height: 75vh;
+        border-radius: 20px 20px 0 0;
+      "
+    >
+      <view>
+        <image
+          :src="state.assets.icon"
+          alt=""
+          style="height: 50px; width: 50px; margin: -100px 0 0 100px"
+        />
+        <view class="list"> sdfsdf </view>
+      </view>
+    </view>
+    <!-- <nut-popup
       position="bottom"
       close-icon-position="top-left"
       close-icon="close-little"
@@ -83,7 +121,7 @@ function execSomeThing(type: string) {
         />
         <view class="list"> sdfsdf </view>
       </view>
-    </nut-popup>
+    </nut-popup> -->
     <view class="main">
       <!-- 我的/统计 -->
       <view class="operation-bar">
@@ -103,15 +141,15 @@ function execSomeThing(type: string) {
             :progress="(20 / 30) * 100"
             :is-auto="true"
             @tap="state.travel"
-            stroke-inner-width="5"
+            stroke-inner-width="4"
             :progress-option="{
-              radius: 20,
+              radius: 18 * (getSize.screenWidth / 375),
               backColor: '#FFF',
               progressColor: '#FFD97DFF',
             }"
-          >
-            <image :src="state.assets.honey" style="width: 52px; height: 52px; margin-top: 5px" />
-          </nut-circleprogress>
+            style="z-index: 2; position: absolute; top: 0; left: 0; bottom: 0; right: 0"
+          />
+          <image :src="state.assets.honey" class="honey-img" />
         </view>
       </view>
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
@@ -119,7 +157,7 @@ function execSomeThing(type: string) {
         <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
         <image :src="state.assets.audio" alt="" @tap="execSomeThing('audio')" />
         <nut-badge :value="1" top="1" right="20">
-          <image :src="state.assets.today" style="width: 104px; height: 60px" alt="" />
+          <image :src="state.assets.today" class="today-target" alt="" />
         </nut-badge>
         <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
         <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
@@ -143,6 +181,8 @@ function execSomeThing(type: string) {
   flex-direction: column;
   justify-content: flex-start;
   .pop {
+    position: absolute;
+    bottom: 0;
     &::before {
       content: "";
       position: absolute;
@@ -190,9 +230,18 @@ function execSomeThing(type: string) {
         right: 25px;
         bottom: 25px;
         border-radius: 50%;
+        width: 52px;
+        height: 52px;
         // border: 1px solid red;
-        // width: 50px;
-        // height: 50px;
+        .honey-img {
+          width: 52px;
+          height: 52px;
+          // margin-top: 5px;
+          z-index: 1;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
       }
     }
     // 底部操作栏
@@ -204,6 +253,10 @@ function execSomeThing(type: string) {
       bottom: 0px;
       display: flex;
       align-items: center;
+      .today-target {
+        width: 104px;
+        height: 60px;
+      }
     }
   }
 }

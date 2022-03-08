@@ -25,12 +25,12 @@ export interface RequestHeader {
 }
 
 // 定义全局请求地址(baseUrl)
-const baseUrl: string = "http://192.168.1.71:60";
+const baseUrl = "http://192.168.1.71:60";
 
 // 暂时考虑 req的属性都会传入
 const requestAction = (url, method, options: RequestBase) => {
   const store = useStore();
-  let query = { ...{ url, method }, ...options };
+  const query = { ...{ url, method }, ...options };
   return new Promise((resolve, reject) => {
     if (query.loading) {
       Taro.showLoading({ title: query.title ? query.title : "数据加载中..." });

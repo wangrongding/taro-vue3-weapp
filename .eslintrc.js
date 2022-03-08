@@ -8,6 +8,7 @@ module.exports = {
   root: true,
   // 全局环境
   env: {
+    "vue/setup-compiler-macros": true,
     node: true,
   },
   // 指定如何解析语法。可以为空，但若不为空，只能配该值
@@ -27,7 +28,13 @@ module.exports = {
     // // extraFileExtensions: [".vue"],
   },
   // plugins: ["@typescript-eslint/eslint-plugin"],
-  extends: ["taro/vue3", "plugin:vue/vue3-strongly-recommended"],
+  extends: [
+    "taro/vue3",
+    "plugin:vue/vue3-strongly-recommended",
+    // "plugin:vue/base",
+    // "plugin:vue/vue3-essential",
+    // "plugin:@typescript-eslint/recommended",
+  ],
   /*
   "规则名": [规则值, 规则配置]
   "off"或者0    //关闭规则关闭
@@ -170,3 +177,32 @@ module.exports = {
   },
   ignorePatterns: ["dist", "**/*.d.ts"],
 };
+
+//整个文件范围内禁止规则出现警告   将/* eslint-disable */放置于文件最顶部===============
+/* eslint-disable */
+
+//将需要忽略的代码块用注释包裹起来============
+/* eslint-disable */
+// alert('foo');
+/* eslint-enable */
+
+//将需要忽略的代码块用注释包裹起来==================
+/* eslint-disable no-alert, no-console */
+// alert('foo');
+// console.log('bar');
+/* eslint-enable no-alert, no-console */
+
+//在指定行上禁用指定的某个规则============
+// alert("foo"); // eslint-disable-line no-alert
+// eslint-disable-next-line no-alert
+// alert("foo");
+
+//在某个特定的行上禁用多个规则==============
+// alert("foo"); // eslint-disable-line no-alert, quotes, semi
+// eslint-disable-next-line no-alert, quotes, semi
+// alert("foo");
+
+//对指定行禁用规则警告==============
+// alert("foo"); // eslint-disable-line
+// eslint-disable-next-line
+// alert("foo");
