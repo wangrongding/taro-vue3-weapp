@@ -21,7 +21,7 @@ const state = reactive({
 
 <style lang="scss">
 .partner-title {
-  padding: 172px 0 10px 0;
+  padding: 104px 0 10px 0;
   font-size: 34px;
   font-family: PingFang-SC-Bold, PingFang-SC;
   font-weight: bold;
