@@ -14,7 +14,7 @@ module.exports = {
     { value: "revert", name: "revert: 代码回退" },
     { value: "init", name: "init: 项目初始化" },
     { value: "build", name: "build: 变更项目构建或外部依赖" },
-    { value: "WIP", name: "WIP: 进行中的工作" },
+    { value: "wip", name: "wip: 进行中的工作" },
   ],
 
   scopes: [],
