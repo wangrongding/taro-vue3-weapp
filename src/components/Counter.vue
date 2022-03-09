@@ -9,6 +9,7 @@
 import { useCounterStore } from "../stores/counter";
 
 export default {
+  name: "CounterTest",
   setup() {
     const counter = useCounterStore();
 
