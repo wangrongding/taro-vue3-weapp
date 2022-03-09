@@ -18,9 +18,9 @@ import Taro from "@tarojs/taro";
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
 });
-// const emit = defineEmits(["userName"]);
+const emit = defineEmits(["userName"]);
 
 function nameOnBlur(e:string){
-  // emit("userName", e.detail.value);
+  emit("userName", e.detail.value);
 }
 </script>
