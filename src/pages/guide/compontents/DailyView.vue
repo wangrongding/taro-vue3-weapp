@@ -19,9 +19,8 @@ const state = reactive({
 <style lang="scss">
 
 .dailyview-image {
-  margin: 205px 0 40px 0;
-  width: 280px;
-  height: 320px;
-  background: #fff
+  margin: 103px 0 20px 0;
+  width: 140px;
+  height: 160px;
 }
 </style>

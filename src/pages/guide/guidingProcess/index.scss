@@ -13,30 +13,30 @@
     height: 100%;
 
     .logo-image {
-      margin: 44px 0 30px 0;
-      width: 210px;
-      height: 240px;
-      background: #fff;
+      margin: 22px 0 15px 0;
+      width: 105px;
+      height: 120px;
     }
 
     .logo-name {
-      font-size: 28px;
+      font-size: 14px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       color: #FFFFFF;
-      line-height: 40px;
-      height: 83px;
-      margin-bottom: 20px;
-      white-space:pre-wrap;
+      line-height: 20px;
+      height: 42px;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
     }
-    .animal-name{
-      width: 670px;
-      height: 116px;
+
+    .animal-name {
+      width: 336px;
+      height: 58px;
       background: #FFFFFF;
-      box-shadow: 0px 10px 25px 0px rgba(96, 211, 148, 0.3);
-      border-radius: 30px;
-      margin-left:40px;
-      font-size: 34px;
+      box-shadow: 0px 5px 12.5px 0px rgba(96, 211, 148, 0.3);
+      border-radius: 15px;
+      margin-left: 20px;
+      font-size: 17px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       color: #333333;
@@ -44,18 +44,18 @@
     }
 
     .page-btn {
-      width: 284px;
-      height: 116px;
+      width: 142px;
+      height: 58px;
       background: #FFFFFF;
-      border-radius: 30px;
-      font-size: 30px;
+      border-radius: 15px;
+      font-size: 15px;
       font-family: PingFang-SC-Bold, PingFang-SC;
       font-weight: bold;
       color: #60D394;
-      line-height: 116px;
+      line-height: 58px;
       position: absolute;
-      bottom: 100px;
-      margin-left: 233px;
+      bottom: 50px;
+      margin-left: 111px;
     }
   }
 }

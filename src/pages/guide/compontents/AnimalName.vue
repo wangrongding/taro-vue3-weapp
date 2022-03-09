@@ -5,6 +5,7 @@
     class="animal-name"
     type="text"
     maxlength="10"
+    @blur="nameOnBlur"
   >
 </template>
 
@@ -19,7 +20,7 @@ const state = reactive({
 });
 // const emit = defineEmits(["animalName"]);
 
-// function nameOnBlur(e:string){
-//   emit("animalName", e.detail.value);
-// }
+function nameOnBlur(e:string){
+  // emit("animalName", e.detail.value);
+}
 </script>

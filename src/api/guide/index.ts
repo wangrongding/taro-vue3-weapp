@@ -1,10 +1,16 @@
 import request from "../request";
 
-// 环境音列表
+// 是否是新用户
 export function getGuide(data?: object) {
-  return request.get("/mini-program/user-sound/getUserSoundList", { data });
+  return request.get("/mini-program/userExt/getGuide", { data });
 }
-// 亲密值查询
-export function getIntimacy(data?: object) {
-  return request.get("/mini-program/user-animal/getUserAnimalIntimateValue", { data });
+
+// 动物名字
+export function saveName(data?: object) {
+  return request.post("/mini-program/user-animal/saveName", { data });
+}
+
+// 用户名字
+export function saveUserName(data?: object) {
+  return request.post("/wx-user/saveUserName", { data });
 }

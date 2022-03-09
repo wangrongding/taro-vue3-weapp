@@ -18,14 +18,22 @@ import { getGuide } from "@/api/guide/index";
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   jumpTo() {
-    Taro.redirectTo({
-      url: "/pages/guide/findAnimals/index",
-      success() {},
-    });
-  },
-  getGuide(){
-    getGuide();
+    let params = {
+      openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+    };
+    // 判断是否完成新手引导
+    getGuide(params)
+      .then((res: any) => {
+        res.guideStatus === 1
+          ? Taro.redirectTo({
+            url: "/pages/guide/findAnimals/index",
+            success() {},
+          })
+          : Taro.redirectTo({
+            url: "/pages/index/index",
+            success() {},
+          });
+      });
   },
 });
-getGuide();
 </script>

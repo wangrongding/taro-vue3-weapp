@@ -12,6 +12,7 @@
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../../components/NavBar.vue";
+import "./index.scss";
 
 const state = reactive({
   jumpTo() {
