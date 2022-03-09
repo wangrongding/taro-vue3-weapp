@@ -20,23 +20,22 @@ const state = reactive({
 
 <style lang="scss" >
 .intimate-data {
-  width: 670px;
-  height: 116px;
+  width: 335px;
+  height: 58px;
   background: #ff9b85;
-  border-radius: 30px;
-  margin-left: 40px;
+  border-radius: 15px;
+  margin-left: 20px;
   text-align: left;
-  line-height: 116px;
+  line-height: 58px;
   .intimate-icon {
-    width: 62px;
-    height: 56px;
-    background: #fff;
-    margin: 0 40px;
+    width: 31px;
+    height: 28px;
+    margin: 0 20px;
   }
   .intimate-name {
     vertical-align: super;
     display: inline-block;
-    font-size: 34px;
+    font-size: 17px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #ffffff;

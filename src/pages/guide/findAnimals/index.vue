@@ -1,5 +1,6 @@
 <template>
   <view class="page-container">
+    <NavBar>梦琦</NavBar>
     <view class="page-main">
       <view class="page-name">草丛里面有一些声音</view>
       <view @tap="state.jumpTo" class="page-btn"> 继续 </view>
@@ -10,7 +11,9 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+import NavBar from "../../../components/NavBar.vue";
 import "./index.scss";
+
 const state = reactive({
   jumpTo() {
     Taro.redirectTo({

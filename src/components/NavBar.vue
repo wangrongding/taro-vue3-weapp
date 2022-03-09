@@ -28,6 +28,7 @@ try {
       lineHeight: state.navigatorInfo.menuButtonHeight + 'px',
       textAlign: 'center',
       boxSizing: 'content-box',
+      color:'#fff',
     }"
   >
     <slot />

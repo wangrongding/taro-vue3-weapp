@@ -1,5 +1,6 @@
 <template>
   <view class="page-container">
+    <NavBar style="color:#000">梦琦</NavBar>
     <view class="page-logo">
       <image :src="state.logo" alt="" />
       <view class="logo-name">梦琦</view>
@@ -11,15 +12,28 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "../../components/NavBar.vue";
 import "./index.scss";
+import { getGuide } from "@/api/guide/index";
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   jumpTo() {
-    Taro.redirectTo({
-      url: "/pages/guide/findAnimals/index",
-      success() {},
-    });
+    let params = {
+      openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+    };
+    // 判断是否完成新手引导
+    getGuide(params)
+      .then((res: any) => {
+        res.guideStatus === 1
+          ? Taro.redirectTo({
+            url: "/pages/guide/findAnimals/index",
+            success() {},
+          })
+          : Taro.redirectTo({
+            url: "/pages/index/index",
+            success() {},
+          });
+      });
   },
 });
 </script>
