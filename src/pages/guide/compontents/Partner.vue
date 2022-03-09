@@ -21,32 +21,30 @@ const state = reactive({
 
 <style lang="scss">
 .partner-title {
-  padding: 104px 0 10px 0;
-  font-size: 34px;
+  padding: 52px 0 5px 0;
+  font-size: 17px;
   font-family: PingFang-SC-Bold, PingFang-SC;
   font-weight: bold;
   color: #333333;
 }
 .partner-subtitle {
-  font-size: 28px;
+  font-size: 14px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #333333;
 }
 .intimacy-icon {
   width: 100%;
-  margin: 40px auto;
+  margin: 20px auto;
 
   image {
-    width: 67px;
-    height: 60px;
-    background: #fff;
+    width: 33.5px;
+    height: 30px;
   }
 }
 .partner-image {
-  margin: 20px 0 40px 0;
-  width: 280px;
-  height: 320px;
-  background: #fff;
+  margin: 10px 0 20px 0;
+  width: 140px;
+  height: 160px;
 }
 </style>

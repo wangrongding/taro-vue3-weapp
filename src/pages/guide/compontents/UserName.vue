@@ -8,6 +8,7 @@
     type="text"
     cursor-spacing="50"
     maxlength="10"
+    @blur="nameOnBlur"
   >
 </template>
 
@@ -17,4 +18,9 @@ import Taro from "@tarojs/taro";
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
 });
+// const emit = defineEmits(["userName"]);
+
+function nameOnBlur(e:string){
+  // emit("userName", e.detail.value);
+}
 </script>

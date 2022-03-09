@@ -5,6 +5,7 @@
       <component
         :is="state.componentList[state.index]"
         @animalName="animalNameNum"
+        @userName="userName"
       />
       <view @tap="state.jumpTo" class="page-btn"> 继续 </view>
     </view>
@@ -15,6 +16,7 @@
 import { reactive, shallowRef } from "vue";
 import Taro from "@tarojs/taro";
 import "./index.scss";
+import { saveName ,saveUserName } from "@/api/guide/index";
 
 import NavBar from "../../../components/NavBar.vue";
 
@@ -42,41 +44,47 @@ const state = reactive({
   sleepId: "UUnJ96IPTBMQo5YHcdOOuAcdWLbXIf20Erxi5X9iOqY",
   getUpId: "Ap7RDxyC31iflhCPwTTglenb-6edqOYRtzSJ-yS9UtY",
   animalName: "",
+  userName: "",
   jumpTo() {
-    if (state.index === 5) {
-      Taro.getUserProfile({
-        lang: "zh_CN",
-        desc: "获取你的昵称",
-        success: (response) => {
-          state.index = state.index + 1;
-          // let serviceArr:Array<string> = [];
-          // serviceArr.push(state.loveValueId);
-          // serviceArr.push(state.sleepId);
-          // serviceArr.push(state.getUpId);
-          // console.log(serviceArr)
-          // Taro.requestSubscribeMessage({
-          //   tmplIds: serviceArr,
-          //   success(res) {
-          //   },
-          //   fail(res) {
-          //   },
-          // });
-        },
-        fail: () => {
-          // 拒绝授权
-          return;
-        },
-      });
-      return;
-    }
-    // state.index = state.index + 1;
+    // if (state.index === 5) {
+    //   Taro.getUserProfile({
+    //     lang: "zh_CN",
+    //     desc: "获取你的昵称",
+    //     success: (response) => {
+    //       state.index = state.index + 1;
+    //       let serviceArr:Array<string> = [];
+    //       serviceArr.push(state.loveValueId);
+    //       serviceArr.push(state.sleepId);
+    //       serviceArr.push(state.getUpId);
+    //       console.log(serviceArr)
+    //       Taro.requestSubscribeMessage({
+    //         tmplIds: serviceArr,
+    //         success(res) {
+    //         },
+    //         fail(res) {
+    //         },
+    //       });
+    //     },
+    //     fail: () => {
+    //       return;
+    //     },
+    //   });
+    //   return;
+    // }
+    // state.animalName === "" ? "" :
+
     // Taro.redirectTo({
     //  url: "/pages/animalName/index",
     //  success() {},
     // });
   },
 });
+// 获取动物名字
 function animalNameNum(num:string){
   state.animalName = num;
+}
+// 获取用户名字
+function userName(num:string){
+  state.userName = num;
 }
 </script>

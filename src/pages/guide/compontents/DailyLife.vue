@@ -17,9 +17,8 @@ const state = reactive({
 
 <style lang="scss">
 .dailylife-image {
-  margin: 290px 0 40px 0;
-  width: 280px;
-  height: 320px;
-  background: #fff
+  margin: 145px 0 20px 0;
+  width: 140px;
+  height: 160px;
 }
 </style>
