@@ -11,7 +11,7 @@ const state = reactive({
   showTeleport: false,
   // 获取亲密度
   getIntimacy() {
-    getIntimacy();
+    getIntimacy({}, { failToast: true, loading: true });
   },
   // 熊旅行
   travel() {
@@ -70,6 +70,29 @@ const getSize: any = computed(() => {
 // console.log(getSize.value.devicePixelRatio, "😀😀😀😀😀");
 // console.log(getSize.value.screenWidth, "😀😀😀😀😀");
 // console.log(getSize.value.windowWidth, "😀😀😀😀😀");
+
+// 获取权限
+function authorize() {
+  // Taro.getUserProfile({
+  //   desc: "用于完善用户资料", // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+  //   success: (res) => {
+  //     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+  //     this.setState({
+  //       userInfo: res.userInfo,
+  //       hasUserInfo: true,
+  //     });
+  //   },
+  // });
+  // 可以通过 Taro.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
+
+  Taro.getUserProfile({
+    desc: "用于完善会员资料", // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+    success: (res) => {
+      // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+      // console.log(res);
+    },
+  });
+}
 </script>
 
 <template>
@@ -125,7 +148,7 @@ const getSize: any = computed(() => {
     <view class="main">
       <!-- 我的/统计 -->
       <view class="operation-bar">
-        <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
+        <image :src="state.assets.icon" alt="" @tap="authorize" />
         <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
       </view>
       <!-- 亲密度/统计 -->
@@ -170,9 +193,7 @@ const getSize: any = computed(() => {
 .page-container {
   background-image: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281552325.png");
   background-color: #48c77d;
-  // background-size: 100% 100%;
   background-size: 100% auto;
-  // background-position: center bottom;
   background-position: center top;
   background-repeat: no-repeat;
   height: 100vh;

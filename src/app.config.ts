@@ -1,12 +1,12 @@
 export default {
   pages: [
-    "pages/guide/index",
-    "pages/guide/findAnimals/index",
-    "pages/guide/guidingProcess/index",
+    // "pages/guide/index",
+    // "pages/guide/findAnimals/index",
+    // "pages/guide/guidingProcess/index",
     "pages/index/index",
-    "pages/target/index",
-    "pages/me/index",
-    "pages/dashboard/index",
+    // "pages/target/index",
+    // "pages/me/index",
+    // "pages/dashboard/index",
   ],
   window: {
     backgroundTextStyle: "light",

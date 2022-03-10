@@ -23,6 +23,12 @@
           "pathName": "pages/index/index",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "新手引导",
+          "pathName": "pages/guide/guidingProcess/index",
+          "query": "",
+          "scene": null
         }
       ]
     }

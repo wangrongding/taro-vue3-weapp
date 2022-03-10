@@ -39,7 +39,11 @@ const requestAction = (url, method, options: RequestBase) => {
       url: baseUrl + query.url,
       method: method,
       data: query.data,
-      header: { "content-type": "application/json", "platform-auth": store.userInfo.token },
+      header: {
+        "content-type": "application/json",
+        "platform-auth": "bearer " + store.userInfo.token,
+        Authorization: "Basic c2xlZXAtcHJvZ3JhbToxMjM0NTY=",
+      },
     })
       .then((res) => {
         // 成功
@@ -48,14 +52,25 @@ const requestAction = (url, method, options: RequestBase) => {
           // console.log("😀", res.data.data);
         } else {
           // 失败
+          if (query.failToast) {
+            Taro.showToast({
+              title: res.data.msg,
+              icon: "error",
+              duration: 1000,
+            });
+          }
           reject(res.data);
-          // console.log("😡", res.data);
         }
       })
-      .catch((err) => {
+      .catch((error) => {
         // 报错提示
-        // console.log("😡😡😡😡");
-        reject(err);
+        // console.log(query.failToast, "😡😡😡😡", error);
+        Taro.showToast({
+          title: error.errMsg,
+          icon: "error",
+          duration: 1000,
+        });
+        reject(error);
       })
       .finally(() => {
         if (query.loading) {
