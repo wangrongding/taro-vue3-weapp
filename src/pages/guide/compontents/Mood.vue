@@ -11,7 +11,14 @@
   </view>
   <view class="mood-data">
     <view class="mood-title"> 你现在心情怎么样?</view>
-    <image class="mood-" :src="state.logo" alt="" />
+    <image
+      v-for="(item,index) in 5"
+      class="mood-logo"
+      :key="index"
+      :src="state.logo"
+      @tap="moodBtn()"
+      alt=""
+    />
   </view>
 </template>
 
@@ -24,6 +31,11 @@ const state = reactive({
   mooddays: 16,
   week: "二",
 });
+const emit = defineEmits(["moodBtn"]);
+// 获取点击详情
+function moodBtn(data) {
+  emit("moodBtn", data);
+}
 </script>
 
 <style lang="scss">
@@ -63,6 +75,11 @@ const state = reactive({
     font-weight: bold;
     color: #333333;
     margin-top: 15px;
+  }
+  .mood-logo {
+    width: 40px;
+    height: 40px;
+    margin: 25px 14.25px;
   }
 }
 </style>

@@ -24,3 +24,8 @@ export function updateByAnimalId(data?: object) {
 export function wxRegistry(data?: object) {
   return request.post("/platform-user/wx-user/wxRegistry", { data });
 }
+
+// 获取心情列表
+export function sleepMood(data?: object) {
+  return request.get("/mini-program/sleep-mood/list ", { data });
+}
