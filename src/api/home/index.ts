@@ -5,6 +5,6 @@ export function getSoundList(data?: object) {
   return request.get("/mini-program/user-sound/getUserSoundList", { data });
 }
 // 亲密值查询
-export function getIntimacy(data?: object) {
-  return request.get("/mini-program/user-animal/getUserAnimalIntimateValue", { data });
+export function getIntimacy(data?: object, options?: object) {
+  return request.get("/mini-program/user-animal/getUserAnimalIntimateValue", { data, ...options });
 }

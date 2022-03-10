@@ -39,7 +39,11 @@ const requestAction = (url, method, options: RequestBase) => {
       url: baseUrl + query.url,
       method: method,
       data: query.data,
-      header: { "content-type": "application/json", "platform-auth": store.userInfo.token },
+      header: {
+        "content-type": "application/json",
+        "platform-auth": "bearer " + store.userInfo.token,
+        Authorization: "Basic c2xlZXAtcHJvZ3JhbToxMjM0NTY=",
+      },
     })
       .then((res) => {
         // 成功
@@ -55,6 +59,13 @@ const requestAction = (url, method, options: RequestBase) => {
       .catch((err) => {
         // 报错提示
         // console.log("😡😡😡😡");
+        if (query.failToast) {
+          Taro.showToast({
+            title: err,
+            icon: "error",
+            duration: 1000,
+          });
+        }
         reject(err);
       })
       .finally(() => {
