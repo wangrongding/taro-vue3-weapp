@@ -52,21 +52,25 @@ const requestAction = (url, method, options: RequestBase) => {
           // console.log("😀", res.data.data);
         } else {
           // 失败
+          if (query.failToast) {
+            Taro.showToast({
+              title: res.data.msg,
+              icon: "error",
+              duration: 1000,
+            });
+          }
           reject(res.data);
-          // console.log("😡", res.data);
         }
       })
-      .catch((err) => {
+      .catch((error) => {
         // 报错提示
-        // console.log("😡😡😡😡");
-        if (query.failToast) {
-          Taro.showToast({
-            title: err,
-            icon: "error",
-            duration: 1000,
-          });
-        }
-        reject(err);
+        // console.log(query.failToast, "😡😡😡😡", error);
+        Taro.showToast({
+          title: error.errMsg,
+          icon: "error",
+          duration: 1000,
+        });
+        reject(error);
       })
       .finally(() => {
         if (query.loading) {
