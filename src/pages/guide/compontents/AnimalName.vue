@@ -18,9 +18,9 @@ const state = reactive({
   nameContent: `你收到了一个熊宝宝!
   给TA取个名字吧～ `,
 });
-// const emit = defineEmits(["animalName"]);
+const emit = defineEmits(["animalName"]);
 
 function nameOnBlur(e:string){
-  // emit("animalName", e.detail.value);
+  emit("animalName", e.detail.value);
 }
 </script>

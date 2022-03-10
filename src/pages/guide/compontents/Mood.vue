@@ -9,6 +9,10 @@
     +20
     <image class="mood-icon" :src="state.logo" alt="" />
   </view>
+  <view class="mood-data">
+    <view class="mood-title"> 你现在心情怎么样?</view>
+    <image class="mood-" :src="state.logo" alt="" />
+  </view>
 </template>
 
 <script setup lang="ts">
@@ -43,6 +47,22 @@ const state = reactive({
   .mood-icon {
     width: 12px;
     height: 16px;
+  }
+}
+.mood-data {
+  width: 375px;
+  height: 144px;
+  background: #ffffff;
+  border-radius: 15px 15px 0px 0px;
+  position: absolute;
+  bottom: 0;
+  z-index: 99;
+  .mood-title {
+    font-size: 17px;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #333333;
+    margin-top: 15px;
   }
 }
 </style>

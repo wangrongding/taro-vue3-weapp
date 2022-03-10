@@ -12,5 +12,15 @@ export function saveName(data?: object) {
 
 // 用户名字
 export function saveUserName(data?: object) {
-  return request.post("/wx-user/saveUserName", { data });
+  return request.post("/platform-user/wx-user/saveUserName", { data });
+}
+
+// 获取亲密值
+export function updateByAnimalId(data?: object) {
+  return request.post("/mini-program/user-animal-intimate/updateByAnimalId", { data });
+}
+
+// 授权
+export function wxRegistry(data?: object) {
+  return request.post("/platform-user/wx-user/wxRegistry", { data });
 }
