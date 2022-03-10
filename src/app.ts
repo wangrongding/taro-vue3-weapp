@@ -3,8 +3,8 @@ import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
 import "./app.scss";
 
+import { CircleProgress,Badge } from "@nutui/nutui-taro";
 import "@nutui/nutui-taro/dist/style.css";
-import NutUI from "@nutui/nutui-taro";
 
 const App = createApp({
   // 生命周期回调——监听小程序初始化。
@@ -35,7 +35,8 @@ const App = createApp({
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 });
 
-App.use(createPinia())
-  .use(NutUI);
+App.use(createPinia());
+App.use(Badge )
+  .use(CircleProgress);
 
 export default App;
