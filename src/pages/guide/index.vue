@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar style="color:#000">梦琦</NavBar>
+    <NavBar style="color: #000">梦琦</NavBar>
     <view class="page-logo">
       <image :src="state.logo" alt="" />
       <view class="logo-name">梦琦</view>
@@ -15,25 +15,32 @@ import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import "./index.scss";
 import { getGuide } from "@/api/guide/index";
+import { useStore } from "@/stores";
+const store = useStore();
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   jumpTo() {
+    // 判断登录接口是否完成
+    if (store.userInfo.token === "") return;
     let params = {
       openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
     };
     // 判断是否完成新手引导
     getGuide(params)
-      .then((res: any) => {
-        res.guideStatus === 1
-          ? Taro.redirectTo({
-            url: "/pages/guide/findAnimals/index",
-            success() {},
-          })
-          : Taro.redirectTo({
-            url: "/pages/index/index",
-            success() {},
-          });
-      });
+      .then(
+        (res: any) => {
+          res.guideStatus === 1
+            ? Taro.redirectTo({
+              url: "/pages/guide/findAnimals/index",
+              success() {},
+            })
+            : Taro.redirectTo({
+              url: "/pages/index/index",
+              success() {},
+            });
+        },
+        { failToast: true, loading: true },
+      );
   },
 });
 </script>

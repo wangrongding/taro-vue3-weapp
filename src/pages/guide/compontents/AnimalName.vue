@@ -1,12 +1,14 @@
 <template>
-  <image class="logo-image" :src="state.logo" alt="" />
-  <view class="logo-name">{{ state.nameContent }}</view>
-  <input
-    class="animal-name"
-    type="text"
-    maxlength="10"
-    @blur="nameOnBlur"
-  >
+  <view>
+    <image class="logo-image" :src="state.logo" alt="" />
+    <view class="logo-name">{{ state.nameContent }}</view>
+    <input
+      class="animal-name"
+      type="text"
+      maxlength="10"
+      @blur="nameOnBlur"
+    >
+  </view>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +22,7 @@ const state = reactive({
 });
 const emit = defineEmits(["animalName"]);
 
-function nameOnBlur(e:string){
+function nameOnBlur(e: string) {
   emit("animalName", e.detail.value);
 }
 </script>

@@ -1,9 +1,11 @@
 <template>
-  <view class="partner-title"> 每日查看 </view>
-  <image class="dailyview-image" :src="state.logo" alt="" />
-  <view class="logo-name">
-    {{ state.name }}会去探险~
-    <view class="name"> 晚上，{{ state.name }}陪你一起入睡，改善你的睡眠 </view>
+  <view>
+    <view class="partner-title"> 每日查看 </view>
+    <image class="dailyview-image" :src="state.logo" alt="" />
+    <view class="logo-name">
+      {{ state.name }}会去探险~
+      <view class="name"> 晚上，{{ state.name }}陪你一起入睡，改善你的睡眠 </view>
+    </view>
   </view>
 </template>
 
@@ -17,7 +19,6 @@ const state = reactive({
 </script>
 
 <style lang="scss">
-
 .dailyview-image {
   margin: 103px 0 20px 0;
   width: 140px;

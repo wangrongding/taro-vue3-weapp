@@ -1,80 +1,94 @@
 <template>
-  <image class="dailylife-image" :src="state.logo" alt="" />
-  <view class="logo-name">
-    设置你的作息~
-    <view class="name"> 让{{ state.name }}跟你一起日出而作，日落而息 </view>
-    <view class="time">
-      <view class="wake-time work-rest" @tap="state.open(state.wakeTime)"> {{ state.wakeTime }} </view>
-      <view class="sack-time work-rest" @tap="state.open(state.sackTime)"> {{ state.sackTime }} </view>
+  <view>
+    <image class="dailylife-image" :src="state.logo" alt="" />
+    <view class="logo-name">
+      设置你的作息~
+      <view class="name"> 让{{ state.name }}跟你一起日出而作，日落而息 </view>
+      <view class="time">
+        <view
+          class="wake-time"
+          v-for="(item, index) in state.time"
+          :key="index"
+          @tap="openTime(item.title)"
+        >
+          {{ item.title }}
+        </view>
+
+        <nut-picker
+          :visible="state.show"
+          :list-data="listData"
+          @confirm="confirm"
+          :cancel-text="state.cancelText"
+          @close="close"
+        />
+      </view>
     </view>
-  </view>
-  <!-- 时间选择器 -->
-  <view class="mask" v-show="state.timeShowModel">
-    <picker-view
-      indicator-style="height: 30px;"
-      :value="value"
-      @change="state.onChange"
-      class="picker-view"
-    >
-      <view class="title">{{ state.title }}</view>
-      <view class="sure-btn" @tap="state.sureBtn(state.title)">确认</view>
-      <picker-view-column class="hours">
-        <view v-for="(item, index) in hours" :key="index">{{ item < 10 ? "0" + item : item }}</view>
-      </picker-view-column>
-      <picker-view-column>
-        <view> : </view>
-      </picker-view-column>
-      <picker-view-column class="minutes">
-        <view v-for="(item, index) in minutes" :key="index">{{ item < 10 ? "0" + item : item }}</view>
-      </picker-view-column>
-    </picker-view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import Taro from "@tarojs/taro";
-const date = new Date();
-const hours = [];
-const minutes = [];
-for (let i = 0; i <= 23; i++) {
-  hours.push(i);
-}
-for (let i = 0; i <= 59; i++) {
-  minutes.push(i);
-}
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   name: "小白",
-  wakeTime: "上床时间",
-  sackTime: "起床时间",
-  hours: hours,
-  hoursData: "",
-  minutes: minutes,
-  minutesData: "",
-  timeShowModel: false,
-  title: "",
-  // 获取选择时间值
-  onChange: function(e) {
-    const val = e.detail.value;
-    state.hoursData = val[0] < 10 ? "0" + val[0] : val[0];
-    state.minutesData = val[2] < 10 ? "0" + val[2] : val[2];
-    state.hours = this.hours[val[0]];
-    state.minutes = this.minutes[val[2]];
-  },
-  // 打开时间插件
-  open(title) {
-    state.title = title;
-    state.timeShowModel = true;
-  },
-  // 点击确认时间
-  sureBtn(data) {
-    data === "上床时间"
-      ? (state.wakeTime = state.hoursData + ":" + state.minutesData)
-      : (state.sackTime = state.hoursData + ":" + state.minutesData);
-    state.timeShowModel = false;
-  },
+  time: [
+    {
+      title: "上床时间",
+    },
+    {
+      title: "起床时间",
+    },
+  ],
+  show: false,
+  hours: [],
+  minutes: [],
+  cancelText: "",
 });
+const listData = [
+  {
+    values: state.hours,
+    defaultIndex: 0,
+  },
+  {
+    values: ":",
+    defaultIndex: 0,
+  },
+  // 第二列
+  {
+    values: state.minutes,
+    defaultIndex: 0,
+  },
+];
+// 渲染时间列表
+function time() {
+  for (let i = 0; i <= 23; i++) {
+    state.hours.push(i < 10 ? "0" + i : i);
+  }
+  for (let i = 0; i <= 59; i++) {
+    state.minutes.push(i < 10 ? "0" + i : i);
+  }
+}
+const emit = defineEmits(["timeTable"]);
+// 确认选择时间
+function confirm(res) {
+  state.cancelText === "上床时间"
+    ? (state.time[0].title = res.join(""))
+    : (state.time[1].title = res.join(""));
+  emit("timeTable", state.time);
+  close();
+}
+// 打开选择时间器
+function openTime(data) {
+  state.cancelText = data;
+  state.show = true;
+}
+// 点击蒙版关闭时间选择器
+function close() {
+  state.show = false;
+}
+//  -------   初始化  -------
+time();
 </script>
 
 <style lang="scss">
@@ -87,13 +101,7 @@ const state = reactive({
   display: flex;
 
   .wake-time {
-    margin-left: 52px;
-  }
-  .sack-time {
-    margin-left: 30px;
-  }
-
-  .work-rest {
+    margin: 0 20px;
     width: 120px;
     height: 50px;
     background: rgba(0, 0, 0, 0.2);
@@ -105,48 +113,23 @@ const state = reactive({
     color: #ffffff;
     line-height: 50px;
   }
-}
-.mask {
-  width: 100%;
-  height: 100vh;
-  background: rgba(4, 9, 32, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9;
-
-  .picker-view {
-    font-size: 14px;
+  .wake-time:nth-child(1) {
+    margin-left: 52px;
+  }
+  .nut-picker-item {
+    opacity: 0;
+  }
+  .nut-picker__button {
+    font-size: 17px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
-    color: #666666;
-    width: 100%;
-    height: 265px;
-    position: absolute;
-    background: #fff;
-    z-index: 999;
-    bottom: 0;
-    border-radius: 15px 15px 0px 0px;
-    .minutes {
-      margin-right: 80px;
-    }
-    .title {
-      font-size: 17px;
-      font-family: PingFang-SC-Bold, PingFang-SC;
-      font-weight: bold;
-      color: #333333;
-      padding: 12.5px 0 0 20px;
-    }
-    .sure-btn {
-      font-size: 17px;
-      font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #60d394;
-      position: absolute;
-      right: 30px;
-      z-index: 99;
-      padding-top: 12.5px;
-    }
+    color: #60d394;
+  }
+  .nut-picker__left {
+    font-size: 17px;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #333333;
   }
 }
 </style>
