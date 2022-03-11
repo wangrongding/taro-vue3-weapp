@@ -3,7 +3,7 @@ import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
 import "./app.scss";
 
-import { CircleProgress,Badge } from "@nutui/nutui-taro";
+import { CircleProgress,Badge , Picker, Popup } from "@nutui/nutui-taro";
 import "@nutui/nutui-taro/dist/style.css";
 
 const App = createApp({
@@ -37,6 +37,8 @@ const App = createApp({
 
 App.use(createPinia());
 App.use(Badge )
-  .use(CircleProgress);
+  .use(CircleProgress)
+  .use(Picker)
+  .use(Popup);
 
 export default App;

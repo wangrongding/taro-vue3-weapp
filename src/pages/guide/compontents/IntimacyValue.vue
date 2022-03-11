@@ -1,11 +1,11 @@
 <template>
-  <image class="logo-image" :src="state.logo" alt="" />
-  <view class="logo-name">
-    “哦~ {{ state.name }}，你好呀~”
-  </view>
-  <view class="intimate-data">
-    <image class="intimate-icon" :src="state.logo" alt="" />
-    <view class="intimate-name"> +3 亲密值</view>
+  <view>
+    <image class="logo-image" :src="state.logo" alt="" />
+    <view class="logo-name"> “哦~ {{ state.name }}，你好呀~” </view>
+    <view class="intimate-data">
+      <image class="intimate-icon" :src="state.logo" alt="" />
+      <view class="intimate-name"> +3 亲密值</view>
+    </view>
   </view>
 </template>
 
@@ -18,7 +18,7 @@ const state = reactive({
 });
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .intimate-data {
   width: 335px;
   height: 58px;
