@@ -42,9 +42,6 @@ export const useStore = defineStore("user", {
       // console.log("🚀🚀🚀 / code", code);
       // 根据code获取openId等用户信息
       const info = (await getUserInfo({ code })) as any;
-      // todo 后端暂时给出的临时token
-      info.token =
-        "bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiLmnY7lpKkyIiwicmVhbF9uYW1lIjoi5p2O5aSpMiIsImF2YXRhciI6IiIsImF1dGhvcml0aWVzIjpbImFkbWluIl0sImNsaWVudF9pZCI6InN0dWRlbnQiLCJyb2xlX25hbWUiOiJhZG1pbiIsImxpY2Vuc2UiOiJwb3dlcmVkIGJ5IHBsYXRmb3JteCIsInVzZXJfaWQiOjMsInJvbGVfaWQiOiIxIiwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTY4MjI3MjQyMywianRpIjoiZTRlZWE1OGMtNzFlMy00ZjhhLTkzNmUtMzNlMGU2NTZhNDQ3IiwiYWNjb3VudCI6IjE3NjcxNzgxNjIxIiwidGVuYW50X2NvZGUiOiIwMDAwMDAifQ.kjOotxm_RM1BHRGOd2EDgwaY1nyZUduRRvbxgvBDh9Y";
       this.setUserInfo(info);
     },
     // 获取静态资源
