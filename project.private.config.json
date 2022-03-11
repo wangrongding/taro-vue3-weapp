@@ -29,6 +29,13 @@
           "pathName": "pages/guide/guidingProcess/index",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "目标",
+          "pathName": "pages/target/index",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
         }
       ]
     }

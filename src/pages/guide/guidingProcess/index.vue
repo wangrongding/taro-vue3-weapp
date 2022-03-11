@@ -52,7 +52,7 @@ const state = reactive({
     DailyLife,
     Mood,
   ]),
-  index: 6,
+  index: 5,
   loveValueId: "5wc9CAYWtzYHFVMViusoItPYGwq3mLqRvVbUHm7_fUw",
   sleepId: "UUnJ96IPTBMQo5YHcdOOuAcdWLbXIf20Erxi5X9iOqY",
   getUpId: "Ap7RDxyC31iflhCPwTTglenb-6edqOYRtzSJ-yS9UtY",
@@ -120,7 +120,14 @@ function getUserProfile() {
   Taro.getUserProfile({
     lang: "zh_CN",
     desc: "获取你的昵称",
-    success: () => {},
+    success: (res) => {
+      let params = {
+        encrypted: res.encryptedData,
+        iv: res.iv,
+        openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+      };
+      wxRegistry(params);
+    },
     fail: () => {
       return;
     },
