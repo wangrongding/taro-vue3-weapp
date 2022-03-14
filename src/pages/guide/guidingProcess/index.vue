@@ -124,7 +124,7 @@ function getUserProfile() {
       let params = {
         encrypted: res.encryptedData,
         iv: res.iv,
-        openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+        openId: "ok5R45KNlKwEiVXNDx5wBd_BtQbU",
       };
       wxRegistry(params);
     },
