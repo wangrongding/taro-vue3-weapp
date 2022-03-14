@@ -42,9 +42,11 @@ module.exports = {
   "error"或者2    //把规则作为一个错误（退出代码触发时为1）
   */
   rules: {
+    //对模板中的自定义组件强制执行 v-on 事件命名样式
+    "vue/v-on-event-hyphenation": [0, "never"],
     // 强制每行的最大属性数 (在vue中，每个标签的属性数量不能超过该值)
     "vue/max-attributes-per-line": [
-      "error",
+      2,
       {
         singleline: {
           max: 3,
@@ -56,7 +58,7 @@ module.exports = {
     ],
     //在标签的右括号之前需要或不允许有空格
     "vue/html-closing-bracket-spacing": [
-      "error",
+      2,
       {
         startTag: "never",
         endTag: "never",
