@@ -1,3 +1,4 @@
+/* eslint-disable */
 import path from "path";
 const config = {
   // 项目名称
@@ -27,7 +28,7 @@ const config = {
   plugins: ["taro-plugin-pinia", "@tarojs/plugin-html"],
   // 给 sass-loader 传递选项 ！！！！ 按需加载方式必须配置
   scss: {
-    data: "@import '@nutui/nutui-taro/dist/styles/variables.scss';",
+    data: `@import "@nutui/nutui-taro/dist/styles/variables.scss";`,
   },
   // 全局变量设置
   defineConstants: {},

@@ -1,9 +1,9 @@
 {
   "cSpell.words": ["circleprogress", "nutui", "rongding"], // 配置 Tab 空格数
   "editor.tabSize": 2,
-  // "prettier.enable": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "editor.formatOnSave": false
+  "editor.formatOnSave": false,
+  // "prettier.enable": false
 }
