@@ -25,6 +25,12 @@ export const useStore = defineStore("user", {
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203071320978.png",
           icon: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452915.png",
         },
+        target: {
+          title:
+            "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203141716702.png",
+          close:
+            "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203141751454.png",
+        },
       },
     };
   },

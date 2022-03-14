@@ -22,13 +22,8 @@
         </template>
         <view v-for="(item, index) in state.list" :key="index">
           <nut-tabpane :pane-key="item.paneKey">
-            <view
-              v-for="item1 in item.list1"
-              :key="item1.paneKey"
-              class="target-content"
-              @tap="addTarget(item1)"
-            >
-              <image class="target-image" :src="item1.active ? '' : item1.img" alt="" />
+            <view v-for="item1 in item.list1" :key="item1.paneKey" class="target-content">
+              <image class="target-image" :src="item1.img" alt="" />
               <span class="target-title">{{ item1.content }}</span>
               <span class="target-energy-value">{{ item1.energyValue }}</span>
               <image class="target-energy-image" :src="item1.img" alt="" />
@@ -36,13 +31,7 @@
           </nut-tabpane>
         </view>
       </nut-tabs>
-      <view
-        class="add-today-target"
-        :class="state.active ? 'add-today-target-check' : 'add-today-target'"
-        @tap="addTodayTarget"
-      >
-        添加目标
-      </view>
+      <view class="add-today-target"> 添加目标 </view>
     </view>
   </view>
 </template>
@@ -50,7 +39,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
-import Taro from "@tarojs/taro";
 const state = reactive({
   tab1value: "0",
   list6: [
@@ -85,16 +73,12 @@ const state = reactive({
           content: "避免白天打盹，如需打盹不超过30分钟",
           energyValue: 5,
           energyIcon: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-          id: 1,
-          active: false,
         },
         {
           img: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
           content: "避免白天打盹，如需打盹不超过30分钟",
           energyValue: 5,
           energyIcon: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-          id: 2,
-          active: false,
         },
         {
           img: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
@@ -145,27 +129,7 @@ const state = reactive({
       ],
     },
   ],
-  addTargetCheckd: [],
-  active: "",
 });
-function addTarget(data) {
-  data.active = !data.active;
-  if (data.active === true) {
-    state.addTargetCheckd.push(data.id);
-  } else {
-    let index = state.addTargetCheckd.indexOf(data.id);
-    if (index > -1) {
-      state.addTargetCheckd.splice(index, 1);
-    }
-  }
-  state.active = state.addTargetCheckd.length !== 0 ? true : false;
-}
-function addTodayTarget() {
-  Taro.redirectTo({
-    url: "/pages/guide/findAnimals/index",
-    success() {},
-  });
-}
 </script>
 
 <style lang="scss">
@@ -269,9 +233,6 @@ function addTodayTarget() {
       font-family: PingFang-SC-Bold, PingFang-SC;
       font-weight: bold;
       color: #ffffff;
-    }
-    .add-today-target-check {
-      background: #60d394;
     }
   }
 }
