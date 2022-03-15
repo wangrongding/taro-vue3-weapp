@@ -66,7 +66,7 @@ const props = defineProps({
         padding: props.padding,
         height: '100%',
         background: props.backgroundColor,
-        boxSizing: 'border-box ',
+        boxSizing: 'border-box',
       }"
     >
       <slot name="content" />
