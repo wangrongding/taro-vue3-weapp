@@ -4,10 +4,13 @@
     <view class="page-main">
       <component
         :is="state.componentList[state.index]"
+        :sleep-mood-list="state.sleepMoodList"
         @animalName="animalNameNum"
         @userName="userName"
+        @timeTable="timeTable"
+        @moodBtn="moodBtn"
       />
-      <view @tap="state.jumpTo" class="page-btn"> 继续 </view>
+      <view @tap="jumpTo" class="page-btn"> 继续 </view>
     </view>
   </view>
 </template>
@@ -16,7 +19,15 @@
 import { reactive, shallowRef } from "vue";
 import Taro from "@tarojs/taro";
 import "./index.scss";
-import { saveName, saveUserName, updateByAnimalId, wxRegistry } from "@/api/guide/index";
+import {
+  saveName,
+  saveUserName,
+  updateByAnimalId,
+  saveRest,
+  wxRegistry,
+  sleepMood,
+  userMood,
+} from "@/api/guide/index";
 // import { useStore } from "@/stores";
 // const store = useStore();
 
@@ -41,72 +52,100 @@ const state = reactive({
     DailyLife,
     Mood,
   ]),
-  index: 4,
+  index: 5,
   loveValueId: "5wc9CAYWtzYHFVMViusoItPYGwq3mLqRvVbUHm7_fUw",
   sleepId: "UUnJ96IPTBMQo5YHcdOOuAcdWLbXIf20Erxi5X9iOqY",
   getUpId: "Ap7RDxyC31iflhCPwTTglenb-6edqOYRtzSJ-yS9UtY",
   animalName: "",
   userName: "",
-  jumpTo() {
-    switch (state.index) {
-      case 0: {
-        if (state.animalName === "") return;
-        let params = {
-          animalName: state.animalName,
-          openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
-        };
-        saveName(params);
-        break;
-      }
-      case 1: {
-        if (state.userName === "") return;
-        let params = {
-          name: state.userName,
-          openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
-        };
-        saveUserName(params);
-        break;
-      }
-      case 2: {
-        let params = {
-          intimateValue: 3,
-        };
-        updateByAnimalId(params);
-        break;
-      }
-      case 5: {
-        let fun = async () => {
-          await getUserProfile;
-          let serviceArr: Array<string> = [];
-          serviceArr.push(state.loveValueId);
-          serviceArr.push(state.sleepId);
-          serviceArr.push(state.getUpId);
-          Taro.requestSubscribeMessage({
-            tmplIds: serviceArr,
-            success() {},
-            fail() {},
-          });
-        };
-        break;
-      }
-    }
-    state.index = state.index + 1;
-  },
+  sleepMoodList: [],
+  time: [],
 });
+
+// 继续
+function jumpTo() {
+  switch (state.index) {
+    case 0: {
+      if (state.animalName === "") return;
+      let params = {
+        animalName: state.animalName,
+        openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+      };
+      saveName(params);
+      break;
+    }
+    case 1: {
+      if (state.userName === "") return;
+      let params = {
+        name: state.userName,
+        openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+      };
+      saveUserName(params);
+      break;
+    }
+    case 2: {
+      let params = {
+        intimateValue: 3,
+      };
+      updateByAnimalId(params);
+      break;
+    }
+    case 5: {
+      if (
+        state.time.length === 0 ||
+        state.time[0].title === "上床时间" ||
+        state.time[1].title === "起床时间"
+      )
+      {return Taro.showToast({
+        title: "请设置作息时间哦",
+        icon: "none",
+        duration: 1000,
+      });}
+      let params = {
+        sleepTime: state.time[0].title,
+        weekTime: state.time[1].title,
+      };
+      saveRest(params)
+        .then((res) => {
+          getUserProfile();
+          messageNotification();
+        });
+      break;
+    }
+  }
+  state.index = state.index + 1;
+}
+// 授权
 function getUserProfile() {
-  return new Promise((reslove, reject) => {
-    Taro.getUserProfile({
-      lang: "zh_CN",
-      desc: "获取你的昵称",
-      success: () => {
-        reslove();
-      },
-      fail: () => {
-        return;
-      },
-    });
+  Taro.getUserProfile({
+    lang: "zh_CN",
+    desc: "获取你的昵称",
+    success: (res) => {
+      let params = {
+        encrypted: res.encryptedData,
+        iv: res.iv,
+        openId: "ok5R45KNlKwEiVXNDx5wBd_BtQbU",
+      };
+      wxRegistry(params);
+    },
+    fail: () => {
+      return;
+    },
   });
 }
+// 消息通知
+function messageNotification() {
+  let serviceArr: Array<string> = [];
+  serviceArr.push(state.loveValueId);
+  serviceArr.push(state.sleepId);
+  serviceArr.push(state.getUpId);
+  Taro.requestSubscribeMessage({
+    tmplIds: serviceArr,
+    success() {},
+    fail() {},
+  });
+}
+
 // 获取动物名字
 function animalNameNum(num: string) {
   state.animalName = num;
@@ -115,4 +154,28 @@ function animalNameNum(num: string) {
 function userName(num: string) {
   state.userName = num;
 }
+
+// 设置作息时间
+function timeTable(data: string) {
+  state.time = data;
+}
+// 选择心情
+function moodBtn(data: any) {
+  let params = {
+    moodId: data.id,
+    week: "二",
+    days: "16",
+  };
+  userMood(params);
+}
+
+// 获取心情列表
+function sleepMoodListData() {
+  sleepMood()
+    .then((res) => {
+      state.sleepMoodList = res;
+    });
+}
+// ------------------ 初始化 --------
+sleepMoodListData();
 </script>

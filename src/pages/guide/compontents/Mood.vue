@@ -1,17 +1,26 @@
 <template>
-  <view class="mood-days"> 第 {{ state.mooddays }} 天 </view>
-  <image class="mood-image" :src="state.logo" alt="" />
-  <view class="logo-name">
-    早上好!
-    <view class="name"> 今天是星期{{ state.week }} </view>
-  </view>
-  <view class="mood-number">
-    +20
-    <image class="mood-icon" :src="state.logo" alt="" />
-  </view>
-  <view class="mood-data">
-    <view class="mood-title"> 你现在心情怎么样?</view>
-    <image class="mood-" :src="state.logo" alt="" />
+  <view>
+    <view class="mood-days"> 第 {{ state.mooddays }} 天 </view>
+    <image class="mood-image" :src="state.logo" alt="" />
+    <view class="logo-name">
+      早上好!
+      <view class="name"> 今天是星期{{ state.week }} </view>
+    </view>
+    <view class="mood-number">
+      +20
+      <image class="mood-icon" :src="state.logo" alt="" />
+    </view>
+    <view class="mood-data">
+      <view class="mood-title"> 你现在心情怎么样?</view>
+      <image
+        v-for="(item, index) in props.sleepMoodList"
+        class="mood-logo"
+        :key="index"
+        :src="state.icon"
+        @tap="moodBtn(item)"
+        alt=""
+      />
+    </view>
   </view>
 </template>
 
@@ -24,6 +33,20 @@ const state = reactive({
   mooddays: 16,
   week: "二",
 });
+const props = defineProps({
+  sleepMoodList: {
+    type: Array,
+    default() {
+      return [];
+    },
+    required: true,
+  },
+});
+const emit = defineEmits(["moodBtn"]);
+// 获取点击详情
+function moodBtn(data) {
+  emit("moodBtn", data);
+}
 </script>
 
 <style lang="scss">
@@ -63,6 +86,11 @@ const state = reactive({
     font-weight: bold;
     color: #333333;
     margin-top: 15px;
+  }
+  .mood-logo {
+    width: 40px;
+    height: 40px;
+    margin: 25px 14.25px;
   }
 }
 </style>

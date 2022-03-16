@@ -23,6 +23,7 @@
     "resolveJsonModule": true,
     "typeRoots": ["node_modules/@types", "global.d.ts"]
   },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx", "src/**/*.vue"],
   "exclude": ["node_modules", "dist"],
   "compileOnSave": false
 }

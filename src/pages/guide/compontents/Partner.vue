@@ -1,11 +1,13 @@
 <template>
-  <view class="partner-title"> 你的同伴 </view>
-  <view class="partner-subtitle"> {{ state.name }}会一直在你身边 </view>
-  <view class="intimacy-icon">
-    <image :src="state.logo" alt="" />
+  <view>
+    <view class="partner-title"> 你的同伴 </view>
+    <view class="partner-subtitle"> {{ state.name }}会一直在你身边 </view>
+    <view class="intimacy-icon">
+      <image :src="state.logo" alt="" />
+    </view>
+    <image class="partner-image" :src="state.logo" alt="" />
+    <view class="logo-name"> {{ state.nameContent }} </view>
   </view>
-  <image class="partner-image" :src="state.logo" alt="" />
-  <view class="logo-name">  {{ state.nameContent }} </view>
 </template>
 
 <script setup lang="ts">

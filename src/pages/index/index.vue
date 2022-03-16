@@ -4,11 +4,16 @@ import { getIntimacy } from "@/api/home/index";
 import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import { useStore } from "@/stores";
+import Ambient from "@/pages/ambient/index.vue";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
   assets: store.assets.home,
-  showTeleport: false,
+  popShow: "",
+  todayGoalPopup: false,
+  closePop() {
+    state.popShow = "";
+  },
   // 获取亲密度
   getIntimacy() {
     getIntimacy({}, { failToast: true, loading: true });
@@ -22,7 +27,9 @@ const state = reactive({
     });
   },
   // 今日目标列表
-  getTodayTargetList() {},
+  getTodayTargetList() {
+    state.todayGoalPopup = true;
+  },
 
   // 环境音
   audio() {
@@ -34,7 +41,10 @@ const state = reactive({
   },
   // 目标模块
   target() {
-    // todo by qianqian
+    Taro.redirectTo({
+      url: "/pages/target/index",
+      success() {},
+    });
   },
   // 日记模块
   diary() {
@@ -46,7 +56,7 @@ function execSomeThing(type: string) {
   switch (type) {
     case "audio": {
       // state.travel();
-      state.showTeleport = !state.showTeleport;
+      state.popShow = "anbient";
       break;
     }
     default:
@@ -84,67 +94,14 @@ function authorize() {
   //   },
   // });
   // 可以通过 Taro.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
-
-  Taro.getUserProfile({
-    desc: "用于完善会员资料", // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-    success: (res) => {
-      // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-      // console.log(res);
-    },
-  });
 }
 </script>
 
 <template>
   <view class="page-container">
     <NavBar>首页</NavBar>
-    <!-- 公用的首页弹窗组件 -->
-
-    <view
-      class="pop"
-      v-show="state.showTeleport"
-      @tap="execSomeThing('audio')"
-      style="
-        z-index: 9999;
-        background-color: #fff;
-        width: 100vw;
-        height: 75vh;
-        border-radius: 20px 20px 0 0;
-      "
-    >
-      <view>
-        <image
-          :src="state.assets.icon"
-          alt=""
-          style="height: 50px; width: 50px; margin: -100px 0 0 100px"
-        />
-        <view class="list"> sdfsdf </view>
-      </view>
-    </view>
-    <!-- <nut-popup
-      position="bottom"
-      close-icon-position="top-left"
-      close-icon="close-little"
-      pop-class="pop"
-      round
-      :style="{ padding: '30px 0px', height: '70%' }"
-      close-on-click-overlay
-      closeable
-      :visible="state.showTeleport"
-      :z-index="100"
-      @click-overlay="state.showTeleport = false"
-      @click-close-icon="state.showTeleport = false"
-    >
-      <view>
-        <image
-          :src="state.assets.icon"
-          alt=""
-          @tap="state.getIntimacy"
-          style="margin-top: -100px"
-        />
-        <view class="list"> sdfsdf </view>
-      </view>
-    </nut-popup> -->
+    <!-- 环境音 -->
+    <Ambient :visible="state.popShow === 'anbient'" @closePop="state.closePop" />
     <view class="main">
       <!-- 我的/统计 -->
       <view class="operation-bar">
@@ -179,12 +136,19 @@ function authorize() {
       <view class="operation-bar bottom-bar">
         <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
         <image :src="state.assets.audio" alt="" @tap="execSomeThing('audio')" />
-        <nut-badge :value="1" top="1" right="20">
+        <nut-badge
+          :value="1"
+          top="1"
+          right="20"
+          @tap="state.getTodayTargetList"
+        >
           <image :src="state.assets.today" class="today-target" alt="" />
         </nut-badge>
         <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
-        <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
+        <image :src="state.assets.icon" alt="" @tap="state.target" />
       </view>
+      <!-- 今日目标列表 -->
+      <!-- <getTodayTarget :todayGoalPopup="state"></getTodayTarget> -->
     </view>
   </view>
 </template>
@@ -201,19 +165,7 @@ function authorize() {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  .pop {
-    position: absolute;
-    bottom: 0;
-    &::before {
-      content: "";
-      position: absolute;
-      top: -50px;
-      left: 125px;
-      width: 100px;
-      height: 100px;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-  }
+
   //首页主要内容
   .main {
     margin-top: 10px;
