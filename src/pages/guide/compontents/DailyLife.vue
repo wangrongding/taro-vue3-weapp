@@ -7,9 +7,9 @@
       <view class="time">
         <view
           class="wake-time"
-          v-for="(item, index) in state.time"
+          v-for="(item, index) in state.timeList"
           :key="index"
-          @tap="openTime(item.title)"
+          @tap="openTime(item)"
         >
           {{ item.title }}
         </view>
@@ -27,25 +27,37 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   name: "小白",
-  time: [
+  timeList: [
     {
       title: "上床时间",
+      id: 1,
     },
     {
       title: "起床时间",
+      id: 2,
     },
   ],
   show: false,
   hours: [],
   minutes: [],
-  cancelText: "",
+  cancelId: "",
+  time() {
+    for (let i = 0; i <= 23; i++) {
+      state.hours.push(i < 10 ? "0" + i : i);
+    }
+
+    for (let i = 0; i <= 59; i++) {
+      state.minutes.push(i < 10 ? "0" + i : i);
+    }
+  },
 });
-const listData = [
+// 渲染时间列表
+const listData: any = [
   {
     values: state.hours,
     defaultIndex: 0,
@@ -60,35 +72,48 @@ const listData = [
     defaultIndex: 0,
   },
 ];
-// 渲染时间列表
-function time() {
-  for (let i = 0; i <= 23; i++) {
-    state.hours.push(i < 10 ? "0" + i : i);
-  }
-  for (let i = 0; i <= 59; i++) {
-    state.minutes.push(i < 10 ? "0" + i : i);
-  }
-}
+
 const emit = defineEmits(["timeTable"]);
 // 确认选择时间
 function confirm(res) {
-  state.cancelText === "上床时间"
-    ? (state.time[0].title = res.join(""))
-    : (state.time[1].title = res.join(""));
-  emit("timeTable", state.time);
+  // 判断点击的是起床还是上床时间
+  if (state.cancelId === 1) {
+    // 判断起床时间 是不是 在18-00 中间
+    if (res[0] > 17 || res[0] === "00") {
+      state.timeList[0].title = res.join("");
+    } else {
+      return Taro.showToast({
+        title: "在18点-0点设置上床时间吧",
+        icon: "none",
+        duration: 1000,
+      });
+    }
+  } else {
+    // 判断是否小于10
+    if (res[0] < 11) {
+      state.timeList[1].title = res.join("");
+    } else {
+      return Taro.showToast({
+        title: "在0点-10点设置起床时间吧",
+        icon: "none",
+        duration: 1000,
+      });
+    }
+  }
+  emit("timeTable", state.timeList);
   close();
 }
 // 打开选择时间器
 function openTime(data) {
-  state.cancelText = data;
+  state.cancelId = data.id;
   state.show = true;
 }
 // 点击蒙版关闭时间选择器
 function close() {
   state.show = false;
 }
-//  -------   初始化  -------
-time();
+// -------- 初始化 -------
+state.time();
 </script>
 
 <style lang="scss">

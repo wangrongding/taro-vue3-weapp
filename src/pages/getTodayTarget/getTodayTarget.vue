@@ -1,45 +1,70 @@
 <template>
   <!-- 今日目标列表 -->
-  <view class="today-goal">
-    <nut-popup
-      position="bottom"
-      :style="{ height: '543px', background: 'rgba(240, 247, 244, 1)' }"
-      round
-      close-on-click-overlay
-      closeable
-      :visible="props.todayGoalPopup.todayGoalPopup"
-      @click-overlay="props.todayGoalPopup.todayGoalPopup = false"
-      @click-close-icon="props.todayGoalPopup.todayGoalPopup = false"
-    >
-      <view class="today-goal-main">
-        <!-- 空状态 -->
-        <!-- <nut-empty description="今天想做点什么呢？" class="today-goal-empty">
+  <D-Popup
+    position="bottom"
+    height="70%"
+    :visible="props.todayTarget.todayGoalPopup"
+    padding="37px 20px 0"
+    :background-color="'#F0F7F4FF'"
+    :suffix-color="'#60D394FF'"
+    @closePop="state.closePop"
+  >
+    <template #content>
+      <view class="today-goal">
+        <view class="today-goal-main">
+          <!-- 暂无今日目标 空状态 -->
+          <nut-empty
+            description="今天想做点什么呢？"
+            class="today-goal-empty"
+            v-if="state.targetStatus === 2"
+          >
             <template #image>
-              <img :src="props.todayGoalPopup.assets.bear" />
+              <img :src="props.todayTarget.assets.bear">
             </template>
-          </nut-empty> -->
-        <!-- 有目标状态 -->
-        <view class="today-goal-list">
-          <view class="title">
-            <image class="title-logo" :src="props.todayGoalPopup.assets.icon" alt="" />
-            <view class="title-name"> 睡前2小时避免剧烈运动 </view>
-            <view class="today-data">
-              5 <image :src="props.todayGoalPopup.assets.icon" alt="" />
+          </nut-empty>
+          <!-- 完成所有目标 空状态 -->
+          <nut-empty
+            description="哇哦~你完成了今天所有的目标"
+            class="today-goal-empty"
+            v-if="state.targetStatus === 1"
+          >
+            <template #image>
+              <img :src="props.todayTarget.assets.bear">
+            </template>
+          </nut-empty>
+          <!-- 有目标状态 -->
+          <view v-else>
+            <view class="today-goal-list" v-for="(item, index) in state.voList" :key="index">
+              <view class="today-title">
+                <image class="title-logo" :src="item.icon" alt="" />
+                <view class="title-name"> {{ item.targetName }} </view>
+                <view class="today-data">
+                  {{ item.honeyCount }} <image :src="item.icon" alt="" />
+                </view>
+              </view>
+              <view class="operation-btn"> 完成 </view>
+              <view class="more-operation"> ... </view>
             </view>
           </view>
-          <view class="operation-btn"> 完成 </view>
-          <view class="more-operation"> ... </view>
         </view>
+        <view class="add-target" @tap="state.addTarget"> 添加目标 </view>
       </view>
-      <view class="add-target"> 添加目标 </view>
-    </nut-popup>
-  </view>
+    </template>
+    <template #title> <image class="logo-image" :src="state.assets.title" alt="" /> </template>
+  </D-Popup>
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+import DPopup from "@/components/D-Popup.vue";
+import { useStore } from "@/stores";
+import { getUserTarget } from "@/api/target/index";
+import { setTimeout } from "timers";
+
+const store = useStore();
+const emit = defineEmits(["closePop"]);
 // const props = defineProps({
-//   todayGoalPopup: {
+//   todayTarget: {
 //     type: Object,
 //     default() {
 //       return {};
@@ -47,15 +72,35 @@ import Taro from "@tarojs/taro";
 //     required: true,
 //   },
 // });
-const state = reactive({});
+const state = reactive({
+  assets: store.assets.ambient,
+  targetStatus: "",
+  voList: [],
+  closePop() {
+    // props.todayTarget.todayGoalPopup = false;
+  },
+  // 添加目标跳转
+  addTarget() {
+    Taro.redirectTo({
+      url: "../target/index",
+      success() {},
+    });
+  },
+});
+// 获取列表
+function getUserTargetData() {
+  getUserTarget()
+    .then((res: any) => {
+      state.targetStatus = res.targetStatus;
+      state.voList = res.voList;
+    });
+}
+//    ------初始化 -------
+getUserTargetData();
 </script>
 <style lang="scss">
 // 今日目标列表
 .today-goal {
-  position: relative;
-  .today-goal-empty {
-    margin: 80px 0 0 60px;
-  }
   .add-target {
     width: 142px;
     height: 58px;
@@ -67,22 +112,14 @@ const state = reactive({});
     color: #ffffff;
     line-height: 58px;
     text-align: center;
-    margin-top: 90px;
-    position: absolute;
-    bottom: 30px;
-    left: 111.5px;
+    margin: 16px auto 0 auto;
   }
   .today-goal-main::-webkit-scrollbar {
     width: 0;
   }
   .today-goal-main {
-    height: 385px;
-    position: absolute;
+    height: 325px;
     overflow-y: scroll;
-    left: 20px;
-    .today-goal-list:nth-child(1) {
-      margin-top: 42px;
-    }
     .today-goal-list {
       width: 335px;
       height: 130px;
@@ -91,7 +128,7 @@ const state = reactive({});
       border-radius: 15px;
       margin: 10px auto 0 auto;
 
-      .title {
+      .today-title {
         height: 80px;
         border-radius: 15px 15px 0 0;
         background: #fff;

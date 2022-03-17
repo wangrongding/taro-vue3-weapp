@@ -5,6 +5,7 @@ import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import { useStore } from "@/stores";
 import Ambient from "@/pages/ambient/index.vue";
+import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
@@ -148,7 +149,7 @@ function authorize() {
         <image :src="state.assets.icon" alt="" @tap="state.target" />
       </view>
       <!-- 今日目标列表 -->
-      <!-- <getTodayTarget :todayGoalPopup="state"></getTodayTarget> -->
+      <getTodayTarget :today-target="state" />
     </view>
   </view>
 </template>
