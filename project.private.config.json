@@ -34,6 +34,13 @@
           "name": "目标",
           "pathName": "pages/target/index",
           "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "环境音播放页",
+          "pathName": "pages/ambient/play",
+          "query": "",
           "scene": null,
           "launchMode": "default"
         }

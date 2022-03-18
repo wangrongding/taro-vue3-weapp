@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import DPopup from "@/components/D-Popup.vue";
+import Taro from "@tarojs/taro";
 import { useStore } from "@/stores";
+import { getAmbientList } from "@/api/ambient";
 const store = useStore();
-const emit = defineEmits(["closePop"]);
-
 const state = reactive({
   file: "ambient",
   assets: store.assets.ambient,
-  closePop() {
-    emit("closePop");
+  ambientList: [] as any,
+  jumpTo() {
+    Taro.navigateTo({
+      url: "/pages/ambient/play",
+    });
+  },
+  getAmbientList() {
+    getAmbientList({})
+      .then((res) => {
+        state.ambientList = res;
+      });
   },
 });
 const props = defineProps({
@@ -28,30 +37,68 @@ const props = defineProps({
     padding="37px 20px 0"
     :background-color="'#F0F7F4FF'"
     :suffix-color="'#60D394FF'"
-    @closePop="state.closePop"
+    :opened-callback="state.getAmbientList"
   >
     <template #content>
       <view class="list">
-        <view class="item" v-for="(item, index) in 15" :key="index">
-          <image class="item-image" :src="state.assets.empty" alt="" />
+        <view
+          class="item"
+          v-for="(item, index) in state.ambientList"
+          :key="index"
+          @tap="state.jumpTo"
+        >
+          <image class="item-image" :src="item.icon" alt="" />
           <view class="item-content">
-            <text>田野</text>
-            <text>描述信息描述信息描述信息</text>
+            <text>{{ item.soundName }}</text>
+            <text>{{ item.explain }}</text>
           </view>
-          <view class="exp">
+          <!-- <view class="exp">
             <text>5</text>
             <image :src="state.assets.empty" alt="" />
-          </view>
+          </view> -->
         </view>
       </view>
-      <!-- 空占位 -->
       <view class="empty">
         <image class="bear" :src="state.assets.empty" alt="" />
         <text class="empty-text">完成冒险,可获得环境音~</text>
       </view>
     </template>
-    <template #title> <image class="logo-image" :src="state.assets.title" alt="" /> </template>
+    <template #title>
+      <image class="logo-image" :src="state.assets.title" alt="" />
+    </template>
   </D-Popup>
+
+  <!-- <nut-popup
+    position="bottom"
+    :style="{ height: 'auto' }"
+    :visible="props.visible"
+    @click-overlay="state.closePop"
+    @click-close-icon="state.closePop"
+    @opend="state.getAmbientList"
+  >
+    <view class="list">
+      <view
+        class="item"
+        v-for="(item, index) in state.ambientList"
+        :key="index"
+        @tap="state.jumpTo"
+      >
+        <image class="item-image" :src="state.assets.item" alt="" />
+        <view class="item-content">
+          <text>田野</text>
+          <text>描述信息描述信息描述信息</text>
+        </view>
+        <view class="exp">
+          <text>5</text>
+          <image :src="state.assets.empty" alt="" />
+        </view>
+      </view>
+    </view>
+    <view class="empty">
+      <image class="bear" :src="state.assets.empty" alt="" />
+      <text class="empty-text">完成冒险,可获得环境音~</text>
+    </view>
+  </nut-popup> -->
 </template>
 <style lang="scss">
 .logo-image {
@@ -75,8 +122,9 @@ const props = defineProps({
       height: 50px;
     }
     .item-content {
+      flex: 1;
       margin-left: 20px;
-      width: 200px;
+      // width: 200px;
       display: flex;
       flex-direction: column;
       & > text:last-child {

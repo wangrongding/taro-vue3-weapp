@@ -23,9 +23,9 @@ export default {
   ],
   window: {
     backgroundTextStyle: "light",
-    navigationBarBackgroundColor: "#fff",
-    navigationBarTitleText: "",
-    navigationBarTextStyle: "black",
-    // navigationStyle: "custom",
+    // navigationBarBackgroundColor: "#fff",
+    // navigationBarTitleText: "",
+    // navigationBarTextStyle: "black",
+    navigationStyle: "custom",
   },
 };

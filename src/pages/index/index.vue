@@ -6,39 +6,49 @@ import NavBar from "@/components/NavBar.vue";
 import { useStore } from "@/stores";
 import Ambient from "@/pages/ambient/index.vue";
 import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
+import bus from "@/utils/eventBus";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
   assets: store.assets.home,
   popShow: "",
   todayGoalPopup: false,
-  closePop() {
-    state.popShow = "";
+  // 我的
+  me() {
+    // TODO by qianqian
+  },
+  // 统计
+  statistical() {
+    // TODO by qianqian
   },
   // 获取亲密度
   getIntimacy() {
+    // FIXME 后续会放到模块中,测试用.
     getIntimacy({}, { failToast: true, loading: true });
+  },
+  // 记录
+  record() {
+    // TODO by qianqian
+  },
+  // 关闭弹窗
+  closePop() {
+    state.popShow = "";
   },
   // 熊旅行
   travel() {
-    Taro.showToast({
-      title: "开发中",
-      icon: "error",
-      duration: 1000,
-    });
+    execSomeThing();
   },
   // 今日目标列表
   getTodayTargetList() {
     state.todayGoalPopup = true;
   },
-
   // 环境音
   audio() {
-    // do something
+    state.popShow = "anbient";
   },
   // 测试
   test() {
-    // todo by qianqian
+    // TODO by qianqian
   },
   // 目标模块
   target() {
@@ -49,21 +59,16 @@ const state = reactive({
   },
   // 日记模块
   diary() {
-    // todo by qianqian
+    // TODO by qianqian
   },
 });
-// 获取亲密度
-function execSomeThing(type: string) {
-  switch (type) {
-    case "audio": {
-      // state.travel();
-      state.popShow = "anbient";
-      break;
-    }
-    default:
-      state.travel();
-      break;
-  }
+// 首页操作控制分发
+function execSomeThing() {
+  Taro.showToast({
+    title: "开发中",
+    icon: "error",
+    duration: 1000,
+  });
 }
 
 // 一个计算属性 ref
@@ -76,47 +81,32 @@ const getSize: any = computed(() => {
   });
   return systemInfo;
 });
-// eslint-disable-next-line
-// console.log(getSize.value, "😀😀😀😀😀");
-// console.log(getSize.value.devicePixelRatio, "😀😀😀😀😀");
-// console.log(getSize.value.screenWidth, "😀😀😀😀😀");
-// console.log(getSize.value.windowWidth, "😀😀😀😀😀");
 
-// 获取权限
-function authorize() {
-  // Taro.getUserProfile({
-  //   desc: "用于完善用户资料", // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-  //   success: (res) => {
-  //     // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-  //     this.setState({
-  //       userInfo: res.userInfo,
-  //       hasUserInfo: true,
-  //     });
-  //   },
-  // });
-  // 可以通过 Taro.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
-}
+bus.on("closePop", () => {
+  state.closePop();
+});
 </script>
 
 <template>
   <view class="page-container">
     <NavBar>首页</NavBar>
-    <!-- 环境音 -->
-    <Ambient :visible="state.popShow === 'anbient'" @closePop="state.closePop" />
     <view class="main">
-      <!-- 我的/统计 -->
       <view class="operation-bar">
-        <image :src="state.assets.icon" alt="" @tap="authorize" />
+        <!-- 我的 -->
+        <image :src="state.assets.icon" alt="" @tap="state.statistical" />
+        <!-- 统计 -->
         <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
       </view>
-      <!-- 亲密度/统计 -->
       <view class="operation-bar">
+        <!-- 亲密度 -->
         <image :src="state.assets.icon" alt="" @tap="state.travel" />
+        <!-- 记录 -->
         <image :src="state.assets.icon" alt="" @tap="state.travel" />
       </view>
-      <!-- 熊/蜂蜜 -->
       <view class="bear-area">
+        <!-- 熊 -->
         <image class="bear" :src="state.assets.bear" alt="" />
+        <!-- 蜂蜜 -->
         <view class="honeypot">
           <nut-circleprogress
             :progress="(20 / 30) * 100"
@@ -135,8 +125,11 @@ function authorize() {
       </view>
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
       <view class="operation-bar bottom-bar">
-        <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
-        <image :src="state.assets.audio" alt="" @tap="execSomeThing('audio')" />
+        <!--- 日记 -->
+        <image :src="state.assets.icon" alt="" @tap="execSomeThing" />
+        <!--- 环境音 -->
+        <image :src="state.assets.audio" alt="" @tap="state.audio" />
+        <!--- 今日目标 -->
         <nut-badge
           :value="1"
           top="1"
@@ -145,11 +138,15 @@ function authorize() {
         >
           <image :src="state.assets.today" class="today-target" alt="" />
         </nut-badge>
-        <image :src="state.assets.icon" alt="" @tap="execSomeThing('item')" />
+        <!--- 测试 -->
+        <image :src="state.assets.icon" alt="" @tap="execSomeThing" />
+        <!-- 目标 -->
         <image :src="state.assets.icon" alt="" @tap="state.target" />
       </view>
+      <!-- 环境音 -->
+      <Ambient :visible="state.popShow === 'anbient'" />
       <!-- 今日目标列表 -->
-      <getTodayTarget :today-target="state" />
+      <!-- <getTodayTarget :today-target="state" /> -->
     </view>
   </view>
 </template>

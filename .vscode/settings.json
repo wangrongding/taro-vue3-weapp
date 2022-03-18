@@ -6,4 +6,27 @@
   },
   "editor.formatOnSave": false,
   // "prettier.enable": false
+  "todo-tree.highlights.defaultHighlight": {
+    "icon": "alert",
+    "type": "text",
+    "foreground": "red",
+    "background": "white",
+    "opacity": 50,
+    "iconColour": "blue"
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "foreground": "white",
+      "background": "darkgreen",
+      "fontWeight": "bold",
+      "icon": "heart-fill",
+      "iconColour": "green",
+      "type": "tag"
+    },
+    "FIXME": {
+      "foreground": "black",
+      "iconColour": "yellow",
+      "gutterIcon": true
+    }
+  }
 }

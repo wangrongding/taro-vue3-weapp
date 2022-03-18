@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useStore } from "@/stores";
+import bus from "@/utils/eventBus";
 const store = useStore();
-const emit = defineEmits(["closePop", "delete"]);
 const state = reactive({
   file: "popup",
   assets: store.assets.target,
   closePop() {
-    // emit("closePop");
-    emit("closePop", {});
+    bus.emit("closePop");
+  },
+  closedCallback() {
+    // console.log("😥😥😥");
   },
 });
 const props = defineProps({
@@ -43,6 +45,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  openedCallback: {
+    type: Function,
+    default: () => {},
+  },
 });
 </script>
 <template>
@@ -52,13 +58,16 @@ const props = defineProps({
     close-icon-position="top-left"
     close-icon="close-little"
     pop-class="pop"
+    :destroy-on-close="true"
     round
-    :style="{ height: props.height, display: 'none' }"
+    :style="{ height: props.height }"
     close-on-click-overlay
     :visible="props.visible"
     :z-index="100"
     @click-overlay="state.closePop"
     @click-close-icon="state.closePop"
+    @open="props.openedCallback"
+    @close="state.closedCallback"
   >
     <view
       class="popup-container"
@@ -105,7 +114,7 @@ const props = defineProps({
     height: 100%;
     width: 100%;
     z-index: 1;
-    border-radius: 19px 19px 0 0;
+    border-radius: 23px 23px 0 0;
   }
   .title {
     z-index: 99;
