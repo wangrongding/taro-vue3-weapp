@@ -33,6 +33,7 @@ const state = reactive({
   // 关闭弹窗
   closePop() {
     state.popShow = "";
+    state.todayGoalPopup = false;
   },
   // 熊旅行
   travel() {
@@ -59,7 +60,10 @@ const state = reactive({
   },
   // 日记模块
   diary() {
-    // TODO by qianqian
+    Taro.redirectTo({
+      url: "/pages/sleepDiary/index",
+      success() {},
+    });
   },
 });
 // 首页操作控制分发
@@ -126,7 +130,7 @@ bus.on("closePop", () => {
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
       <view class="operation-bar bottom-bar">
         <!--- 日记 -->
-        <image :src="state.assets.icon" alt="" @tap="execSomeThing" />
+        <image :src="state.assets.icon" alt="" @tap="state.diary" />
         <!--- 环境音 -->
         <image :src="state.assets.audio" alt="" @tap="state.audio" />
         <!--- 今日目标 -->
@@ -146,7 +150,7 @@ bus.on("closePop", () => {
       <!-- 环境音 -->
       <Ambient :visible="state.popShow === 'anbient'" />
       <!-- 今日目标列表 -->
-      <!-- <getTodayTarget :today-target="state" /> -->
+      <getTodayTarget :today-target="state.todayGoalPopup" />
     </view>
   </view>
 </template>

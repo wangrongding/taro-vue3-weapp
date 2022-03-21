@@ -5,7 +5,7 @@
     <view class="target-main">
       <nut-tabs v-model="state.tab1value" class="target-tab">
         <template #titles>
-          <div
+          <view
             class="nut-tabs__titles-item"
             @click="state.tab1value = item.dictKey - 1"
             :class="{ actives: state.tab1value === item.dictKey - 1 }"
@@ -18,7 +18,7 @@
               :class="{ actives: state.tab1value === item.dictKey - 1 }"
             >{{ item.dictValue }}</span>
             <span class="nut-tabs__titles-item__line" />
-          </div>
+          </view>
           <image
             class="close"
             src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"

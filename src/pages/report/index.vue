@@ -13,7 +13,7 @@
                 class="detail"
                 src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
                 alt=""
-                @tap="detail"
+                @tap="state.detail"
               />
             </view>
           </view>
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
-import NavBar from "../../../components/NavBar.vue";
+import NavBar from "../../components/NavBar.vue";
 const state = reactive({
   tips: `你的睡眠效率很高，请继续保持呦！
   祝你有愉快的一天！ `,
@@ -63,6 +63,12 @@ const state = reactive({
       ],
     },
   ],
+  detail(){
+    Taro.redirectTo({
+      url: "/pages/report/explain/index",
+      success() {},
+    });
+  },
 });
 </script>
 

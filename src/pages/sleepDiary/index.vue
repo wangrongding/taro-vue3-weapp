@@ -43,7 +43,7 @@ function close() {
     success() {},
   });
 }
-function startBtn(){
+function startBtn() {
   Taro.redirectTo({
     url: "/pages/sleepDiary/testQuestions/index",
     success() {},
@@ -54,7 +54,7 @@ function startBtn(){
 <style lang="scss">
 .page-container {
   background: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png");
-  background: red;
+  background: rgba(137, 144, 254, 1);
   background-size: 100% auto;
   background-repeat: no-repeat;
   height: 100vh;

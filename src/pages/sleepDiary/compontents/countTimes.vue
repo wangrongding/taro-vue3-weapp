@@ -1,14 +1,18 @@
 <template>
   <view class="countTimes">
-    <nut-inputnumber v-model="state.value" min="0" />
+    <nut-inputnumber v-model="state.value" min="0" @add="state.addNumber" />
   </view>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+const emit = defineEmits(["countNum"]);
 const state = reactive({
   value: 0,
+  addNumber() {
+    emit("countNum", state.value);
+  },
 });
 </script>
 

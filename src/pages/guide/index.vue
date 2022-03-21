@@ -13,7 +13,6 @@
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
-import "./index.scss";
 import { getGuide } from "@/api/guide/index";
 import { useStore } from "@/stores";
 const store = useStore();
@@ -23,7 +22,7 @@ const state = reactive({
     // 判断登录接口是否完成
     if (store.userInfo.token === "") return;
     let params = {
-      openId: "ok5R45IzRFU3L9kC6fzRgi5ZIZbc",
+      openId: store.userInfo.openId,
     };
     // 判断是否完成新手引导
     getGuide(params)
@@ -34,13 +33,65 @@ const state = reactive({
               url: "/pages/guide/findAnimals/index",
               success() {},
             })
-            : Taro.redirectTo({
-              url: "/pages/index/index",
-              success() {},
-            });
+            : res.guideStatus === 2
+              ? Taro.redirectTo({
+                url: "/pages/index/index",
+                success() {},
+              })
+              : Taro.redirectTo({
+                url: "/pages/guide/guidingProcess/index?index=6",
+                success() {},
+              });
         },
         { failToast: true, loading: true },
       );
   },
 });
 </script>
+<style lang="scss">
+.page-container {
+  text-align: center;
+  margin: 0 auto;
+  background-color: #f3f5f9;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  .page-logo {
+    position: relative;
+    height: 100%;
+
+    image {
+      width: 90px;
+      height: 90px;
+      margin: 63px auto 0 auto;
+    }
+
+    .logo-name {
+      font-size: 22px;
+      font-family: PingFang-SC-Bold, PingFang-SC;
+      font-weight: bold;
+      color: #333333;
+      line-height: 60px;
+      margin-top: 10px;
+    }
+  }
+
+  .page-btn {
+    width: 315px;
+    height: 58px;
+    line-height: 58px;
+    background: #60d394;
+    border-radius: 15px;
+    font-size: 15px;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #ffffff;
+    position: absolute;
+    bottom: 50px;
+    margin-left: 30px;
+  }
+}
+</style>

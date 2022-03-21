@@ -17,7 +17,9 @@ export default {
     // 睡眠日记测试题
     "pages/sleepDiary/testQuestions/index",
     // 睡眠日记报告
-    "pages/sleepDiary/report/index",
+    "pages/report/index",
+    // 睡眠日记解释
+    "pages/report/explain/index",
     // "pages/me/index",
     // "pages/dashboard/index",
   ],

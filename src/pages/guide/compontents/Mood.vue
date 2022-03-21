@@ -1,9 +1,9 @@
 <template>
   <view>
-    <view class="mood-days"> 第 {{ state.mooddays }} 天 </view>
+    <view class="mood-days"> 第 {{ props.getUserMoodList.days }} 天 </view>
     <image class="mood-image" :src="state.logo" alt="" />
     <view class="logo-name">
-      早上好!
+      {{ props.getUserMoodList.userName }}好!
       <view class="name"> 今天是星期{{ state.week }} </view>
     </view>
     <view class="mood-number">
@@ -29,12 +29,16 @@ import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-  name: "小白",
-  mooddays: 16,
-  week: "二",
 });
 const props = defineProps({
   sleepMoodList: {
+    type: Array,
+    default() {
+      return [];
+    },
+    required: true,
+  },
+  getUserMoodList: {
     type: Array,
     default() {
       return [];

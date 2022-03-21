@@ -38,3 +38,13 @@ export function sleepMood(data?: object) {
 export function userMood(data?: object) {
   return request.post("/mini-program/user-mood/save", { data });
 }
+
+// 心情 详情
+export function getUserMood(data?: object) {
+  return request.get("/mini-program/user-mood/getUserMood", { data });
+}
+
+// 订阅消息通知
+export function template(data?: object) {
+  return request.get("/mini-program/template/list", { data });
+}

@@ -41,6 +41,20 @@
           "name": "环境音播放页",
           "pathName": "pages/ambient/play",
           "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "日记测试",
+          "pathName": "pages/sleepDiary/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "睡眠日记报告",
+          "pathName": "pages/report/index",
+          "query": "",
           "scene": null,
           "launchMode": "default"
         }

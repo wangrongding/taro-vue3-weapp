@@ -3,11 +3,11 @@
   <D-Popup
     position="bottom"
     height="70%"
-    :visible="props.todayTarget.todayGoalPopup"
+    :visible="props.todayTarget"
     padding="37px 20px 0"
     :background-color="'#F0F7F4FF'"
     :suffix-color="'#60D394FF'"
-    @closePop="state.closePop"
+    :opened-callback="state.getUserTargetData"
   >
     <template #content>
       <view class="today-goal">
@@ -19,7 +19,7 @@
             v-if="state.targetStatus === 2"
           >
             <template #image>
-              <img :src="props.todayTarget.assets.bear">
+              <img :src="state.assets.bear">
             </template>
           </nut-empty>
           <!-- 完成所有目标 空状态 -->
@@ -29,7 +29,7 @@
             v-if="state.targetStatus === 1"
           >
             <template #image>
-              <img :src="props.todayTarget.assets.bear">
+              <img :src="state.assets.bear">
             </template>
           </nut-empty>
           <!-- 有目标状态 -->
@@ -42,7 +42,7 @@
                   {{ item.honeyCount }} <image :src="item.icon" alt="" />
                 </view>
               </view>
-              <view class="operation-btn"> 完成 </view>
+              <view class="operation-btn" @tap="state.operationBtn(item)"> 完成 </view>
               <view class="more-operation"> ... </view>
             </view>
           </view>
@@ -54,31 +54,24 @@
   </D-Popup>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, toRef } from "vue";
 import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
 import { useStore } from "@/stores";
-import { getUserTarget } from "@/api/target/index";
-import { setTimeout } from "timers";
-
+import { getUserTarget, finishTarget } from "@/api/target/index";
 const store = useStore();
-const emit = defineEmits(["closePop"]);
-// const props = defineProps({
-//   todayTarget: {
-//     type: Object,
-//     default() {
-//       return {};
-//     },
-//     required: true,
-//   },
-// });
+const props = defineProps({
+  todayTarget: {
+    type: Boolean,
+    default: false,
+  },
+});
 const state = reactive({
   assets: store.assets.ambient,
   targetStatus: "",
   voList: [],
-  closePop() {
-    // props.todayTarget.todayGoalPopup = false;
-  },
+  closePop() {},
+  open() {},
   // 添加目标跳转
   addTarget() {
     Taro.redirectTo({
@@ -86,17 +79,24 @@ const state = reactive({
       success() {},
     });
   },
+  // 完成目标
+  operationBtn(data) {
+    let params = {
+      honeyCount: data.honeyCount,
+      userTargetId: data.targetTypeId,
+    };
+    finishTarget(params);
+  },
+  // 获取列表
+  getUserTargetData() {
+    getUserTarget()
+      .then((res: any) => {
+        state.targetStatus = res.targetStatus;
+        state.voList = res.voList;
+      });
+  },
 });
-// 获取列表
-function getUserTargetData() {
-  getUserTarget()
-    .then((res: any) => {
-      state.targetStatus = res.targetStatus;
-      state.voList = res.voList;
-    });
-}
-//    ------初始化 -------
-getUserTargetData();
+//    --------初始化 ------------
 </script>
 <style lang="scss">
 // 今日目标列表

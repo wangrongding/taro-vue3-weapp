@@ -14,3 +14,8 @@ export function getUserTarget(data?: object) {
 export function userTarget(data?: object) {
   return request.post("/mini-program/user-target/save", { data });
 }
+
+// 完成目标
+export function finishTarget(data?: object) {
+  return request.post("/mini-program/user-target/finishTarget", { data });
+}
