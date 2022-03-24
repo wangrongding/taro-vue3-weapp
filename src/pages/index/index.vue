@@ -3,10 +3,11 @@ import { computed, reactive } from "vue";
 import { getIntimacy } from "@/api/home/index";
 import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/assets";
 import Ambient from "@/pages/ambient/index.vue";
 import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 import bus from "@/utils/eventBus";
+import Intimacy from "../components/Intimacy.vue";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
@@ -23,8 +24,7 @@ const state = reactive({
   },
   // 获取亲密度
   getIntimacy() {
-    // FIXME 后续会放到模块中,测试用.
-    getIntimacy({}, { failToast: true, loading: true });
+    state.popShow = "intimacy";
   },
   // 记录
   record() {
@@ -93,7 +93,7 @@ bus.on("closePop", () => {
 
 <template>
   <view class="page-container">
-    <NavBar>首页</NavBar>
+    <NavBar>梦琦</NavBar>
     <view class="main">
       <view class="operation-bar">
         <!-- 我的 -->
@@ -103,7 +103,7 @@ bus.on("closePop", () => {
       </view>
       <view class="operation-bar">
         <!-- 亲密度 -->
-        <image :src="state.assets.icon" alt="" @tap="state.travel" />
+        <image :src="state.assets.intimacy" alt="" @tap="state.getIntimacy" />
         <!-- 记录 -->
         <image :src="state.assets.icon" alt="" @tap="state.travel" />
       </view>
@@ -147,6 +147,8 @@ bus.on("closePop", () => {
         <!-- 目标 -->
         <image :src="state.assets.icon" alt="" @tap="state.target" />
       </view>
+      <!-- 亲密度 -->
+      <Intimacy :visible="state.popShow === 'intimacy'" />
       <!-- 环境音 -->
       <Ambient :visible="state.popShow === 'anbient'" />
       <!-- 今日目标列表 -->

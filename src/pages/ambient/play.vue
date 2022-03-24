@@ -1,12 +1,30 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import NavBar from "@/components/NavBar.vue";
 import Taro from "@tarojs/taro";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/assets";
 const store = useStore();
+
+let audioCtx: any = null;
+
 const state = reactive({
   file: "play",
   assets: store.assets.ambient,
+  playStatus: false,
+  timeCheckList: [
+    { lable: "无限", value: 9999999 },
+    { lable: "5  分钟", value: 5 },
+    { lable: "10  分钟", value: 10 },
+    { lable: "20  分钟", value: 20 },
+    { lable: "30  分钟", value: 30 },
+    "无限",
+    "5",
+    "10",
+    "20",
+    "30",
+  ],
+  end: 0,
+  timeCheckShow: false,
   goBack() {
     Taro.navigateBack({
       delta: 1,
@@ -17,6 +35,46 @@ const state = reactive({
       url: "/pages/index/index",
     });
   },
+  // 创建音频上下文
+  createAudio() {
+    audioCtx = Taro.createInnerAudioContext();
+    audioCtx.src = "https://storage.360buyimg.com/jdrd-blog/27.mp3";
+    audioCtx.autoplay = false;
+    audioCtx.loop = true;
+    audioCtx.onPlay(() => {
+      state.onPlay();
+    });
+    audioCtx.onError(() => {
+      // state.onError(err);
+    });
+  },
+  // 控制音频播放/暂停
+  handlePlay() {
+    if (audioCtx.paused) {
+      state.playStatus = true;
+      // console.log("播放", audioCtx, audioCtx.paused);
+      audioCtx.play();
+    } else {
+      state.playStatus = false;
+      // console.log("暂停", audioCtx, audioCtx.paused);
+      audioCtx.pause();
+    }
+  },
+  // 暂停
+  stop() {
+    audioCtx.stop();
+  },
+  // 播放回调
+  onPlay() {},
+  // 设置倒计时
+  setCountdown(val: string) {
+    state.end = Date.now() + parseInt(val) * 1000;
+    state.timeCheckShow = false;
+  },
+});
+onMounted(() => {
+  // 创建音频
+  state.createAudio();
 });
 </script>
 <template>
@@ -42,7 +100,6 @@ const state = reactive({
         style="height: 50px; width: 50px; line-height: 50px; margin-top: 5px"
       />
     </view>
-
     <view
       class="music-img"
       :style="{
@@ -58,9 +115,16 @@ const state = reactive({
       }"
     />
     <view class="play-box">
-      <view style="text-align: center; color: white">5:00</view>
+      <nut-countdown
+        v-if="state.end"
+        style="justify-content: center; color: white"
+        :end-time="state.end"
+        @update:modelValue="state.onPlay"
+      />
+      <!-- <nut-countdown :end-time="state.countdown" /> -->
       <view class="operations-play">
         <view
+          @tap="state.timeCheckShow = true"
           :style="{
             backgroundColor: 'white',
             width: '40px',
@@ -72,19 +136,31 @@ const state = reactive({
           }"
         />
         <view
+          @tap="state.handlePlay"
           :style="{
             width: '80px',
             height: '80px',
             borderRadius: '50%',
             overflow: 'hidden',
-            backgroundImage: `url(${state.assets.play})`,
+            backgroundImage: state.playStatus
+              ? `url(${state.assets.pause})`
+              : `url(${state.assets.play})`,
             backgroundSize: '100% 100%',
           }"
         />
-        <view :style="{ backgroundColor: 'white', width: '40px', height: '40px' }" />
+        <view
+          @tap="state.stop"
+          :style="{ backgroundColor: 'white', width: '40px', height: '40px' }"
+        />
       </view>
     </view>
   </view>
+  <nut-picker
+    :visible="state.timeCheckShow"
+    :list-data="state.timeCheckList"
+    @confirm="state.setCountdown"
+    @close="state.timeCheckShow = false"
+  />
 </template>
 <style lang="scss">
 .play-container {

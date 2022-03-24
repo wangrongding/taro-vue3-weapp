@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/assets";
 import bus from "@/utils/eventBus";
 const store = useStore();
 const state = reactive({
@@ -49,6 +49,10 @@ const props = defineProps({
     type: Function,
     default: () => {},
   },
+  hidenCloseIcon: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 <template>
@@ -80,6 +84,7 @@ const props = defineProps({
     >
       <slot name="content" />
       <image
+        v-if="!props.hidenCloseIcon"
         @tap="state.closePop"
         class="close"
         :src="state.assets.close"
@@ -114,7 +119,7 @@ const props = defineProps({
     height: 100%;
     width: 100%;
     z-index: 1;
-    border-radius: 23px 23px 0 0;
+    border-radius: 20px 20px 0 0;
   }
   .title {
     z-index: 99;

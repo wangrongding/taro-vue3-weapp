@@ -2,7 +2,7 @@
 import { defineStore } from "pinia";
 import Taro from "@tarojs/taro";
 import { getUserInfo } from "@/api/preload/index";
-export const useStore = defineStore("user", {
+export const useStore = defineStore("assets", {
   state: () => {
     return {
       // TODO通用资源,临时资源
@@ -21,7 +21,13 @@ export const useStore = defineStore("user", {
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203071129104.png",
           audio:
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203071320978.png",
+          intimacy:
+            "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203221740424.png",
           icon: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452915.png",
+        },
+        intimacy: {
+          heart:
+            "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203231800806.png",
         },
         ambient: {
           title:
@@ -31,7 +37,8 @@ export const useStore = defineStore("user", {
           item: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203161453639.png",
           icon: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203151401112.png",
           play: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203161514696.png",
-          stop: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203161451389.png",
+          pause:
+            "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203161451389.png",
           timing:
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203161514612.png",
           reset:

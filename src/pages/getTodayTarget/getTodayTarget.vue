@@ -57,7 +57,7 @@
 import { reactive, toRef } from "vue";
 import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/assets";
 import { getUserTarget, finishTarget } from "@/api/target/index";
 const store = useStore();
 const props = defineProps({

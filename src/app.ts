@@ -3,7 +3,23 @@ import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
 import "./app.scss";
 
-import { CircleProgress,Badge , Picker, Popup ,OverLay ,Empty,Tabs, TabPane,Progress,InputNumber,DatePicker,Icon } from "@nutui/nutui-taro";
+import {
+  CircleProgress,
+  Badge,
+  Picker,
+  Popup,
+  OverLay,
+  Empty,
+  Tabs,
+  Cell,
+  TabPane,
+  Progress,
+  InputNumber,
+  DatePicker,
+  CountDown,
+  Range,
+  Icon,
+} from "@nutui/nutui-taro";
 import "@nutui/nutui-taro/dist/style.css";
 
 const App = createApp({
@@ -36,7 +52,7 @@ const App = createApp({
 });
 
 App.use(createPinia());
-App.use(Badge )
+App.use(Badge)
   .use(CircleProgress)
   .use(Picker)
   .use(Popup)
@@ -44,10 +60,12 @@ App.use(Badge )
   .use(Empty)
   .use(Tabs)
   .use(TabPane)
+  .use(Cell)
+  .use(CountDown)
+  .use(Range)
   .use(Progress)
   .use(InputNumber)
   .use(DatePicker)
-  .use(Icon)
-;
+  .use(Icon);
 
 export default App;

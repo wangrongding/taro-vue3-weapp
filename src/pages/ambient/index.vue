@@ -2,7 +2,7 @@
 import { reactive, onMounted } from "vue";
 import DPopup from "@/components/D-Popup.vue";
 import Taro from "@tarojs/taro";
-import { useStore } from "@/stores";
+import { useStore } from "@/stores/assets";
 import { getAmbientList } from "@/api/ambient";
 const store = useStore();
 const state = reactive({
