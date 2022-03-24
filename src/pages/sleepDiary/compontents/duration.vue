@@ -40,9 +40,7 @@ const state = reactive({
     }
   },
   durationAnswer(e) {
-    // e.detail.value[0] = e.detail.value[0] ? "0" + e.detail.value[0] : e.detail.value[0];
-    // e.detail.value[2] = e.detail.value[2] ? "0" + e.detail.value[2] : e.detail.value[2];
-    state.duration = e.detail.value[0] + " : " + e.detail.value[2];
+    state.duration = e.detail.value[0] + ":" + e.detail.value[2];
     emit("duration", state.duration);
   },
 });
@@ -59,7 +57,7 @@ state.time();
     width: 335px;
     height: 200px;
     background: rgba(137, 144, 254, 1);
-    margin: 80px auto 0 auto;
+    margin: 40px auto 0 auto;
     text-align: center;
   }
 }

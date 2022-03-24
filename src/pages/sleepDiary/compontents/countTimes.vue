@@ -1,6 +1,11 @@
 <template>
   <view class="countTimes">
-    <nut-inputnumber v-model="state.value" min="0" @add="state.addNumber" />
+    <nut-inputnumber
+      v-model="state.value"
+      min="0"
+      @add="state.addNumber"
+      @reduce="state.removeNumber"
+    />
   </view>
 </template>
 
@@ -11,6 +16,13 @@ const emit = defineEmits(["countNum"]);
 const state = reactive({
   value: 0,
   addNumber() {
+    // 因前端是从0开始
+    state.value++;
+    emit("countNum", state.value);
+  },
+  removeNumber() {
+    if (state.value <= 0) return;
+    state.value--;
     emit("countNum", state.value);
   },
 });

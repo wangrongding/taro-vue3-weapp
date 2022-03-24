@@ -3,8 +3,8 @@
   <view class="singleChoice">
     <view
       class="answer"
-      :class="state.number === index ? 'answer-select' : ''"
-      v-for="(item, index) in props.singleChoiceList"
+      :class="state.defaultNumber.number === index ? 'answer-select' : ''"
+      v-for="(item, index) in props.singleChoiceList.optionList"
       :key="index"
       @tap="state.answerBtn(item, index)"
     >
@@ -17,23 +17,28 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+const emit = defineEmits(["singleChoice"]);
 const props = defineProps({
   singleChoiceList: {
-    type: Array,
-    default() {
-      return [];
-    },
+    type: Object,
+    default: () => ({}),
+    required: true,
+  },
+  defaultValue: {
+    type: Object,
+    default: () => ({}),
     required: true,
   },
 });
 const state = reactive({
   singleChoice: [],
-  number: -1,
+  defaultNumber: props.defaultValue,
   // 选择答案
   answerBtn(data, index) {
-    state.number = data.number = index;
+    state.defaultNumber.number = data.number = index;
     state.singleChoice = [];
     state.singleChoice.unshift(data.id);
+    emit("singleChoice", state.singleChoice);
   },
 });
 </script>

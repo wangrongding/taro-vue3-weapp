@@ -4,7 +4,7 @@
     <view
       class="answer"
       :class="item.active ? 'answer-select' : ''"
-      v-for="(item, index) in props.singleChoiceList"
+      v-for="(item, index) in props.singleChoiceList.optionList"
       :key="index"
       @tap="state.answerBtn(item)"
     >
@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+const emit = defineEmits(["multipleChoice"]);
 const props = defineProps({
   singleChoiceList: {
     type: Array,
@@ -30,15 +31,25 @@ const state = reactive({
   multipleChoice: [],
   // 选择答案
   answerBtn(data) {
+    // 判断是否是没有被影响
+    if (data.id === "1502112911429476354") {
+      props.singleChoiceList.optionList.forEach((item) => {
+        item.active = false;
+      });
+    } else {
+      props.singleChoiceList.optionList.forEach((item) => {
+        if (item.id === "1502112911429476354") item.active = false;
+      });
+    }
+
     data.active = !data.active;
     if (data.active === true) {
       state.multipleChoice.push(data.id);
     } else {
       let index = state.multipleChoice.indexOf(data.id);
-      if (index > -1) {
-        state.multipleChoice.splice(index, 1);
-      }
+      if (index > -1) state.multipleChoice.splice(index, 1);
     }
+    emit("multipleChoice", state.multipleChoice);
   },
 });
 </script>
