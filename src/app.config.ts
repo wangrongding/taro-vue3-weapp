@@ -20,6 +20,8 @@ export default {
     "pages/report/index",
     // 睡眠日记解释
     "pages/report/explain/index",
+    // 记录
+    "pages/record/index",
     // "pages/me/index",
     // "pages/dashboard/index",
   ],

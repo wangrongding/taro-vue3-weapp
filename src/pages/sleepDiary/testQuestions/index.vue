@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { reactive, shallowRef } from "vue";
-import { getSleepTest } from "@/api/sleepDiary/index";
+import { getSleepTest, saveResult } from "@/api/sleepDiary/index";
 import NavBar from "../../../components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import time from "../compontents/time.vue";
@@ -107,7 +107,6 @@ function goStart() {
     }
   }
 
-
   // 判断数据是否存在
   // state.answerList.forEach((item) => {
   //   if (item.diaryQuestionId === state.sleepList[state.index].id) {
@@ -134,20 +133,30 @@ function goStart() {
   state.index = state.index + 1;
   state.next = state.sleepList[state.index];
   // 判断是否跳转报告以及传参接口参数
-  // if (state.sleepList.length === 13)
-  //   Taro.redirectTo({
-  //     url: "/pages/sleepDiary/report/index",
-  //     success() {},
-  //   });
+  if (state.answerList.length === 12) {
+    let params = {
+      answerList: state.answerList,
+      diaryId: 1,
+    };
+    saveResult(params)
+      .then(() => {
+      // Taro.redirectTo({
+      //   url: "/pages/sleepDiary/report/index",
+      //   success() {},
+      // });
+      });
+    return;
+  }
 }
 // 上一题
 function preNext() {
   // 判断是否是第一题
-  if (state.index === 0)
-  {return Taro.redirectTo({
-    url: "/pages/sleepDiary/index",
-    success() {},
-  });}
+  if (state.index === 0) {
+    return Taro.redirectTo({
+      url: "/pages/sleepDiary/index",
+      success() {},
+    });
+  }
   state.index = state.index - 1;
   state.next = state.sleepList[state.index];
 }

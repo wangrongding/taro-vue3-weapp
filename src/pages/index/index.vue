@@ -28,7 +28,10 @@ const state = reactive({
   },
   // 记录
   record() {
-    // TODO by qianqian
+    Taro.redirectTo({
+      url: "/pages/record/index",
+      success() {},
+    });
   },
   // 关闭弹窗
   closePop() {
@@ -105,7 +108,7 @@ bus.on("closePop", () => {
         <!-- 亲密度 -->
         <image :src="state.assets.intimacy" alt="" @tap="state.getIntimacy" />
         <!-- 记录 -->
-        <image :src="state.assets.icon" alt="" @tap="state.travel" />
+        <image :src="state.assets.icon" alt="" @tap="state.record" />
       </view>
       <view class="bear-area">
         <!-- 熊 -->

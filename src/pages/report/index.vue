@@ -24,9 +24,7 @@
               class="sleep-data"
             >
               <dt class="sleep-time" :class="item.id === 1 ? 'bed-time' : ''">
-                {{
-                  children.time
-                }}
+                {{ children.time }}
               </dt>
               <dd>{{ children.name }}</dd>
             </dl>
@@ -63,7 +61,7 @@ const state = reactive({
       ],
     },
   ],
-  detail(){
+  detail() {
     Taro.redirectTo({
       url: "/pages/report/explain/index",
       success() {},

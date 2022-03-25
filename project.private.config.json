@@ -25,12 +25,6 @@
           "scene": null
         },
         {
-          "name": "新手引导",
-          "pathName": "pages/guide/guidingProcess/index",
-          "query": "",
-          "scene": null
-        },
-        {
           "name": "目标",
           "pathName": "pages/target/index",
           "query": "",
@@ -55,8 +49,15 @@
           "name": "睡眠日记报告",
           "pathName": "pages/report/index",
           "query": "",
-          "scene": null,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "记录",
+          "pathName": "pages/record/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

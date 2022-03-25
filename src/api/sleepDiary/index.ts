@@ -4,3 +4,8 @@ import request from "../request";
 export function getSleepTest(data?: object) {
   return request.get("/mini-program/sleet-test/getSleepTest", { data });
 }
+
+// 保存结果
+export function saveResult(data?: object) {
+  return request.post("/mini-program/sleet-test/saveResult", { data });
+}
