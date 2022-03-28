@@ -16,7 +16,10 @@ const state = reactive({
   todayGoalPopup: false,
   // 我的
   me() {
-    // TODO by qianqian
+    Taro.redirectTo({
+      url: "/pages/me/index",
+      success() {},
+    });
   },
   // 统计
   statistical() {
@@ -100,7 +103,7 @@ bus.on("closePop", () => {
     <view class="main">
       <view class="operation-bar">
         <!-- 我的 -->
-        <image :src="state.assets.icon" alt="" @tap="state.statistical" />
+        <image :src="state.assets.icon" alt="" @tap="state.me" />
         <!-- 统计 -->
         <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
       </view>

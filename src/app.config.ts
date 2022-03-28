@@ -22,7 +22,10 @@ export default {
     "pages/report/explain/index",
     // 记录
     "pages/record/index",
-    // "pages/me/index",
+    // 我的
+    "pages/me/index",
+    // 隐私政策
+    "pages/me/privacyPolicy",
     // "pages/dashboard/index",
   ],
   window: {

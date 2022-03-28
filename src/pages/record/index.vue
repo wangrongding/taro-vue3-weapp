@@ -52,7 +52,6 @@ import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { useStore } from "@/stores/assets";
 import { userTargetRecordList } from "@/api/record/index";
-import { stat } from "fs/promises";
 const store = useStore();
 const state = reactive({
   assets: store.assets.home,
@@ -185,10 +184,10 @@ state.userTargetRecordListData(0);
     .close {
       width: 100%;
       text-align: center;
+      margin-top: 15px;
       image {
         width: 50px;
         height: 58px;
-        margin-top: 15px;
       }
     }
   }
