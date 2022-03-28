@@ -67,40 +67,55 @@ const props = defineProps({
       <image class="logo-image" :src="state.assets.title" alt="" />
     </template>
   </D-Popup>
-
-  <!-- <nut-popup
-    position="bottom"
-    :style="{ height: 'auto' }"
-    :visible="props.visible"
-    @click-overlay="state.closePop"
-    @click-close-icon="state.closePop"
-    @opend="state.getAmbientList"
-  >
-    <view class="list">
-      <view
-        class="item"
-        v-for="(item, index) in state.ambientList"
-        :key="index"
-        @tap="state.jumpTo"
-      >
-        <image class="item-image" :src="state.assets.item" alt="" />
-        <view class="item-content">
-          <text>田野</text>
-          <text>描述信息描述信息描述信息</text>
-        </view>
-        <view class="exp">
-          <text>5</text>
-          <image :src="state.assets.empty" alt="" />
-        </view>
-      </view>
-    </view>
-    <view class="empty">
-      <image class="bear" :src="state.assets.empty" alt="" />
-      <text class="empty-text">完成冒险,可获得环境音~</text>
-    </view>
-  </nut-popup> -->
+  <view class="play-action-bar">
+    <image class="play-action-bar-image" :src="state.assets.item" alt="" />
+    <text class="play-action-bar-text">{{ "qwe" }}</text>
+    <!-- 控制播放、暂停 -->
+    <view
+      class="play"
+      :style="{
+        backgroundImage: state.assets.pause,
+      }"
+    />
+  </view>
 </template>
 <style lang="scss">
+.play-action-bar {
+  position: absolute;
+  bottom: 100px;
+  height: 58px;
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 0 10px;
+  background-color: #00000059;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .play-action-bar-image {
+    width: 34px;
+    height: 34px;
+    border: 4px solid #fff;
+    border-radius: 50%;
+  }
+  .play-action-bar-text {
+    flex-grow: 1; //这三个元素只有它在有空余空间时可伸缩，也就是它占据了所有剩余空间
+    display: flex; //将它设置为flex,就可以单独对他进行主轴右对齐
+    justify-content: flex-start;
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    margin-left: 10px;
+  }
+  .play {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    background-color: white;
+    background-size: 100% 100%;
+    overflow: hidden;
+  }
+}
 .logo-image {
   width: 229px;
   height: 80px;

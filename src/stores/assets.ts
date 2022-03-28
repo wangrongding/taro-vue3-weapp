@@ -2,9 +2,23 @@
 import { defineStore } from "pinia";
 import Taro from "@tarojs/taro";
 import { getUserInfo } from "@/api/preload/index";
+const src =
+  "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203280935056.png";
 export const useStore = defineStore("assets", {
   state: () => {
     return {
+      tempAssets: {
+        // 首页
+        home: {
+          // 熊
+          bear: {
+            base: src,
+          },
+          honey:
+            "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203071501301.png",
+        },
+      },
+      // ============================================================
       // TODO通用资源,临时资源
       assets: {
         base: {},
