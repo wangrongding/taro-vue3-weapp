@@ -88,6 +88,9 @@ const request = {
   post(url, options) {
     return requestAction(url, "POST", options);
   },
+  put(url, options) {
+    return requestAction(url, "PUT", options);
+  },
 };
 
 export default request;
