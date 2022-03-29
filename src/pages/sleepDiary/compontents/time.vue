@@ -7,26 +7,9 @@
       :visible="state.show"
       :min-date="state.minDate"
       :max-date="state.maxDate"
+      :is-show-chinese="true"
       @close="close"
     />
-    <!-- <picker-view
-      indicator-style="height: 80px;"
-      :value="valueArr"
-      class="picker-view"
-      mask-style="opacity: 0;"
-      style="line-height: 80px"
-      @change="state.answer"
-    >
-      <picker-view-column class="hours">
-        <view v-for="(item, index) in state.hours" :key="index">{{ item }}</view>
-      </picker-view-column>
-      <picker-view-column>
-        <view> : </view>
-      </picker-view-column>
-      <picker-view-column class="minutes">
-        <view v-for="(item, index) in state.minutes" :key="index">{{ item }}</view>
-      </picker-view-column>
-    </picker-view> -->
   </view>
 </template>
 
@@ -43,38 +26,16 @@ const props = defineProps({
 });
 const state = reactive({
   show: false,
-  conversion: "",
   minDate: new Date(2000, 0, 1),
   maxDate: new Date(2023, 11, 31, 22, 60),
-  // valueArr: ["23","12"],
-  // hours: [],
-  // minutes: [],
-  // checkTime: "",
-  // time() {
-  //   for (let i = 0; i <= 23; i++) {
-  //     state.hours.push(i < 10 ? "0" + i : i);
-  //   }
-  //   for (let i = 0; i <= 59; i++) {
-  //     state.minutes.push(i < 10 ? "0" + i : i);
-  //   }
-  // },
-  // answer(e) {
-  //   state.checkTime = e.detail.value[0] + " : " + e.detail.value[2];
-  //   emit("checkTime", state.checkTime);
-  // },
 });
-function confirm(res) {
-  let conversionNum: number;
-  let conversionString: string;
-  state.conversion = "";
-  res.forEach((item) => {
-    conversionNum = parseInt(item.replace(/\p{Unified_Ideograph}/gu, ""));
-    state.conversion += conversionNum < 10 ? "0" + conversionNum + "-" : conversionNum + "-";
-  });
-  conversionString = state.conversion.slice(0, state.conversion.length - 1);
+function confirm(selectedValue) {
   state.desc =
-    conversionString.substring(0, 10) + " " + conversionString.substring(11, 17)
-      .replace("-", ":");
+    selectedValue.selectedValue.slice(0, 3)
+      .join("-") +
+    " " +
+    selectedValue.selectedValue.slice(3)
+      .join(":");
   emit("desc", state.desc);
   close();
 }

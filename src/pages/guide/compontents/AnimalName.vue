@@ -21,7 +21,6 @@ const state = reactive({
   给TA取个名字吧～ `,
 });
 const emit = defineEmits(["animalName"]);
-
 function nameOnBlur(e: string) {
   emit("animalName", e.detail.value);
 }

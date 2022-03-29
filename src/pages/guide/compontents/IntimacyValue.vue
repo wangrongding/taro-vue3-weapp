@@ -1,7 +1,7 @@
 <template>
   <view>
     <image class="logo-image" :src="state.logo" alt="" />
-    <view class="logo-name"> “哦~ {{ state.name }}，你好呀~” </view>
+    <view class="logo-name"> “哦~ {{ props.userName }}，你好呀~” </view>
     <view class="intimate-data">
       <image class="intimate-icon" :src="state.logo" alt="" />
       <view class="intimate-name"> +3 亲密值</view>
@@ -12,9 +12,17 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+const props = defineProps({
+  userName: {
+    type: String,
+    default() {
+      return "";
+    },
+    required: true,
+  },
+});
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-  name: "仙女儿",
 });
 </script>
 

@@ -7,27 +7,26 @@
           class="close"
           src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
           alt=""
-          @tap="close"
+          @tap="state.close"
         />
       </view>
-      <image
-        class="bear"
-        src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
-        alt=""
-      />
-      <view class="titel"> 睡眠日记 </view>
+
+      <image class="bear" :src="state.getSleepGuide.icon" alt="" />
+      <view class="titel"> {{ state.getSleepGuide.title }} </view>
       <view class="detail">
-        每天早上起床后完成你的睡眠日记非常重要，这意味着我们能够得到你睡眠问题的准确信息，以便我们开启有效的方法来改善它，这是走向成功的第一步。
+        {{ state.getSleepGuide.explain }}
       </view>
       <view class="energy-data">
         20
+        {{ state.getSleepGuide.honeyCount }}
         <image
           class="energy-value-img"
           src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
           alt=""
         />
       </view>
-      <view class="start-btn" @tap="startBtn"> 开始 </view>
+
+      <view class="start-btn" @tap="state.startBtn"> 开始 </view>
     </view>
   </view>
 </template>
@@ -35,20 +34,34 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
+import { getSleepGuide } from "@/api/sleepDiary/index";
 import Taro from "@tarojs/taro";
-const state = reactive({});
-function close() {
-  Taro.redirectTo({
-    url: "/pages/index/index",
-    success() {},
-  });
-}
-function startBtn() {
-  Taro.redirectTo({
-    url: "/pages/sleepDiary/testQuestions/index",
-    success() {},
-  });
-}
+const getCurrentInstance = Taro.getCurrentInstance();
+const state = reactive({
+  typeId: "",
+  getSleepGuide: {},
+  getSleepGuideData() {
+    state.typeId = getCurrentInstance.router.params.id;
+    let params = {
+      typeId: state.typeId,
+    };
+    getSleepGuide(params)
+      .then((res: any) => {
+        state.getSleepGuide = res;
+      });
+  },
+  close() {
+    Taro.redirectTo({
+      url: "/pages/index/index",
+    });
+  },
+  startBtn() {
+    Taro.navigateTo({
+      url: "/pages/sleepDiary/testQuestions/index?id=" + state.typeId,
+    });
+  },
+});
+state.getSleepGuideData();
 </script>
 
 <style lang="scss">
@@ -65,6 +78,8 @@ function startBtn() {
   .page-main {
     position: relative;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     .close {
       width: 38px;
       height: 38px;
@@ -91,22 +106,26 @@ function startBtn() {
       font-weight: 400;
       color: #ffffff;
       width: 335px;
-      margin: 15px auto;
+      margin: 15px auto 0 auto;
       text-indent: 25px;
+      flex: 1;
     }
+
     .energy-data {
-      margin-top: 88.5px;
+      margin-bottom: 100px;
       font-size: 22px;
       font-family: PingFang-SC-Bold, PingFang-SC;
       font-weight: bold;
       color: #ffffff;
       text-align: center;
+
       .energy-value-img {
         width: 12px;
         height: 16px;
         background: #fff;
       }
     }
+
     .start-btn {
       width: 142px;
       height: 58px;
@@ -117,7 +136,9 @@ function startBtn() {
       font-family: PingFang-SC-Bold, PingFang-SC;
       font-weight: bold;
       color: #60d394;
-      margin: 10px auto;
+      position: absolute;
+      bottom: 30px;
+      left: 117px;
       text-align: center;
     }
   }

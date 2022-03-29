@@ -6,6 +6,7 @@ import NavBar from "@/components/NavBar.vue";
 import { useStore } from "@/stores/assets";
 import Ambient from "@/pages/components/Ambient.vue";
 import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
+import test from "@/pages/test/index.vue";
 import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
 const store = useStore();
@@ -14,11 +15,11 @@ const state = reactive({
   assets: store.assets.home,
   popShow: "",
   todayGoalPopup: false,
+  testGoalPopup: false,
   // 我的
   me() {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: "/pages/me/index",
-      success() {},
     });
   },
   // 统计
@@ -31,15 +32,13 @@ const state = reactive({
   },
   // 记录
   record() {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: "/pages/record/index",
-      success() {},
     });
   },
   // 关闭弹窗
   closePop() {
     state.popShow = "";
-    state.todayGoalPopup = false;
   },
   // 熊旅行
   travel() {
@@ -47,7 +46,7 @@ const state = reactive({
   },
   // 今日目标列表
   getTodayTargetList() {
-    state.todayGoalPopup = true;
+    state.popShow = "getTodayTarget";
   },
   // 环境音
   audio() {
@@ -55,20 +54,18 @@ const state = reactive({
   },
   // 测试
   test() {
-    // TODO by qianqian
+    state.popShow = "test";
   },
   // 目标模块
   target() {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: "/pages/target/index",
-      success() {},
     });
   },
   // 日记模块
   diary() {
-    Taro.redirectTo({
-      url: "/pages/sleepDiary/index",
-      success() {},
+    Taro.navigateTo({
+      url: "/pages/sleepDiary/index?id=4",
     });
   },
 });
@@ -150,7 +147,7 @@ bus.on("closePop", () => {
           <image :src="state.assets.today" class="today-target" alt="" />
         </nut-badge>
         <!--- 测试 -->
-        <image :src="state.assets.icon" alt="" @tap="execSomeThing" />
+        <image :src="state.assets.icon" alt="" @tap="state.test" />
         <!-- 目标 -->
         <image :src="state.assets.icon" alt="" @tap="state.target" />
       </view>
@@ -159,7 +156,9 @@ bus.on("closePop", () => {
       <!-- 环境音 -->
       <Ambient :visible="state.popShow === 'anbient'" />
       <!-- 今日目标列表 -->
-      <getTodayTarget :today-target="state.todayGoalPopup" />
+      <getTodayTarget :visible="state.popShow === 'getTodayTarget'" />
+      <!-- 测试 -->
+      <test :visible="state.popShow === 'test'" />
     </view>
   </view>
 </template>

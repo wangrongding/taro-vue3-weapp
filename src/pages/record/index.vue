@@ -17,29 +17,32 @@
           @tap="state.next(state.newDate)"
         />
       </view>
-      <view class="record-content">
-        <view class="title-target">目标</view>
-        <nut-empty description="暂无记录哦~" v-if="state.userTargetRecordList.length === 0">
-          <template #image>
-            <img :src="state.assets.bear">
-          </template>
-        </nut-empty>
-        <view
-          class="recordList"
-          v-for="(item, index) in state.userTargetRecordList"
-          :key="index"
-          v-else
-        >
-          <image class="recordListImg" :src="item.icon" alt="" />
-          <span class="text">{{ item.targetName }}</span>
-          <image
-            class="complete"
-            :src="state.assets.icon"
-            alt=""
-            v-if="item.finishStatus === 0"
-          />
+      <view class="elastic-box">
+        <view class="record-content">
+          <view class="title-target">目标</view>
+          <nut-empty description="暂无记录哦~" v-if="state.userTargetRecordList.length === 0">
+            <template #image>
+              <img :src="state.assets.bear">
+            </template>
+          </nut-empty>
+          <view
+            class="recordList"
+            v-for="(item, index) in state.userTargetRecordList"
+            :key="index"
+            v-else
+          >
+            <image class="recordListImg" :src="item.icon" alt="" />
+            <span class="text">{{ item.targetName }}</span>
+            <image
+              class="complete"
+              :src="state.assets.icon"
+              alt=""
+              v-if="item.finishStatus === 0"
+            />
+          </view>
         </view>
       </view>
+
       <view class="close">
         <image :src="state.assets.icon" alt="" @tap="state.close" />
       </view>
@@ -115,6 +118,8 @@ state.userTargetRecordListData(0);
   .page-main {
     position: relative;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     .record-title {
       display: flex;
       margin-top: 27px;
@@ -138,53 +143,57 @@ state.userTargetRecordListData(0);
         text-align: center;
       }
     }
-    .record-content {
-      width: 335px;
-      height: 437px;
-      overflow-y: scroll;
-      background: #ffffff;
-      box-shadow: 0px 0px 2px 1px rgba(96, 211, 148, 0.1);
-      border-radius: 15px 15px 0px 0px;
-      margin: 15px auto 0 auto;
-      .title-target {
-        font-size: 17px;
-        font-family: PingFang-SC-Bold, PingFang-SC;
-        font-weight: bold;
-        color: #333333;
-        margin: 15px;
-      }
-      .recordList {
-        position: relative;
-        margin-top: 20px;
-        .recordListImg {
-          width: 40px;
-          height: 40px;
-          margin-left: 25px;
-        }
-        .complete {
-          width: 10px;
-          height: 10px;
-          position: absolute;
-          bottom: 5px;
-          left: 55px;
-        }
-        .text {
-          font-size: 12px;
-          font-family: PingFangSC-Regular, PingFang SC;
-          font-weight: 400;
+    .elastic-box {
+      flex: 1;
+      .record-content {
+        width: 335px;
+        height: 437px;
+        overflow-y: scroll;
+        background: #ffffff;
+        box-shadow: 0px 0px 2px 1px rgba(96, 211, 148, 0.1);
+        border-radius: 15px 15px 0px 0px;
+        margin: 15px auto 0 auto;
+        .title-target {
+          font-size: 17px;
+          font-family: PingFang-SC-Bold, PingFang-SC;
+          font-weight: bold;
           color: #333333;
-          margin-left: 15px;
-          width: 230px;
-          display: inline-block;
-          vertical-align: top;
-          margin-top: 10px;
+          margin: 15px;
+        }
+        .recordList {
+          position: relative;
+          margin-top: 20px;
+          .recordListImg {
+            width: 40px;
+            height: 40px;
+            margin-left: 25px;
+          }
+          .complete {
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            bottom: 5px;
+            left: 55px;
+          }
+          .text {
+            font-size: 12px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #333333;
+            margin-left: 15px;
+            width: 230px;
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 10px;
+          }
         }
       }
     }
+
     .close {
       width: 100%;
       text-align: center;
-      margin-top: 15px;
+      margin-bottom: 30px;
       image {
         width: 50px;
         height: 58px;

@@ -16,7 +16,7 @@ import NavBar from "../../../components/NavBar.vue";
 const state = reactive({
   jumpTo() {
     Taro.redirectTo({
-      url: "/pages/guide/guidingProcess/index",
+      url: "/pages/guide/guidingProcess/index?index=0",
       success() {},
     });
   },
@@ -36,6 +36,8 @@ const state = reactive({
   .page-main {
     position: relative;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 
     .page-name {
       writing-mode: vertical-lr;
@@ -46,6 +48,7 @@ const state = reactive({
       line-height: 30px;
       margin: 66px auto 0 auto;
       letter-spacing: 10px;
+      flex: 1;
     }
 
     .page-btn {
@@ -58,9 +61,7 @@ const state = reactive({
       font-family: PingFang-SC-Bold, PingFang-SC;
       font-weight: bold;
       color: rgba(96, 211, 148, 1);
-      position: absolute;
-      bottom: 50px;
-      margin-left: 117px;
+      margin: 0 auto 50px auto;
       text-align: center;
     }
   }
