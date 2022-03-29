@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { onMounted, onBeforeUnmount, reactive } from "vue";
 import NavBar from "@/components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import { useStore } from "@/stores/assets";
@@ -12,18 +12,16 @@ const state = reactive({
   assets: store.assets.ambient,
   playStatus: false,
   timeCheckList: [
-    { lable: "无限", value: 9999999 },
-    { lable: "5  分钟", value: 5 },
-    { lable: "10  分钟", value: 10 },
-    { lable: "20  分钟", value: 20 },
-    { lable: "30  分钟", value: 30 },
-    "无限",
-    "5",
-    "10",
-    "20",
-    "30",
+    { text: "5  分钟", value: 5 },
+    { text: "10  分钟", value: 10 },
+    { text: "20  分钟", value: 20 },
+    { text: "30  分钟", value: 30 },
+    { text: "40  分钟", value: 30 },
+    { text: "50  分钟", value: 30 },
+    { text: "60  分钟", value: 30 },
   ],
   end: 0,
+  handleEndTime: 0,
   timeCheckShow: false,
   goBack() {
     Taro.navigateBack({
@@ -31,6 +29,7 @@ const state = reactive({
     });
   },
   redirectTo() {
+    audioCtx && state.handlePlay();
     Taro.redirectTo({
       url: "/pages/index/index",
     });
@@ -44,12 +43,12 @@ const state = reactive({
     audioCtx.onPlay(() => {
       state.onPlay();
     });
-    audioCtx.onError(() => {
-      // state.onError(err);
-    });
+    audioCtx.onError(() => {});
   },
   // 控制音频播放/暂停
   handlePlay() {
+    // console.log("🚀🚀🚀 / state.end", state.end);
+    // return;
     if (audioCtx.paused) {
       state.playStatus = true;
       // console.log("播放", audioCtx, audioCtx.paused);
@@ -62,19 +61,27 @@ const state = reactive({
   },
   // 暂停
   stop() {
-    audioCtx.stop();
+    state.end = 0;
+    audioCtx && audioCtx.stop();
+    state.playStatus = false;
   },
   // 播放回调
   onPlay() {},
   // 设置倒计时
-  setCountdown(val: string) {
-    state.end = Date.now() + parseInt(val) * 1000;
+  setCountdown({ selectedValue }) {
+    state.end = Date.now() + parseInt(selectedValue) * 60 * 1000;
     state.timeCheckShow = false;
+    audioCtx && audioCtx.play();
+    state.playStatus = true;
   },
 });
 onMounted(() => {
   // 创建音频
   state.createAudio();
+});
+onBeforeUnmount(() => {
+  // console.log("onHide");
+  // audioCtx && state.handlePlay();
 });
 </script>
 <template>
@@ -100,6 +107,7 @@ onMounted(() => {
         style="height: 50px; width: 50px; line-height: 50px; margin-top: 5px"
       />
     </view>
+    <!-- 音乐图片 -->
     <view
       class="music-img"
       :style="{
@@ -115,14 +123,15 @@ onMounted(() => {
       }"
     />
     <view class="play-box">
+      <!-- 倒计时 -->
       <nut-countdown
         v-if="state.end"
         style="justify-content: center; color: white"
         :end-time="state.end"
-        @update:modelValue="state.onPlay"
+        @on-end="state.stop"
       />
-      <!-- <nut-countdown :end-time="state.countdown" /> -->
       <view class="operations-play">
+        <!-- 设置倒计时 -->
         <view
           @tap="state.timeCheckShow = true"
           :style="{
@@ -135,6 +144,7 @@ onMounted(() => {
             backgroundSize: '100% 100%',
           }"
         />
+        <!-- 控制播放、暂停 -->
         <view
           @tap="state.handlePlay"
           :style="{
@@ -148,6 +158,7 @@ onMounted(() => {
             backgroundSize: '100% 100%',
           }"
         />
+        <!-- 停止 -->
         <view
           @tap="state.stop"
           :style="{ backgroundColor: 'white', width: '40px', height: '40px' }"
@@ -157,7 +168,7 @@ onMounted(() => {
   </view>
   <nut-picker
     :visible="state.timeCheckShow"
-    :list-data="state.timeCheckList"
+    :columns="state.timeCheckList"
     @confirm="state.setCountdown"
     @close="state.timeCheckShow = false"
   />

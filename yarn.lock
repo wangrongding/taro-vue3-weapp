@@ -1349,10 +1349,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@nutui/nutui-taro@^3.1.17":
-  version "3.1.17"
-  resolved "https://registry.npmjs.org/@nutui/nutui-taro/-/nutui-taro-3.1.17.tgz#1fffd05c6641a27fa62db5650690f8ec9e672f7f"
-  integrity sha512-2n/1Bv9EZ11W7u8vzo22DlPJ5qNGBjQjl9C7q8tH/JdsMYPPvaGgbCmFia/rW+WzI1WVgurI120PKQQKkzFNrg==
+"@nutui/nutui-taro@3.1.18":
+  version "3.1.18"
+  resolved "https://registry.npmmirror.com/@nutui/nutui-taro/-/nutui-taro-3.1.18.tgz#39c8e7b45ea3238da3a9b0d594480ed65e17829e"
+  integrity sha512-6dZ96ciDYl/cbO7cnrmnRTxPZtkY5EEmtd/Ddhyliy+GgqdHw/WemhYZbs33eprpiQo1kv8IX5byzjg/NOjkLg==
   dependencies:
     sass "~1.32.0"
     vue-router "^4.0.12"

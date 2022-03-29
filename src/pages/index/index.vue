@@ -4,7 +4,7 @@ import { getIntimacy } from "@/api/home/index";
 import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import { useStore } from "@/stores/assets";
-import Ambient from "@/pages/ambient/index.vue";
+import Ambient from "@/pages/components/Ambient.vue";
 import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
@@ -131,6 +131,7 @@ bus.on("closePop", () => {
             style="z-index: 2; position: absolute; top: 0; left: 0; bottom: 0; right: 0"
           />
           <image :src="state.assets.honey" class="honey-img" />
+          <view class="honey-text"> {{ 20 }}g </view>
         </view>
       </view>
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
@@ -224,6 +225,20 @@ bus.on("closePop", () => {
           position: absolute;
           top: 0;
           left: 0;
+        }
+        .honey-text {
+          font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+          color: white;
+          z-index: 2;
+          position: absolute;
+          right: 50%;
+          bottom: -10px;
+          font-size: 26px;
+          font-weight: bolder;
+          transform: translateX(50%);
+          -webkit-text-fill-color: white;
+          -webkit-text-stroke-color: #804812ff;
+          -webkit-text-stroke-width: 2px;
         }
       }
     }
