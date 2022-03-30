@@ -3,8 +3,8 @@
     <view class="partner-title"> 每日查看 </view>
     <image class="dailyview-image" :src="state.logo" alt="" />
     <view class="logo-name">
-      {{ state.name }}会去探险~
-      <view class="name"> 晚上，{{ state.name }}陪你一起入睡，改善你的睡眠 </view>
+      {{ props.animalName }}会去探险~
+      <view class="name"> 晚上，{{ props.animalName }}陪你一起入睡，改善你的睡眠 </view>
     </view>
   </view>
 </template>
@@ -12,9 +12,17 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+const props = defineProps({
+  animalName: {
+    type: String,
+    default() {
+      return "";
+    },
+    required: true,
+  },
+});
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-  name: "小白",
 });
 </script>
 

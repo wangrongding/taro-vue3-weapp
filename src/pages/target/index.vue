@@ -26,7 +26,6 @@
             @tap="addTodayTarget('close')"
           />
         </template>
-
         <view v-for="(item, index) in state.targetList" :key="index">
           <nut-tabpane :pane-key="item.dictKey - 1">
             <view
@@ -124,7 +123,7 @@ targetListData();
         margin-left: -20px;
       }
       .nut-tabs__titles-item {
-        width: 88px;
+        width: 83px;
         height: 31px;
 
         border-radius: 8px;
@@ -142,16 +141,24 @@ targetListData();
       .nut-tabs__titles-item__text.actives {
         color: #ff9b85;
       }
-
       .nut-tabpane::-webkit-scrollbar {
         width: 0;
+      }
+      @media screen and (min-width: 400px) {
+        .nut-tabpane {
+          height: 445px;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        .nut-tabpane {
+          height: 550px;
+        }
       }
       .nut-tabpane {
         width: 335px;
         box-shadow: 0px 0px 2px 1px rgba(96, 211, 148, 0.1);
         background: #f3f5f9;
         padding: 0;
-        height: 445px;
         overflow-y: scroll;
       }
 
@@ -161,10 +168,9 @@ targetListData();
       .close {
         background: red;
         position: absolute;
-        width: 20px;
-        right: 20px;
-        height: 20px;
-        margin-top: 5px;
+        width: 38px;
+        right: 22px;
+        height: 38px;
       }
       .target-content {
         display: flex;

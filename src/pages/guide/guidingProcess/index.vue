@@ -2,15 +2,20 @@
   <view class="page-container">
     <NavBar>梦琦</NavBar>
     <view class="page-main">
-      <component
-        :is="state.componentList[state.index]"
-        :sleep-mood-list="state.sleepMoodList"
-        :get-user-mood-list="state.getUserMoodList"
-        @animalName="animalNameNum"
-        @userName="userName"
-        @timeTable="timeTable"
-        @moodBtn="moodBtn"
-      />
+      <view class="elastic-box">
+        <component
+          :is="state.componentList[state.index]"
+          :sleep-mood-list="state.sleepMoodList"
+          :get-user-mood-list="state.getUserMoodList"
+          :user-name="state.userName"
+          :animal-name="state.animalName"
+          @animalName="animalNameNum"
+          @userName="userName"
+          @timeTable="timeTable"
+          @moodBtn="moodBtn"
+        />
+      </view>
+
       <view @tap="jumpTo" class="page-btn"> 继续 </view>
     </view>
   </view>
@@ -43,7 +48,9 @@ import DailyView from "../compontents/DailyView.vue";
 import DailyLife from "../compontents/DailyLife.vue";
 import Mood from "../compontents/Mood.vue";
 const getCurrentInstance = Taro.getCurrentInstance();
+
 const state = reactive({
+  index: 0,
   componentList: shallowRef([
     AnimalName,
     UserName,
@@ -53,7 +60,6 @@ const state = reactive({
     DailyLife,
     Mood,
   ]),
-  index: 0,
   loveValueId: "5wc9CAYWtzYHFVMViusoItPYGwq3mLqRvVbUHm7_fUw",
   sleepId: "UUnJ96IPTBMQo5YHcdOOuAcdWLbXIf20Erxi5X9iOqY",
   getUpId: "Ap7RDxyC31iflhCPwTTglenb-6edqOYRtzSJ-yS9UtY",
@@ -109,8 +115,6 @@ function jumpTo() {
       };
       saveRest(params)
         .then(() => {
-          getUserProfile();
-          messageNotification();
           sleepMoodListData();
           getUserMoodData();
           templateList();
@@ -121,32 +125,14 @@ function jumpTo() {
   }
   state.index = state.index + 1;
 }
-// 授权
-function getUserProfile() {
-  Taro.getUserProfile({
-    lang: "zh_CN",
-    desc: "获取你的昵称",
-    success: (res) => {
-      let params = {
-        encrypted: res.encryptedData,
-        iv: res.iv,
-        openId: store.userInfo.openId,
-      };
-      wxRegistry(params);
-    },
-    fail: () => {
-      return;
-    },
-  });
-}
 // 消息通知
 function messageNotification() {
-  let serviceArr: Array<string> = [];
-  serviceArr.push(state.serviceArr[0]);
-  serviceArr.push(state.serviceArr[1]);
-  serviceArr.push(state.serviceArr[2]);
+  let serviceArrs: Array<string> = [];
+  serviceArrs.push(state.serviceArr[0]);
+  serviceArrs.push(state.serviceArr[1]);
+  serviceArrs.push(state.serviceArr[2]);
   Taro.requestSubscribeMessage({
-    tmplIds: serviceArr,
+    tmplIds: serviceArrs,
     success() {},
     fail() {},
   });
@@ -201,12 +187,13 @@ function templateList() {
     .then((res) => {
       res.forEach((item) => {
         state.serviceArr.push(item.templateId);
+        messageNotification();
       });
     });
 }
 function start() {
-  state.index = getCurrentInstance.router.params.index;
-  if (state.index === "6") {
+  state.index = Number(getCurrentInstance.router.params.index);
+  if (state.index === 6) {
     sleepMoodListData();
     getUserMoodData();
   }
@@ -228,35 +215,39 @@ start();
   .page-main {
     position: relative;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    .elastic-box {
+      flex: 1;
+      .logo-image {
+        margin: 22px 0 15px 0;
+        width: 105px;
+        height: 120px;
+      }
 
-    .logo-image {
-      margin: 22px 0 15px 0;
-      width: 105px;
-      height: 120px;
-    }
+      .logo-name {
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 20px;
+        height: 42px;
+        margin-bottom: 10px;
+        white-space: pre-wrap;
+      }
 
-    .logo-name {
-      font-size: 14px;
-      font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #ffffff;
-      line-height: 20px;
-      height: 42px;
-      margin-bottom: 10px;
-      white-space: pre-wrap;
-    }
-
-    .animal-name {
-      width: 336px;
-      height: 58px;
-      background: #ffffff;
-      box-shadow: 0px 5px 12.5px 0px rgba(96, 211, 148, 0.3);
-      border-radius: 15px;
-      margin-left: 20px;
-      font-size: 17px;
-      font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 400;
-      color: #333333;
+      .animal-name {
+        width: 336px;
+        height: 58px;
+        background: #ffffff;
+        box-shadow: 0px 5px 12.5px 0px rgba(96, 211, 148, 0.3);
+        border-radius: 15px;
+        margin-left: 20px;
+        font-size: 17px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #333333;
+      }
     }
 
     .page-btn {
@@ -269,9 +260,8 @@ start();
       font-weight: bold;
       color: #60d394;
       line-height: 58px;
-      position: absolute;
-      bottom: 50px;
-      margin-left: 111px;
+      margin: 0 auto 50px auto;
+      text-align: center;
     }
   }
 }

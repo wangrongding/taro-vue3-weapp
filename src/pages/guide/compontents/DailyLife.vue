@@ -3,7 +3,7 @@
     <image class="dailylife-image" :src="state.logo" alt="" />
     <view class="logo-name">
       设置你的作息~
-      <view class="name"> 让{{ state.name }}跟你一起日出而作，日落而息 </view>
+      <view class="name"> 让{{ props.animalName }}跟你一起日出而作，日落而息 </view>
       <view class="time">
         <view
           class="wake-time"
@@ -16,7 +16,7 @@
 
         <nut-picker
           :visible="state.show"
-          :list-data="listData"
+          :columns="multipleColumns"
           @confirm="confirm"
           :cancel-text="state.cancelText"
           @close="close"
@@ -27,11 +27,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import Taro from "@tarojs/taro";
+const props = defineProps({
+  animalName: {
+    type: String,
+    default() {
+      return "";
+    },
+    required: true,
+  },
+});
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-  name: "小白",
   timeList: [
     {
       title: "上床时间",
@@ -48,58 +56,40 @@ const state = reactive({
   cancelId: "",
   time() {
     for (let i = 0; i <= 23; i++) {
-      state.hours.push(i < 10 ? "0" + i : i);
+      state.hours.push({
+        text: i < 10 ? "0" + i : i,
+        value: i < 10 ? "0" + i : i,
+      });
     }
-
     for (let i = 0; i <= 59; i++) {
-      state.minutes.push(i < 10 ? "0" + i : i);
+      state.minutes.push({
+        text: i < 10 ? "0" + i : i,
+        value: i < 10 ? "0" + i : i,
+      });
     }
   },
 });
-// 渲染时间列表
-const listData: any = [
-  {
-    values: state.hours,
-    defaultIndex: 0,
-  },
-  {
-    values: ":",
-    defaultIndex: 0,
-  },
+const multipleColumns = ref([
+  // 第一列
+  state.hours,
+  // 添加：
+  [
+    {
+      value: ":",
+    },
+  ],
   // 第二列
-  {
-    values: state.minutes,
-    defaultIndex: 0,
-  },
-];
+  state.minutes,
+]);
 
 const emit = defineEmits(["timeTable"]);
+
 // 确认选择时间
-function confirm(res) {
+function confirm(selectedValue) {
   // 判断点击的是起床还是上床时间
-  if (state.cancelId === 1) {
-    // 判断起床时间 是不是 在18-00 中间
-    if (res[0] > 17 || res[0] === "00") {
-      state.timeList[0].title = res.join("");
-    } else {
-      return Taro.showToast({
-        title: "在18点-0点设置上床时间吧",
-        icon: "none",
-        duration: 1000,
-      });
-    }
-  } else {
-    // 判断是否小于10
-    if (res[0] < 11) {
-      state.timeList[1].title = res.join("");
-    } else {
-      return Taro.showToast({
-        title: "在0点-10点设置起床时间吧",
-        icon: "none",
-        duration: 1000,
-      });
-    }
-  }
+  state.cancelId === 1
+    ? (state.timeList[0].title = selectedValue.selectedValue.join(""))
+    : (state.timeList[1].title = selectedValue.selectedValue.join(""));
   emit("timeTable", state.timeList);
   close();
 }

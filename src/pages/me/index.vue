@@ -6,33 +6,40 @@
         <image class="me-logo" :src="state.getUserAnimalInfoObj.animalPortrait" alt="" />
         <span class="me-name">{{ state.getUserAnimalInfoObj.animalName }}</span>
       </view>
-      <view class="me-content">
-        <view
-          class="setting"
-          v-for="(item, index) in state.list"
-          :key="index"
-          @tap="state.setting(item)"
-        >
-          <image class="me-icon" :src="item.img" alt="" />
-          <span class="me-title">{{ item.title }}</span>
-          <image class="me-next" :src="item.icon" alt="" />
-          <span class="cloudArchiving">{{ item.cloudArchiving }}</span>
-        </view>
-        <button
+      <view class="elastic-box">
+        <view class="me-content">
+          <view
+            class="setting"
+            v-for="(item, index) in state.list"
+            :key="index"
+            @tap="state.setting(item)"
+          >
+            <image class="me-icon" :src="item.img" alt="" />
+            <span class="me-title">{{ item.title }}</span>
+            <image class="me-next" :src="item.icon" alt="" />
+            <span class="cloudArchiving">{{ item.cloudArchiving }}</span>
+          </view>
+          <!-- <button
           type="primary"
           openType="getPhoneNumber"
           @getphonenumber="getPhoneNumber"
         >
           微信绑定手机号登录
-        </button>
+        </button> -->
+        </view>
       </view>
+
       <view class="close">
         <image :src="state.assets.icon" alt="" @tap="state.close" />
       </view>
       <!-- 更改宠物名字弹框 -->
       <view class="change-name" v-if="state.show === true">
         <view class="pets-name">
-          <view class="pets-name-title"> 宠物名字 </view>
+          <view class="pets-name-title">
+            <span class="pets-title">宠物名字</span>
+            <span class="pets-name-close" @tap="state.petsClose"> X </span>
+          </view>
+
           <view class="pets-name-text">
             <input
               type="text"
@@ -85,12 +92,12 @@ const state = reactive({
     if (data.title === "宠物名字") {
       state.show = true;
     } else if (data.title === "睡眠时间") {
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: "/pages/report/index",
         success() {},
       });
     } else if (data.title === "隐私政策") {
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: "/pages/me/privacyPolicy",
         success() {},
       });
@@ -126,11 +133,16 @@ const state = reactive({
     }
     state.updateUserAnimalInfoData(state.name);
   },
+  // 关闭设置
   close() {
     Taro.redirectTo({
       url: "/pages/index/index",
       success() {},
     });
+  },
+  // 关闭修改宠物名字弹框
+  petsClose() {
+    state.show = false;
   },
 });
 
@@ -158,6 +170,9 @@ state.getUserAnimalInfoData();
   .page-main {
     position: relative;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    // logo 和名字
     .meInformation {
       margin-top: 27px;
       text-align: center;
@@ -174,55 +189,62 @@ state.getUserAnimalInfoData();
         margin-top: 10px;
       }
     }
-    .me-content {
-      width: 335px;
-      height: 230px;
-      background: #ffffff;
-      box-shadow: 0px 0px 2px 1px rgba(96, 211, 148, 0.1);
-      border-radius: 15px;
-      margin: 20px auto 0 auto;
-      .setting:nth-child(1) {
-        padding-top: 25px;
-      }
-      .setting {
-        margin: 0 0 20px 20px;
-        display: flex;
-        .me-icon {
-          background: red;
-          width: 30px;
-          height: 30px;
+    // 主要列表
+    .elastic-box {
+      flex: 1;
+      .me-content {
+        width: 335px;
+        background: #ffffff;
+        box-shadow: 0px 0px 2px 1px rgba(96, 211, 148, 0.1);
+        border-radius: 15px;
+        margin: 20px auto 0 auto;
+        .setting:nth-child(1) {
+          padding-top: 25px;
         }
-        .me-title {
-          font-size: 14px;
-          font-family: PingFangSC-Regular, PingFang SC;
-          font-weight: 400;
-          color: #666666;
-          flex: 1;
-          margin: 6px 0 0 15px;
-        }
-        .me-next {
-          width: 6px;
-          height: 14px;
-          margin-top: 7px;
-        }
-        .cloudArchiving {
-          font-size: 12px;
-          font-family: PingFangSC-Regular, PingFang SC;
-          font-weight: 400;
-          color: #999999;
-          margin: 7px 20px 0 0;
+        .setting {
+          margin-left: 20px;
+          padding-bottom: 20px;
+          display: flex;
+          .me-icon {
+            background: red;
+            width: 30px;
+            height: 30px;
+          }
+          .me-title {
+            font-size: 14px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #666666;
+            flex: 1;
+            margin: 6px 0 0 15px;
+          }
+          .me-next {
+            width: 6px;
+            height: 14px;
+            margin-top: 7px;
+          }
+          .cloudArchiving {
+            font-size: 12px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #999999;
+            margin: 7px 20px 0 0;
+          }
         }
       }
     }
+
+    // 关闭按钮
     .close {
       width: 100%;
       text-align: center;
-      margin-top: 87px;
+      margin-bottom: 30px;
       image {
         width: 50px;
         height: 58px;
       }
     }
+    // 弹框
     .change-name {
       position: fixed;
       top: 0;
@@ -237,15 +259,25 @@ state.getUserAnimalInfoData();
         height: 196px;
         background: #ffffff;
         border-radius: 15px;
-        margin: 116px 0 0 42px;
+        margin: 50% 0 0 42px;
         .pets-name-title {
-          font-size: 17px;
-          font-family: PingFang-SC-Bold, PingFang-SC;
-          font-weight: bold;
-          color: #333333;
-          text-align: center;
-          padding: 15px 0;
+          display: flex;
+          .pets-title {
+            font-size: 17px;
+            font-family: PingFang-SC-Bold, PingFang-SC;
+            font-weight: bold;
+            color: #333333;
+            text-align: center;
+            padding: 15px 0;
+            flex: 1;
+            margin-left: 20px;
+          }
+          .pets-name-close {
+            margin: 15px 10px 0 0;
+            font-size: 16px;
+          }
         }
+
         .pets-name-text {
           width: 259px;
           height: 35px;

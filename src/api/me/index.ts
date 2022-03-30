@@ -9,3 +9,8 @@ export function getUserAnimalInfo(data?: object) {
 export function updateUserAnimalInfo(data?: object) {
   return request.put("/mini-program/user-animal/updateUserAnimalInfo", { data });
 }
+
+// 隐私政策
+export function getPrivacyPolicy(data?: object) {
+  return request.get("/mini-program/privacy-policy/getPrivacyPolicy", { data });
+}

@@ -3,7 +3,7 @@
   <D-Popup
     position="bottom"
     height="70%"
-    :visible="props.todayTarget"
+    :visible="props.visible"
     padding="37px 20px 0"
     :background-color="'#F0F7F4FF'"
     :suffix-color="'#60D394FF'"
@@ -61,9 +61,10 @@ import { useStore } from "@/stores/assets";
 import { getUserTarget, finishTarget } from "@/api/target/index";
 const store = useStore();
 const props = defineProps({
-  todayTarget: {
+  visible: {
     type: Boolean,
     default: false,
+    required: true,
   },
 });
 const state = reactive({
@@ -74,9 +75,8 @@ const state = reactive({
   open() {},
   // 添加目标跳转
   addTarget() {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: "../target/index",
-      success() {},
     });
   },
   // 完成目标
@@ -101,6 +101,7 @@ const state = reactive({
 <style lang="scss">
 // 今日目标列表
 .today-goal {
+  height: 51vh;
   .add-target {
     width: 142px;
     height: 58px;
@@ -112,14 +113,17 @@ const state = reactive({
     color: #ffffff;
     line-height: 58px;
     text-align: center;
-    margin: 16px auto 0 auto;
+    margin: 16px auto 30px auto;
   }
   .today-goal-main::-webkit-scrollbar {
     width: 0;
   }
   .today-goal-main {
-    height: 325px;
-    overflow-y: scroll;
+    position: relative;
+    height: 100%;
+    flex: 1;
+    overflow: auto;
+    margin: 0 auto;
     .today-goal-list {
       width: 335px;
       height: 130px;

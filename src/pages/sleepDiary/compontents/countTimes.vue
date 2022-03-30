@@ -35,7 +35,6 @@ const state = reactive({
   .nut-inputnumber {
     margin: 0 auto;
     text-align: center;
-    margin-left: 113px;
   }
   .nut-inputnumber .h5-input,
   .nut-inputnumber__text--readonly {
@@ -43,6 +42,7 @@ const state = reactive({
     height: 46px;
     background: #f5f5f5;
     border-radius: 8px;
+    font-size: 17px;
   }
   .nut-inputnumber__icon--disabled {
     color: rgba(255, 255, 255, 0.5) !important;
