@@ -9,6 +9,7 @@ import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 import test from "@/pages/test/index.vue";
 import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
+import type { ComputedRef } from "vue";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
@@ -79,7 +80,7 @@ function execSomeThing() {
 }
 
 // 一个计算属性 ref
-const getSize: any = computed(() => {
+const getSize: ComputedRef = computed(() => {
   let systemInfo = {};
   Taro.getSystemInfoAsync({
     success(res) {
@@ -198,7 +199,8 @@ bus.on("closePop", () => {
       height: 200px;
       width: 100%;
       position: absolute;
-      bottom: 150px;
+      // bottom: 250px;
+      bottom: 30%;
       // display: flex;
       // flex-direction: row;
       // justify-content: center;

@@ -48,7 +48,8 @@ const App = createApp({
   onPageNotFound() {
     // console.log("🚀 onPageNotFound");
   },
-  // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
+  // 可以使用所有的 Vue 生命周期方法
+  mounted() {},
 });
 
 App.use(createPinia());

@@ -1,7 +1,5 @@
 // https://pinia.esm.dev/introduction.html
 import { defineStore } from "pinia";
-import Taro from "@tarojs/taro";
-import { getUserInfo } from "@/api/preload/index";
 const src =
   "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203280935056.png";
 export const useStore = defineStore("assets", {
@@ -30,7 +28,7 @@ export const useStore = defineStore("assets", {
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203071501301.png",
           background:
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281550467.png",
-          bear: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203031005423.gif",
+          bear: "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203291154057.gif",
           today:
             "https://raw.githubusercontent.com/wangrongding/image-house/master/images202203071129104.png",
           audio:

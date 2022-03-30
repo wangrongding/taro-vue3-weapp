@@ -25,8 +25,8 @@ export interface RequestHeader {
 }
 
 // 定义全局请求地址(baseUrl)
-const baseUrl = "http://192.168.1.71:60";
-// const baseUrl = "http://192.168.1.114:60";
+// const baseUrl = "http://192.168.1.71:60";
+const baseUrl = "http://192.168.1.114:60";
 
 // 暂时考虑 req的属性都会传入
 const requestAction = (url, method, options: RequestBase) => {
