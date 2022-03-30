@@ -20,3 +20,8 @@ export function getSleepGuide(data?: object) {
 export function getSleepTest(data?: object) {
   return request.get("/mini-program/sleet-test/getSleepTest", { data });
 }
+
+// 获取测试报告
+export function saveTestResult(data?: object) {
+  return request.post("/mini-program/sleet-test/saveResult", { data });
+}

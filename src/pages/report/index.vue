@@ -5,9 +5,10 @@
       <view class="sleep-list" v-for="(item, index) in state.getResultList" :key="index">
         <view class="sleep-list-title">
           {{ item.title }}
-          <!-- 判断时间显示 -->
-          <view class="detail-time" v-if="item.id === 2">
+          <!-- 判断时间显示 title -->
+          <view class="detail-time" v-if="item.title === '建议在床时间：'">
             {{ item.timeShow }}
+            <text>{{ item.time }}</text>
             <image
               class="detail"
               src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
@@ -16,6 +17,7 @@
             />
           </view>
         </view>
+        <!-- 循环报告列表 -->
         <view class="sleep-list-content">
           <dl
             v-for="(children, childrenIndex) in item.list"
@@ -24,18 +26,24 @@
           >
             <dt
               class="sleep-time"
-              :class="item.id === 2 ? 'bed-time' : ''"
-              @tap="state.updateTime(item.id)"
+              :class="item.title === '建议在床时间：' ? 'bed-time' : ''"
+              @tap="state.updateTime(item, children)"
             >
-              {{ children.time }}
+              <view :class="children.time < 85 ? 'sleep-text-color' : ''">
+                {{ children.time }}
+                <text v-if="children.name === '睡眠效率' || children.name === '平均睡眠效率'">
+                  %
+                </text>
+              </view>
             </dt>
             <dd>{{ children.name }}</dd>
           </dl>
         </view>
       </view>
       <view class="tips"> {{ state.tips }}</view>
+      <Bedtime :visible="state.show" @timeTable="timeTable" />
     </view>
-    <view class="sleep-btn"> 确认</view>
+    <view class="sleep-btn" @tap="state.sleepBtn"> 确认</view>
   </view>
 </template>
 
@@ -44,49 +52,79 @@ import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { getResult } from "@/api/report/index";
+import { saveRest } from "@/api/guide/index";
+import Bedtime from "../components/Bedtime.vue";
+const getCurrentInstance = Taro.getCurrentInstance();
 const state = reactive({
-  tips: `你的睡眠效率很高，请继续保持呦！
-  祝你有愉快的一天!`,
+  tips: "",
   getResultList: [],
-  sleepList: [
-    {
-      title: "建议在床时间:  ",
-      id: 1,
-      timeShow: " - -",
-      content: [
-        {
-          time: "23:00",
-          name: "上床时间",
-        },
-        {
-          time: "07:00",
-          name: "起床时间",
-        },
-      ],
-    },
-  ],
+  show: false,
+  settingTime: "",
+  time: "",
+  jumpRoute: "",
   // 详情
   detail() {
     Taro.redirectTo({
       url: "/pages/report/explain/index",
-      success() {},
     });
   },
   // 获取初始化数据
   getResultData() {
     getResult()
       .then((res: any) => {
-        state.getResultList = res;
+        state.getResultList = res.list;
+        processingData();
+        state.tips = res.title;
       });
   },
   // 修改时间
-  updateTime(data) {
+  updateTime(item, children) {
+    state.settingTime = children;
     // 判断 是在床时间
-    if (data === 2) {
-    }
+    if (item.title === "建议在床时间：") state.show = true;
+  },
+  // 点击确定 并修改时间
+  sleepBtn() {
+    let params = {
+      sleepTime: state.name.list[0].time,
+      weekTime: state.name.list[1].time,
+    };
+    saveRest(params)
+      .then(() => {
+      // setting 跳转回设置
+        state.jumpRoute === "setting"
+          ? Taro.redirectTo({
+            url: "/pages/me/index",
+            success() {},
+          })
+          : Taro.redirectTo({
+            url: "/pages/index/index",
+            success() {},
+          });
+      });
   },
 });
+// 设置时间
+function timeTable(data) {
+  if (state.settingTime.name === "上床时间") state.settingTime.time = data;
+  if (state.settingTime.name === "起床时间") state.settingTime.time = data;
+  state.show = false;
+}
+// 换算成number类型 进行判断  处理数据格式
+function processingData() {
+  state.getResultList.forEach((item) => {
+    state.name = item;
+    item.list.forEach((children) => {
+      if (children.name === "睡眠效率" || children.name === "平均睡眠效率")
+      {children.time = Number(children.time)
+        .toFixed(1);}
+    });
+    if (item.title === "建议在床时间：" && item.time === "") item.time = "--";
+  });
+}
 state.getResultData();
+// 获取传参
+state.jumpRoute = getCurrentInstance.router.params.name;
 </script>
 
 <style lang="scss">
@@ -130,6 +168,9 @@ state.getResultData();
             vertical-align: bottom;
             margin-left: 10px;
           }
+          text {
+            color: rgba(255, 155, 133, 1);
+          }
         }
       }
       .sleep-list-content {
@@ -162,6 +203,9 @@ state.getResultData();
             font-weight: 400;
             color: #fff;
             margin-top: 5px;
+          }
+          .sleep-text-color {
+            color: rgba(255, 155, 133, 1);
           }
         }
       }

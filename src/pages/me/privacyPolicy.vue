@@ -28,7 +28,6 @@ const state = reactive({
   close() {
     Taro.redirectTo({
       url: "/pages/me/index",
-      success() {},
     });
   },
   getPrivacyPolicyData() {

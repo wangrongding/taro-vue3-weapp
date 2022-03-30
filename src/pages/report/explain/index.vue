@@ -2,8 +2,11 @@
   <view class="page-container">
     <NavBar>梦琦</NavBar>
     <view class="page-main">
-      <view class="explain-title"> 睡眠限制 </view>
-      <view class="explain-text"> {{ state.text }}</view>
+      <view class="explain-title"> {{ state.getDiaryLimit.title }} </view>
+      <view class="explain-text"> {{ state.getDiaryLimit.content }}</view>
+    </view>
+    <view class="close">
+      <image :src="state.assets.icon" alt="" @tap="state.close" />
     </view>
   </view>
 </template>
@@ -11,10 +14,26 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
+import { getDiaryLimit } from "@/api/report/index";
 import NavBar from "../../../components/NavBar.vue";
+import { useStore } from "@/stores/assets";
+const store = useStore();
 const state = reactive({
-  text: "睡眠限制是一种减少你在床时间的技术，你上周平均每晚实际睡6小时，平均在床时间8小时，有2个小时醒着躺在床上，平均睡眠效率为75%，长时间醒着躺在床上会导致睡眠问题。 在睡眠限制中减少你的在床时间（8小时），使之与实际睡眠时间（6小时）尽量接近，",
+  getDiaryLimit: "",
+  assets: store.assets.home,
+  getDiaryLimittData() {
+    getDiaryLimit()
+      .then((res: any) => {
+        state.getDiaryLimit = res;
+      });
+  },
+  close(){
+    Taro.navigateTo({
+      url: "/pages/report/index",
+    });
+  },
 });
+state.getDiaryLimittData();
 </script>
 
 <style lang="scss">
@@ -31,6 +50,10 @@ const state = reactive({
   .page-main {
     position: relative;
     height: 100%;
+    flex: 1;
+    overflow: auto;
+    margin: 0 auto;
+    padding-bottom: 30px;
     .explain-title {
       font-size: 22px;
       font-family: PingFang-SC-Bold, PingFang-SC;
@@ -47,6 +70,15 @@ const state = reactive({
       text-indent: 30px;
       margin: 15px auto 0 auto;
       width: 335px;
+    }
+  }
+  .close {
+    width: 100%;
+    text-align: center;
+    margin: 15px auto 30px auto;
+    image {
+      width: 50px;
+      height: 58px;
     }
   }
 }

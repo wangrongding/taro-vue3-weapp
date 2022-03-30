@@ -93,7 +93,7 @@ const state = reactive({
       state.show = true;
     } else if (data.title === "睡眠时间") {
       Taro.navigateTo({
-        url: "/pages/report/index",
+        url: "/pages/report/index?name=setting",
         success() {},
       });
     } else if (data.title === "隐私政策") {

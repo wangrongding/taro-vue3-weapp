@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { reactive, shallowRef } from "vue";
-import { getDiaryTest, saveResult, getSleepTest } from "@/api/sleepDiary/index";
+import { getDiaryTest, saveResult, getSleepTest, saveTestResult } from "@/api/sleepDiary/index";
 import NavBar from "../../../components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import time from "../compontents/time.vue";
@@ -161,10 +161,21 @@ function goStart() {
       saveResult(params)
         .then(() => {
           Taro.redirectTo({
-            url: "/pages/report/index",
+            url: "/pages/report/index?name=sleepTest",
           });
         });
     } else {
+      let params = {
+        answerList: state.answerList,
+        diaryId: state.typeId,
+      };
+      saveTestResult(params)
+        .then((res) => {
+          Taro.redirectTo({
+            url: "/pages/test/report?id=" + JSON.stringify(res),
+          });
+
+        });
     }
     return;
   }
