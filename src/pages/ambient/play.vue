@@ -3,10 +3,13 @@ import { onMounted, onBeforeUnmount, reactive } from "vue";
 import NavBar from "@/components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import { useStore } from "@/stores/assets";
+import { Ambient } from "@/types/index";
+import { useGlobalStore } from "@/stores/global";
 const store = useStore();
+const globalStore = useGlobalStore();
 
 let audioCtx: any = null;
-
+const routerParams: Ambient = Taro.getCurrentInstance().router?.params as any;
 const state = reactive({
   file: "play",
   assets: store.assets.ambient,
@@ -20,8 +23,6 @@ const state = reactive({
     { text: "50  分钟", value: 30 },
     { text: "60  分钟", value: 30 },
   ],
-  end: 0,
-  handleEndTime: 0,
   timeCheckShow: false,
   goBack() {
     Taro.navigateBack({
@@ -29,7 +30,9 @@ const state = reactive({
     });
   },
   redirectTo() {
-    audioCtx && state.handlePlay();
+    if (audioCtx) {
+      state.handlePlay();
+    }
     Taro.redirectTo({
       url: "/pages/index/index",
     });
@@ -37,7 +40,7 @@ const state = reactive({
   // 创建音频上下文
   createAudio() {
     audioCtx = Taro.createInnerAudioContext();
-    audioCtx.src = "https://storage.360buyimg.com/jdrd-blog/27.mp3";
+    audioCtx.src = routerParams.music;
     audioCtx.autoplay = false;
     audioCtx.loop = true;
     audioCtx.onPlay(() => {
@@ -47,42 +50,35 @@ const state = reactive({
   },
   // 控制音频播放/暂停
   handlePlay() {
-    // console.log("🚀🚀🚀 / state.end", state.end);
-    // return;
     if (audioCtx.paused) {
-      state.playStatus = true;
+      globalStore.ambient.playStatus = true;
       // console.log("播放", audioCtx, audioCtx.paused);
       audioCtx.play();
     } else {
-      state.playStatus = false;
+      globalStore.ambient.playStatus = false;
       // console.log("暂停", audioCtx, audioCtx.paused);
       audioCtx.pause();
     }
   },
   // 暂停
   stop() {
-    state.end = 0;
+    globalStore.ambient.musicTime = 0;
     audioCtx && audioCtx.stop();
-    state.playStatus = false;
+    globalStore.ambient.playStatus = false;
   },
   // 播放回调
   onPlay() {},
   // 设置倒计时
   setCountdown({ selectedValue }) {
-    state.end = Date.now() + parseInt(selectedValue) * 60 * 1000;
+    globalStore.ambient.musicTime = Date.now() + parseInt(selectedValue) * 60 * 1000;
     state.timeCheckShow = false;
-    audioCtx && audioCtx.play();
-    state.playStatus = true;
+    // audioCtx && audioCtx.play();
+    // state.playStatus = true;
   },
 });
-onMounted(() => {
-  // 创建音频
-  state.createAudio();
-});
-onBeforeUnmount(() => {
-  // console.log("onHide");
-  // audioCtx && state.handlePlay();
-});
+// 创建音频
+state.createAudio();
+globalStore.ambient.musicName = routerParams.soundName;
 </script>
 <template>
   <view class="play-container">
@@ -111,7 +107,7 @@ onBeforeUnmount(() => {
     <view
       class="music-img"
       :style="{
-        backgroundImage: `url(${state.assets.item})`,
+        backgroundImage: `url(${routerParams.icon})`,
         width: '150px',
         height: '150px',
         'border-radius': '50%',
@@ -125,9 +121,9 @@ onBeforeUnmount(() => {
     <view class="play-box">
       <!-- 倒计时 -->
       <nut-countdown
-        v-if="state.end"
+        v-if="globalStore.ambient.musicTime"
         style="justify-content: center; color: white"
-        :end-time="state.end"
+        :end-time="globalStore.ambient.musicTime"
         @on-end="state.stop"
       />
       <view class="operations-play">
@@ -152,7 +148,7 @@ onBeforeUnmount(() => {
             height: '80px',
             borderRadius: '50%',
             overflow: 'hidden',
-            backgroundImage: state.playStatus
+            backgroundImage: globalStore.ambient.playStatus
               ? `url(${state.assets.pause})`
               : `url(${state.assets.play})`,
             backgroundSize: '100% 100%',

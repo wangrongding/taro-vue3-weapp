@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import DPopup from "@/components/D-Popup.vue";
 import { useStore } from "@/stores/assets";
 import { getIntimacy } from "@/api/home/index";
+import { Intimate } from "@/types/index";
+import bus from "@/utils/eventBus";
 const store = useStore();
 const state = reactive({
   file: "intimacy",
+  intimateInfo: {} as Intimate,
   assets: store.assets.intimacy,
   // 获取亲密度
   getIntimacy() {
     getIntimacy({}, { failToast: true, loading: true })
-      .then((res) => {});
+      .then((res: Intimate) => {
+        state.intimateInfo = res;
+      });
+  },
+  closePop() {
+    bus.emit("closePop");
   },
 });
 const props = defineProps({
@@ -19,6 +27,13 @@ const props = defineProps({
     default: false,
     required: true,
   },
+});
+
+const intimateInfo = computed(() => {
+  return (
+    (parseInt(state.intimateInfo.intimateValue) / parseInt(state.intimateInfo.maxIntimateValue)) *
+    100
+  );
 });
 </script>
 <template>
@@ -39,15 +54,17 @@ const props = defineProps({
             <image class="heart" :src="state.assets.heart" alt="" />
             <nut-progress
               stroke-color="#FFD97DFF"
-              :percentage="20"
+              :text-inside="true"
+              text-background="#EE6055FF"
               stroke-width="25"
               size="large"
-              :text-inside="true"
               style="margin-top: 40px"
+              :percentage="intimateInfo || 0"
             />
             <view style="color: white; margin-top: 20px">亲密值等级越高，小白回来得就越快哦！</view>
           </view>
           <view
+            @click="state.closePop"
             style="
               color: #60d394ff;
               width: 100px;

@@ -4,14 +4,17 @@ import DPopup from "@/components/D-Popup.vue";
 import Taro from "@tarojs/taro";
 import { useStore } from "@/stores/assets";
 import { getAmbientList } from "@/api/ambient";
+import { useGlobalStore } from "@/stores/global";
+const globalStore = useGlobalStore();
+import qs from "qs";
 const store = useStore();
 const state = reactive({
   file: "ambient",
   assets: store.assets.ambient,
   ambientList: [] as any,
-  jumpTo() {
+  jumpTo(item: any) {
     Taro.navigateTo({
-      url: "/pages/ambient/play",
+      url: `/pages/ambient/play?${qs.stringify(item, { encode: false })}`,
     });
   },
   getAmbientList() {
@@ -45,7 +48,7 @@ const props = defineProps({
           class="item"
           v-for="(item, index) in state.ambientList"
           :key="index"
-          @tap="state.jumpTo"
+          @tap="state.jumpTo(item)"
         >
           <image class="item-image" :src="item.icon" alt="" />
           <view class="item-content">
@@ -67,14 +70,20 @@ const props = defineProps({
       <image class="logo-image" :src="state.assets.title" alt="" />
     </template>
   </D-Popup>
-  <view class="play-action-bar">
+  <view class="play-action-bar" v-if="globalStore.ambient.playStatus">
     <image class="play-action-bar-image" :src="state.assets.item" alt="" />
-    <text class="play-action-bar-text">{{ "qwe" }}</text>
+    <text class="play-action-bar-text">{{ globalStore.ambient.musicName }}</text>
     <!-- 控制播放、暂停 -->
     <view
       class="play"
       :style="{
         backgroundImage: state.assets.pause,
+        borderRadius: '50%',
+        overflow: 'hidden',
+        backgroundImage: globalStore.ambient.playStatus
+          ? `url(${state.assets.pause})`
+          : `url(${state.assets.play})`,
+        backgroundSize: '100% 100%',
       }"
     />
   </view>
@@ -111,7 +120,6 @@ const props = defineProps({
     width: 36px;
     height: 36px;
     line-height: 36px;
-    background-color: white;
     background-size: 100% 100%;
     overflow: hidden;
   }

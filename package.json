@@ -54,6 +54,7 @@
     "babel-plugin-import": "^1.13.3",
     "mitt": "^3.0.0",
     "pinia": "^2.0.6",
+    "qs": "^6.10.3",
     "taro-plugin-pinia": "^1.0.0",
     "vite-plugin-style-import": "^2.0.0",
     "vue": "^3.2.24"
