@@ -8,3 +8,7 @@ export function getSoundList(data?: object) {
 export function getIntimacy(data?: object, options?: object) {
   return request.get("/mini-program/user-animal/getUserAnimalIntimateValue", { data, ...options });
 }
+// 查询动物以及蜂蜜信息
+export function getAnimalAndHoneyInfo(data?: object, options?: object) {
+  return request.get("/mini-program/user-animal/getAnimalAndHoneyInfo", { data, ...options });
+}

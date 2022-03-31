@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { computed, reactive } from "vue";
-import { getIntimacy } from "@/api/home/index";
+import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import { useStore } from "@/stores/assets";
 import Ambient from "@/pages/components/Ambient.vue";
-import getTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
-import test from "@/pages/test/index.vue";
+import GetTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
+import Test from "@/pages/test/index.vue";
 import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
-import type { ComputedRef } from "vue";
+import Bear from "../components/Bear.vue";
 const store = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
@@ -41,17 +40,13 @@ const state = reactive({
   closePop() {
     state.popShow = "";
   },
-  // 熊旅行
-  travel() {
-    execSomeThing();
-  },
   // 今日目标列表
   getTodayTargetList() {
     state.popShow = "getTodayTarget";
   },
   // 环境音
   audio() {
-    state.popShow = "anbient";
+    state.popShow = "ambient";
   },
   // 测试
   test() {
@@ -70,26 +65,6 @@ const state = reactive({
     });
   },
 });
-// 首页操作控制分发
-function execSomeThing() {
-  Taro.showToast({
-    title: "开发中",
-    icon: "error",
-    duration: 1000,
-  });
-}
-
-// 一个计算属性 ref
-const getSize: ComputedRef = computed(() => {
-  let systemInfo = {};
-  Taro.getSystemInfoAsync({
-    success(res) {
-      systemInfo = res;
-    },
-  });
-  return systemInfo;
-});
-
 bus.on("closePop", () => {
   state.closePop();
 });
@@ -111,27 +86,8 @@ bus.on("closePop", () => {
         <!-- 记录 -->
         <image :src="state.assets.icon" alt="" @tap="state.record" />
       </view>
-      <view class="bear-area">
-        <!-- 熊 -->
-        <image class="bear" :src="state.assets.bear" alt="" />
-        <!-- 蜂蜜 -->
-        <view class="honeypot">
-          <nut-circleprogress
-            :progress="(20 / 30) * 100"
-            :is-auto="true"
-            @tap="state.travel"
-            stroke-inner-width="4"
-            :progress-option="{
-              radius: 18 * (getSize.screenWidth / 375),
-              backColor: '#FFF',
-              progressColor: '#FFD97DFF',
-            }"
-            style="z-index: 2; position: absolute; top: 0; left: 0; bottom: 0; right: 0"
-          />
-          <image :src="state.assets.honey" class="honey-img" />
-          <view class="honey-text"> {{ 20 }}g </view>
-        </view>
-      </view>
+      <!-- 熊与蜂蜜 -->
+      <Bear class="main-area" />
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
       <view class="operation-bar bottom-bar">
         <!--- 日记 -->
@@ -155,11 +111,11 @@ bus.on("closePop", () => {
       <!-- 亲密度 -->
       <Intimacy :visible="state.popShow === 'intimacy'" />
       <!-- 环境音 -->
-      <Ambient :visible="state.popShow === 'anbient'" />
+      <Ambient :visible="state.popShow === 'ambient'" />
       <!-- 今日目标列表 -->
-      <getTodayTarget :visible="state.popShow === 'getTodayTarget'" />
+      <GetTodayTarget :visible="state.popShow === 'getTodayTarget'" />
       <!-- 测试 -->
-      <test :visible="state.popShow === 'test'" />
+      <Test :visible="state.popShow === 'test'" />
     </view>
   </view>
 </template>
@@ -176,7 +132,6 @@ bus.on("closePop", () => {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
   //首页主要内容
   .main {
     margin-top: 10px;
@@ -192,55 +147,6 @@ bus.on("closePop", () => {
       image {
         width: 44px;
         height: 54px;
-      }
-    }
-    // 熊区域
-    .bear-area {
-      height: 200px;
-      width: 100%;
-      position: absolute;
-      // bottom: 250px;
-      bottom: 30%;
-      // display: flex;
-      // flex-direction: row;
-      // justify-content: center;
-      text-align: center;
-      .bear {
-        width: 140px;
-        height: 160px;
-        align-items: center;
-      }
-      .honeypot {
-        position: absolute;
-        right: 25px;
-        bottom: 25px;
-        border-radius: 50%;
-        width: 52px;
-        height: 52px;
-        // border: 1px solid red;
-        .honey-img {
-          width: 52px;
-          height: 52px;
-          // margin-top: 5px;
-          z-index: 1;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        .honey-text {
-          font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-          color: white;
-          z-index: 2;
-          position: absolute;
-          right: 50%;
-          bottom: -10px;
-          font-size: 26px;
-          font-weight: bolder;
-          transform: translateX(50%);
-          -webkit-text-fill-color: white;
-          -webkit-text-stroke-color: #804812ff;
-          -webkit-text-stroke-width: 2px;
-        }
       }
     }
     // 底部操作栏

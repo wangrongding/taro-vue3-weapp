@@ -52,3 +52,23 @@ export interface Ambient {
   music: string;
   explain: string;
 }
+
+export interface Data {
+  BearInfo: BearInfo;
+  HoneyInfo: HoneyInfo;
+}
+
+export interface BearInfo {
+  animalStatus: number;
+  animalExpressionName: string;
+  animalIcon: string;
+  outStartTime: string;
+  totalTime: number;
+  reduceTime: number;
+}
+
+export interface HoneyInfo {
+  honeyValue: string;
+  honeyIsShow: number;
+  honeyIsFull: number;
+}
