@@ -21,21 +21,31 @@ import { getResult } from "@/api/test/index";
 import Taro from "@tarojs/taro";
 import { useStore } from "@/stores/assets";
 const store = useStore();
-const getCurrentInstance = Taro.getCurrentInstance();
+interface GetResult {
+  content: string,
+  explain: string,
+  icon: string,
+  title: string,
+}
+interface InterfaceId {
+  actionId: string,
+  testQuestionnaireId: string,
+}
 const state = reactive({
-  interfaceId: "",
-  getResult: "",
+  interfaceId: {} as InterfaceId,
+  getResult: {} as GetResult,
   socre: "",
   assets: store.assets.home,
   text: "",
+  // 获取报告
   getResultData() {
-    state.interfaceId = JSON.parse(getCurrentInstance.router.params.id);
+    state.interfaceId = JSON.parse(Taro.getCurrentInstance().router?.params.id as any);
     let params = {
       actionId: state.interfaceId.actionId,
       testQuestionnaireId: state.interfaceId.testQuestionnaireId,
     };
     getResult(params)
-      .then((res: any) => {
+      .then((res: GetResult) => {
         state.getResult = res;
         state.socre = state.getResult.content.replace(/[^0-9]/gi, "");
         state.text = state.getResult.content.substring(0, 10);

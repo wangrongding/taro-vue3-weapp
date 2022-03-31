@@ -3,14 +3,13 @@
     :visible="props.visible"
     :columns="multipleColumns"
     @confirm="confirm"
-    :cancel-text="state.cancelText"
     @close="close"
   />
+  <!-- :cancel-text="state.cancelText" -->
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import Taro from "@tarojs/taro";
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -20,10 +19,14 @@ const props = defineProps({
     required: true,
   },
 });
+interface Time {
+  text: any,
+  value: any,
+}
 const state = reactive({
   visible: props.visible,
-  hours: [],
-  minutes: [],
+  hours: [] as Time[],
+  minutes: [] as Time[],
   cancelId: "",
   time() {
     for (let i = 0; i <= 23; i++) {

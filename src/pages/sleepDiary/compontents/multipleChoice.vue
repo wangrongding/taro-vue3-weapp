@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
 const emit = defineEmits(["multipleChoice"]);
 const props = defineProps({
   singleChoiceList: {

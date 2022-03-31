@@ -31,11 +31,12 @@
   </D-Popup>
 </template>
 <script setup lang="ts">
-import { reactive, toRef } from "vue";
+import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
 import { useStore } from "@/stores/assets";
 import { getSleepList } from "@/api/test/index";
+import { GetSleepGuide } from "@/types/type";
 const store = useStore();
 const props = defineProps({
   visible: {
@@ -46,11 +47,11 @@ const props = defineProps({
 });
 const state = reactive({
   assets: store.assets.ambient,
-  getSleepList: [],
+  getSleepList: [] as GetSleepGuide[],
   // 获取列表
   getSleepListData() {
     getSleepList()
-      .then((res: any) => {
+      .then((res: GetSleepGuide[]) => {
         state.getSleepList = res;
       });
   },

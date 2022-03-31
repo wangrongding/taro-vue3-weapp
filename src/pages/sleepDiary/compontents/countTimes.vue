@@ -11,7 +11,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
 const emit = defineEmits(["countNum"]);
 const state = reactive({
   value: 0,

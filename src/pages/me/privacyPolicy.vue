@@ -21,10 +21,11 @@ import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { getPrivacyPolicy } from "@/api/me/index";
 import { useStore } from "@/stores/assets";
+import { GetPrivacyPolicy } from "@/types/type";
 const store = useStore();
 const state = reactive({
   assets: store.assets.home,
-  getPrivacyPolicy: [],
+  getPrivacyPolicy: [] as GetPrivacyPolicy[],
   close() {
     Taro.redirectTo({
       url: "/pages/me/index",
@@ -32,7 +33,7 @@ const state = reactive({
   },
   getPrivacyPolicyData() {
     getPrivacyPolicy()
-      .then((res) => {
+      .then((res:GetPrivacyPolicy[]) => {
         state.getPrivacyPolicy = res;
       });
   },

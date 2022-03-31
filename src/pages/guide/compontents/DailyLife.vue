@@ -20,8 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import Taro from "@tarojs/taro";
+import { reactive } from "vue";
 import Bedtime from "../../components/Bedtime.vue";
 const props = defineProps({
   animalName: {
@@ -45,7 +44,7 @@ const state = reactive({
     },
   ],
   show: false,
-  cancelId: "",
+  cancelId: 0,
 });
 
 const emit = defineEmits(["timeTable"]);

@@ -14,7 +14,7 @@
           class="next"
           :src="state.currentDate === 0 ? state.assets.icon : state.assets.icon"
           alt=""
-          @tap="state.next(state.newDate)"
+          @tap="state.next()"
         />
       </view>
       <view class="elastic-box">
@@ -55,15 +55,16 @@ import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { useStore } from "@/stores/assets";
 import { userTargetRecordList } from "@/api/record/index";
+import { UsertargetRecord } from "@/types/type";
 const store = useStore();
 const state = reactive({
   assets: store.assets.home,
   date: "",
   newDate: "",
-  userTargetRecordList: [],
+  userTargetRecordList: [] as UsertargetRecord[],
   currentDate: 0,
   // 列表数据
-  userTargetRecordListData(date) {
+  userTargetRecordListData(date: number) {
     time(date);
     let params = {
       time: state.date,
@@ -94,7 +95,7 @@ const state = reactive({
   },
 });
 // 获取当前时间、根据选择切换获取日期
-function time(newTime) {
+function time(newTime: number) {
   let newDate = new Date();
   newDate.setDate(newDate.getDate() + newTime);
   let year = newDate.getFullYear();

@@ -10,7 +10,7 @@
     <view class="page-main">
       <view class="test-questions">
         <component
-          :is="state.componentList[state.next.questionType - 1]"
+          :is="state.componentList[Number(state.next.questionType) -1]"
           :single-choice-list="state.next"
           :default-value="state.defaultValue"
           @desc="descTime"
@@ -38,7 +38,14 @@ import duration from "../compontents/duration.vue";
 import countTimes from "../compontents/countTimes.vue";
 import singleChoice from "../compontents/singleChoice.vue";
 import multipleChoice from "../compontents/multipleChoice.vue";
-const getCurrentInstance = Taro.getCurrentInstance();
+import { Gettest } from "@/types/type";
+interface Answer {
+    diaryQuestionId: string,
+    questionType: string,
+    answer: any,
+    sort: number,
+    diaryOptionId: any
+}
 const state = reactive({
   componentList: shallowRef([
     time,
@@ -48,41 +55,34 @@ const state = reactive({
     multipleChoice,
   ]),
   index: 0,
-  sleepList: [],
-  next: {},
+  sleepList: [] as Gettest[],
+  next: {} as Gettest,
   time: "",
-  answerList: [],
+  answerList: [] as Answer[],
   diaryOptionId: [],
-  answer: "",
+  answer: "" as any,
   multipleChoiceAnswer: [],
   // 所有子组件的默认值
   defaultValue: {
     desc: "年-月-日 时-分",
     duration: "0:0",
     countNumber: 0,
-    singleChoice: [],
+    singleChoice: "",
     number: -1,
   },
-  // answerTransformation: {
-  //   diaryQuestionId: "",
-  //   questionType: "",
-  //   answer: "",
-  //   sort: "",
-  //   diaryOptionId: "",
-  // },
   typeId: "",
   answerObj: {},
 });
 // 获取试题
 function getSleepTestList() {
   // 4是睡眠日记  其他是 测试列表
-  state.typeId = getCurrentInstance.router.params.id;
+  state.typeId = Taro.getCurrentInstance().router?.params.id as any;
   if (state.typeId === "4") {
     let params = {
       diaryId: 1,
     };
     getDiaryTest(params)
-      .then((res: any) => {
+      .then((res: Gettest[]) => {
         state.sleepList = res;
         // 给页面使用
         state.next = state.sleepList[state.index];
@@ -93,7 +93,7 @@ function getSleepTestList() {
       diaryId: state.typeId,
     };
     getSleepTest(params)
-      .then((res: any) => {
+      .then((res: Gettest[]) => {
         state.sleepList = res;
         // 给页面使用
         state.next = state.sleepList[state.index];
@@ -121,7 +121,7 @@ function goStart() {
     case "4": {
       if (state.defaultValue.number === -1) return showToast("请选择答案");
       // 永远都是0
-      state.answer = state.defaultValue.singleChoice[0];
+      state.answer = state.defaultValue.singleChoice;
       break;
     }
     case "5": {
@@ -186,7 +186,6 @@ function preNext() {
   if (state.index === 0) {
     return Taro.redirectTo({
       url: "/pages/sleepDiary/index",
-      success() {},
     });
   }
   state.index = state.index - 1;
@@ -205,39 +204,39 @@ function countNum(data: number) {
   state.defaultValue.countNumber = data;
 }
 // 获取单选题答案
-function singleChoiceAnswer(data: string) {
-  state.defaultValue.singleChoice = data;
+function singleChoiceAnswer(data: string[]) {
+  state.defaultValue.singleChoice = data[0];
 }
 // 获取多选题答案
-function multipleChoiceAnswer(data: any) {
+function multipleChoiceAnswer(data: never[]) {
   state.multipleChoiceAnswer = data;
 }
 // 转换 字母A，B,C
 function addSort() {
-  state.sleepList.forEach((item) => {
-    item.optionList.forEach((chiliren) => {
-      chiliren.sort === 1
-        ? (chiliren.sort = "A")
-        : chiliren.sort === 2
-          ? (chiliren.sort = "B")
-          : chiliren.sort === 3
-            ? (chiliren.sort = "C")
-            : chiliren.sort === 4
-              ? (chiliren.sort = "D")
-              : chiliren.sort === 5
-                ? (chiliren.sort = "E")
-                : chiliren.sort === 6
-                  ? (chiliren.sort = "F")
-                  : chiliren.sort === 7
-                    ? (chiliren.sort = "G")
-                    : chiliren.sort === 8
-                      ? (chiliren.sort = "H")
-                      : (chiliren.sort = "I");
+  state.sleepList.forEach((item:any) => {
+    item.optionList.forEach((children: { sort: string | number; }) => {
+      children.sort === 1
+        ? (children.sort = "A")
+        : children.sort === 2
+          ? (children.sort = "B")
+          : children.sort === 3
+            ? (children.sort = "C")
+            : children.sort === 4
+              ? (children.sort = "D")
+              : children.sort === 5
+                ? (children.sort = "E")
+                : children.sort === 6
+                  ? (children.sort = "F")
+                  : children.sort === 7
+                    ? (children.sort = "G")
+                    : children.sort === 8
+                      ? (children.sort = "H")
+                      : (children.sort = "I");
     });
   });
 }
 // 提示
-function showToast(data) {
+function showToast(data: string) {
   Taro.showToast({
     title: data,
     icon: "none",

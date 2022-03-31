@@ -17,13 +17,14 @@ import Taro from "@tarojs/taro";
 import { getDiaryLimit } from "@/api/report/index";
 import NavBar from "../../../components/NavBar.vue";
 import { useStore } from "@/stores/assets";
+import { GetPrivacyPolicy } from "@/types/type";
 const store = useStore();
 const state = reactive({
-  getDiaryLimit: "",
+  getDiaryLimit: {} as GetPrivacyPolicy,
   assets: store.assets.home,
   getDiaryLimittData() {
     getDiaryLimit()
-      .then((res: any) => {
+      .then((res: GetPrivacyPolicy) => {
         state.getDiaryLimit = res;
       });
   },

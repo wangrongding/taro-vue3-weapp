@@ -2,12 +2,11 @@
   <view class="page-container">
     <NavBar>梦琦</NavBar>
     <view class="page-main">
-      <view class="sleep-list" v-for="(item, index) in state.getResultList" :key="index">
+      <view class="sleep-list" v-for="(item, index) in (state.getResultList as GetResultList[])" :key="index">
         <view class="sleep-list-title">
           {{ item.title }}
           <!-- 判断时间显示 title -->
           <view class="detail-time" v-if="item.title === '建议在床时间：'">
-            {{ item.timeShow }}
             <text>{{ item.time }}</text>
             <image
               class="detail"
@@ -20,7 +19,7 @@
         <!-- 循环报告列表 -->
         <view class="sleep-list-content">
           <dl
-            v-for="(children, childrenIndex) in item.list"
+            v-for="(children, childrenIndex) in (item.list as Report)"
             :key="childrenIndex"
             class="sleep-data"
           >
@@ -54,14 +53,21 @@ import NavBar from "../../components/NavBar.vue";
 import { getResult } from "@/api/report/index";
 import { saveRest } from "@/api/guide/index";
 import Bedtime from "../components/Bedtime.vue";
-const getCurrentInstance = Taro.getCurrentInstance();
+import { GetResultList } from "@/types/type";
+interface Report {
+  name: string;
+  time: string;
+}
 const state = reactive({
   tips: "",
   getResultList: [],
   show: false,
-  settingTime: "",
+  settingTime: {} as Report,
   time: "",
   jumpRoute: "",
+  name: {
+    list: [] as Report[],
+  },
   // 详情
   detail() {
     Taro.redirectTo({
@@ -78,7 +84,7 @@ const state = reactive({
       });
   },
   // 修改时间
-  updateTime(item, children) {
+  updateTime(item: { title: string }, children: { name: string; time: string }) {
     state.settingTime = children;
     // 判断 是在床时间
     if (item.title === "建议在床时间：") state.show = true;
@@ -95,36 +101,35 @@ const state = reactive({
         state.jumpRoute === "setting"
           ? Taro.redirectTo({
             url: "/pages/me/index",
-            success() {},
           })
           : Taro.redirectTo({
             url: "/pages/index/index",
-            success() {},
           });
       });
   },
 });
 // 设置时间
-function timeTable(data) {
+function timeTable(data: any) {
   if (state.settingTime.name === "上床时间") state.settingTime.time = data;
   if (state.settingTime.name === "起床时间") state.settingTime.time = data;
   state.show = false;
 }
 // 换算成number类型 进行判断  处理数据格式
 function processingData() {
-  state.getResultList.forEach((item) => {
+  state.getResultList.forEach((item: { title: string; list: Report[]; time: string }) => {
     state.name = item;
-    item.list.forEach((children) => {
-      if (children.name === "睡眠效率" || children.name === "平均睡眠效率")
-      {children.time = Number(children.time)
-        .toFixed(1);}
+    item.list.forEach((children: { name: string; time: string }) => {
+      if (children.name === "睡眠效率" || children.name === "平均睡眠效率") {
+        children.time = Number(children.time)
+          .toFixed(1);
+      }
     });
     if (item.title === "建议在床时间：" && item.time === "") item.time = "--";
   });
 }
 state.getResultData();
 // 获取传参
-state.jumpRoute = getCurrentInstance.router.params.name;
+state.jumpRoute = Taro.getCurrentInstance().router?.params.name as any;
 </script>
 
 <style lang="scss">

@@ -45,7 +45,7 @@
       <view
         class="add-today-target"
         :class="state.active ? 'add-today-target-check' : 'add-today-target'"
-        @tap="addTodayTarget()"
+        @tap="addTodayTarget('')"
       >
         添加目标
       </view>
@@ -58,15 +58,20 @@ import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import { targetList, userTarget } from "@/api/target/index";
+interface DictList {
+  dictKey: number,
+  dictValue: string,
+  icon: string,
+}
 const state = reactive({
   tab1value: 0,
-  dictList: [],
-  targetList: [],
-  addTargetCheckd: [],
+  dictList: [] as DictList[],
+  targetList: [] as any,
+  addTargetCheckd: [] as any,
   active: false,
 });
 // 选择目标
-function addTarget(data) {
+function addTarget(data: { active: boolean; id: string; }) {
   data.active = !data.active;
   if (data.active === true) {
     state.addTargetCheckd.push(data.id);
@@ -79,7 +84,7 @@ function addTarget(data) {
   state.active = state.addTargetCheckd.length !== 0 ? true : false;
 }
 // 关闭、添加目标
-function addTodayTarget(data) {
+function addTodayTarget(data: string) {
   let params = {
     targetIds: state.addTargetCheckd,
   };
@@ -87,13 +92,12 @@ function addTodayTarget(data) {
   data !== "close" ? userTarget(params) : "";
   Taro.redirectTo({
     url: "/pages/index/index",
-    success() {},
   });
 }
 // 获取列表
 function targetListData() {
   targetList()
-    .then((res: any) => {
+    .then((res:{dictList: DictList[] , targetList: any }) => {
       state.dictList = res.dictList;
       state.targetList = res.targetList;
     });
