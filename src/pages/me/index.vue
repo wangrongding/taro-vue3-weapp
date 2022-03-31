@@ -60,10 +60,11 @@ import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { useStore } from "@/stores/assets";
 import { getUserAnimalInfo, updateUserAnimalInfo } from "@/api/me/index";
+import { GetUserAnimalInfo } from "@/types/type";
 const store = useStore();
 const state = reactive({
   assets: store.assets.home,
-  getUserAnimalInfoObj: {},
+  getUserAnimalInfoObj: {} as GetUserAnimalInfo,
   name: "",
   show: false,
   list: [
@@ -88,30 +89,28 @@ const state = reactive({
       cloudArchiving: "未存档",
     },
   ],
-  setting(data) {
+  setting(data: { img: string; title: string; icon: string; cloudArchiving?: undefined; } | { img: string; title: string; cloudArchiving: string; icon?: undefined; }) {
     if (data.title === "宠物名字") {
       state.show = true;
     } else if (data.title === "睡眠时间") {
       Taro.navigateTo({
-        url: "/pages/report/index",
-        success() {},
+        url: "/pages/report/index?name=setting",
       });
     } else if (data.title === "隐私政策") {
       Taro.navigateTo({
         url: "/pages/me/privacyPolicy",
-        success() {},
       });
     }
   },
   // 用户动物信息
   getUserAnimalInfoData() {
     getUserAnimalInfo()
-      .then((res) => {
+      .then((res: GetUserAnimalInfo) => {
         state.getUserAnimalInfoObj = res;
       });
   },
   // 修改名字
-  updateUserAnimalInfoData(animalName) {
+  updateUserAnimalInfoData(animalName: string) {
     let params = {
       animalName: animalName,
       id: state.getUserAnimalInfoObj.id,
@@ -146,7 +145,7 @@ const state = reactive({
   },
 });
 
-function getPhoneNumber(e) {
+function getPhoneNumber() {
   // console.log(JSON.stringify(e));
   // console.log(`加密算法的初始向量:${e.detail.iv}`);
   // console.log(`包括敏感数据在内的完整用户信息的加密数据:${e.detail.encryptedData}`);

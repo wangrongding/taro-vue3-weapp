@@ -26,6 +26,8 @@ export default {
     "pages/me/index",
     // 隐私政策
     "pages/me/privacyPolicy",
+    // 测试报告
+    "pages/test/report",
     // "pages/dashboard/index",
   ],
   window: {

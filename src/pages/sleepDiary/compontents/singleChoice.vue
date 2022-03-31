@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
 const emit = defineEmits(["singleChoice"]);
 const props = defineProps({
   singleChoiceList: {
@@ -31,10 +30,10 @@ const props = defineProps({
   },
 });
 const state = reactive({
-  singleChoice: [],
+  singleChoice: [] as any,
   defaultNumber: props.defaultValue,
   // 选择答案
-  answerBtn(data, index) {
+  answerBtn(data: { number: number; id: string; }, index: number) {
     state.defaultNumber.number = data.number = index;
     state.singleChoice = [];
     state.singleChoice.unshift(data.id);

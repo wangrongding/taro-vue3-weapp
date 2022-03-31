@@ -4,7 +4,7 @@
     <image class="mood-image" :src="state.logo" alt="" />
     <view class="logo-name">
       {{ props.getUserMoodList.userName }}好!
-      <view class="name"> 今天是星期{{ state.week }} </view>
+      <view class="name"> 今天是星期{{ props.getUserMoodList.week }} </view>
     </view>
     <view class="mood-number">
       +20
@@ -13,10 +13,10 @@
     <view class="mood-data">
       <view class="mood-title"> 你现在心情怎么样?</view>
       <image
-        v-for="(item, index) in props.sleepMoodList"
+        v-for="(item, index) in (props.sleepMoodList as Sleepmood[])"
         class="mood-logo"
         :key="index"
-        :src="state.icon"
+        :src="item.icon"
         @tap="moodBtn(item)"
         alt=""
       />
@@ -26,10 +26,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
-const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
-});
+import { Sleepmood } from "@/types/type";
 const props = defineProps({
   sleepMoodList: {
     type: Array,
@@ -39,16 +36,19 @@ const props = defineProps({
     required: true,
   },
   getUserMoodList: {
-    type: Array,
+    type: Object,
     default() {
-      return [];
+      return {};
     },
     required: true,
   },
 });
+const state = reactive({
+  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+});
 const emit = defineEmits(["moodBtn"]);
 // 获取点击详情
-function moodBtn(data) {
+function moodBtn(data: unknown) {
   emit("moodBtn", data);
 }
 </script>

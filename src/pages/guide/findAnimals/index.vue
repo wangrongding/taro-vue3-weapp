@@ -17,7 +17,6 @@ const state = reactive({
   jumpTo() {
     Taro.redirectTo({
       url: "/pages/guide/guidingProcess/index?index=0",
-      success() {},
     });
   },
 });

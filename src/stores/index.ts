@@ -5,7 +5,7 @@ import { getUserInfo } from "@/api/preload/index";
 export const useStore = defineStore("user", {
   state: () => {
     return {
-      userInfo: { token: "" },
+      userInfo: { token: "" ,openId: "" },
     };
   },
   getters: {

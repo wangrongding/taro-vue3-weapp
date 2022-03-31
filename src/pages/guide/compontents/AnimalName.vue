@@ -13,7 +13,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
 
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
@@ -21,7 +20,7 @@ const state = reactive({
   给TA取个名字吧～ `,
 });
 const emit = defineEmits(["animalName"]);
-function nameOnBlur(e: string) {
+function nameOnBlur(e) {
   emit("animalName", e.detail.value);
 }
 </script>

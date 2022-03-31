@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
 const emit = defineEmits(["desc"]);
 const props = defineProps({
   defaultValue: {
@@ -28,6 +27,7 @@ const state = reactive({
   show: false,
   minDate: new Date(2000, 0, 1),
   maxDate: new Date(2023, 11, 31, 22, 60),
+  desc: "",
 });
 function confirm(selectedValue) {
   state.desc =

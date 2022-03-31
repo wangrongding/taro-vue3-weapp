@@ -25,7 +25,6 @@
           alt=""
         />
       </view>
-
       <view class="start-btn" @tap="state.startBtn"> 开始 </view>
     </view>
   </view>
@@ -36,17 +35,17 @@ import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
 import { getSleepGuide } from "@/api/sleepDiary/index";
 import Taro from "@tarojs/taro";
-const getCurrentInstance = Taro.getCurrentInstance();
+import { GetSleepGuide } from "@/types/type";
 const state = reactive({
   typeId: "",
-  getSleepGuide: {},
+  getSleepGuide: {} as GetSleepGuide,
   getSleepGuideData() {
-    state.typeId = getCurrentInstance.router.params.id;
+    state.typeId = Taro.getCurrentInstance().router?.params.id as any;
     let params = {
       typeId: state.typeId,
     };
     getSleepGuide(params)
-      .then((res: any) => {
+      .then((res: GetSleepGuide) => {
         state.getSleepGuide = res;
       });
   },

@@ -4,3 +4,8 @@ import request from "../request";
 export function getResult(data?: object) {
   return request.get("/mini-program/sleet-diary/getResult", { data });
 }
+
+// 睡眠限制
+export function getDiaryLimit(data?: object) {
+  return request.get("/mini-program/sleet-diary/getDiaryLimit", { data });
+}

@@ -29,17 +29,12 @@ import {
   saveUserName,
   updateByAnimalId,
   saveRest,
-  wxRegistry,
   sleepMood,
   userMood,
   getUserMood,
   template,
 } from "@/api/guide/index";
-import { useStore } from "@/stores";
-const store = useStore();
-
 import NavBar from "../../../components/NavBar.vue";
-
 import AnimalName from "../compontents/AnimalName.vue";
 import UserName from "../compontents/UserName.vue";
 import IntimacyValue from "../compontents/IntimacyValue.vue";
@@ -47,8 +42,12 @@ import Partner from "../compontents/Partner.vue";
 import DailyView from "../compontents/DailyView.vue";
 import DailyLife from "../compontents/DailyLife.vue";
 import Mood from "../compontents/Mood.vue";
-const getCurrentInstance = Taro.getCurrentInstance();
-
+import { Sleepmood } from "@/types/type";
+interface Guide {
+  title: string,
+  week: string,
+  days: string,
+}
 const state = reactive({
   index: 0,
   componentList: shallowRef([
@@ -60,15 +59,12 @@ const state = reactive({
     DailyLife,
     Mood,
   ]),
-  loveValueId: "5wc9CAYWtzYHFVMViusoItPYGwq3mLqRvVbUHm7_fUw",
-  sleepId: "UUnJ96IPTBMQo5YHcdOOuAcdWLbXIf20Erxi5X9iOqY",
-  getUpId: "Ap7RDxyC31iflhCPwTTglenb-6edqOYRtzSJ-yS9UtY",
   animalName: "",
   userName: "",
-  sleepMoodList: [],
-  getUserMoodList: [],
-  time: [],
-  serviceArr: [],
+  sleepMoodList: [] as Sleepmood[],
+  getUserMoodList: {} as Guide,
+  time: [] as Guide[],
+  serviceArr: [] as any,
 });
 
 // 继续
@@ -148,11 +144,11 @@ function userName(num: string) {
 }
 
 // 设置作息时间
-function timeTable(data: string) {
+function timeTable(data: { title: string; week: string; days: string; }[]) {
   state.time = data;
 }
 // 选择心情
-function moodBtn(data: any) {
+function moodBtn(data: { id: string }) {
   let params = {
     moodId: data.id,
     week: state.getUserMoodList.week,
@@ -162,7 +158,6 @@ function moodBtn(data: any) {
     .then(() => {
       Taro.redirectTo({
         url: "/pages/index/index",
-        success() {},
       });
     });
 }
@@ -170,29 +165,29 @@ function moodBtn(data: any) {
 // 获取心情列表
 function sleepMoodListData() {
   sleepMood()
-    .then((res) => {
+    .then((res: Sleepmood[]) => {
       state.sleepMoodList = res;
     });
 }
 // 心情详情
 function getUserMoodData() {
   getUserMood()
-    .then((res) => {
+    .then((res: Guide) => {
       state.getUserMoodList = res;
     });
 }
 // 消息通知模板
 function templateList() {
   template()
-    .then((res) => {
-      res.forEach((item) => {
+    .then((res: any) => {
+      res.forEach((item: { templateId: string; }) => {
         state.serviceArr.push(item.templateId);
         messageNotification();
       });
     });
 }
 function start() {
-  state.index = Number(getCurrentInstance.router.params.index);
+  state.index = Number(Taro.getCurrentInstance().router?.params.index as any);
   if (state.index === 6) {
     sleepMoodListData();
     getUserMoodData();

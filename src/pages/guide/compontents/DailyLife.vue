@@ -13,22 +13,15 @@
         >
           {{ item.title }}
         </view>
-
-        <nut-picker
-          :visible="state.show"
-          :columns="multipleColumns"
-          @confirm="confirm"
-          :cancel-text="state.cancelText"
-          @close="close"
-        />
+        <Bedtime :visible="state.show" @timeTable="timeTable" />
       </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import Taro from "@tarojs/taro";
+import { reactive } from "vue";
+import Bedtime from "../../components/Bedtime.vue";
 const props = defineProps({
   animalName: {
     type: String,
@@ -51,59 +44,25 @@ const state = reactive({
     },
   ],
   show: false,
-  hours: [],
-  minutes: [],
-  cancelId: "",
-  time() {
-    for (let i = 0; i <= 23; i++) {
-      state.hours.push({
-        text: i < 10 ? "0" + i : i,
-        value: i < 10 ? "0" + i : i,
-      });
-    }
-    for (let i = 0; i <= 59; i++) {
-      state.minutes.push({
-        text: i < 10 ? "0" + i : i,
-        value: i < 10 ? "0" + i : i,
-      });
-    }
-  },
+  cancelId: 0,
 });
-const multipleColumns = ref([
-  // 第一列
-  state.hours,
-  // 添加：
-  [
-    {
-      value: ":",
-    },
-  ],
-  // 第二列
-  state.minutes,
-]);
 
 const emit = defineEmits(["timeTable"]);
 
 // 确认选择时间
-function confirm(selectedValue) {
+function timeTable(selectedValue) {
   // 判断点击的是起床还是上床时间
   state.cancelId === 1
-    ? (state.timeList[0].title = selectedValue.selectedValue.join(""))
-    : (state.timeList[1].title = selectedValue.selectedValue.join(""));
+    ? (state.timeList[0].title = selectedValue)
+    : (state.timeList[1].title = selectedValue);
   emit("timeTable", state.timeList);
-  close();
+  state.show = false;
 }
 // 打开选择时间器
 function openTime(data) {
   state.cancelId = data.id;
   state.show = true;
 }
-// 点击蒙版关闭时间选择器
-function close() {
-  state.show = false;
-}
-// -------- 初始化 -------
-state.time();
 </script>
 
 <style lang="scss">
@@ -130,21 +89,6 @@ state.time();
   }
   .wake-time:nth-child(1) {
     margin-left: 52px;
-  }
-  .nut-picker-item {
-    opacity: 0;
-  }
-  .nut-picker__button {
-    font-size: 17px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #60d394;
-  }
-  .nut-picker__left {
-    font-size: 17px;
-    font-family: PingFang-SC-Bold, PingFang-SC;
-    font-weight: bold;
-    color: #333333;
   }
 }
 </style>

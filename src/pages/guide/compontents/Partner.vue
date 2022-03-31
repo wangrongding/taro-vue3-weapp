@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import Taro from "@tarojs/taro";
 const props = defineProps({
   animalName: {
     type: String,

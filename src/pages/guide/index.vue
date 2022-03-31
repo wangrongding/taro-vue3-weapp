@@ -16,8 +16,12 @@ import NavBar from "../../components/NavBar.vue";
 import { getGuide } from "@/api/guide/index";
 import { useStore } from "@/stores";
 const store = useStore();
+interface Getguide {
+  guideStatus: number;
+}
 const state = reactive({
   logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  Getguide: {} as Getguide,
   jumpTo() {
     // 判断登录接口是否完成
     if (store.userInfo.token === "") return;
@@ -25,26 +29,21 @@ const state = reactive({
       openId: store.userInfo.openId,
     };
     // 判断是否完成新手引导
-    getGuide(params)
-      .then(
-        (res: any) => {
-          res.guideStatus === 1
+    getGuide(params, { failToast: true, loading: true })
+      .then((res: Getguide) => {
+        state.Getguide = res;
+        state.Getguide.guideStatus === 1
+          ? Taro.redirectTo({
+            url: "/pages/guide/findAnimals/index",
+          })
+          : state.Getguide.guideStatus === 2
             ? Taro.redirectTo({
-              url: "/pages/guide/findAnimals/index",
-              success() {},
+              url: "/pages/index/index",
             })
-            : res.guideStatus === 2
-              ? Taro.redirectTo({
-                url: "/pages/index/index",
-                success() {},
-              })
-              : Taro.redirectTo({
-                url: "/pages/guide/guidingProcess/index?index=6",
-                success() {},
-              });
-        },
-        { failToast: true, loading: true },
-      );
+            : Taro.redirectTo({
+              url: "/pages/guide/guidingProcess/index?index=6",
+            });
+      });
   },
 });
 </script>
