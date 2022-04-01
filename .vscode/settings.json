@@ -5,7 +5,7 @@
     "source.fixAll.eslint": true
   },
   "editor.formatOnSave": false,
-  // "prettier.enable": false
+  // "prettier.enable": false,
   "todo-tree.highlights.defaultHighlight": {
     "icon": "alert",
     "type": "text",

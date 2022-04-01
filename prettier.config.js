@@ -17,6 +17,7 @@ module.exports = {
   arrowParens: "always", // 箭头函数，只有一个参数的时候，也需要括号 always|avoid
   htmlWhitespaceSensitivity: "strict", // html中换行规则 |strict|ignore|
   vueIndentScriptAndStyle: false, // vue中script与style里的第一条语句是否空格
+  // singleAttributePerLine: true, // 属性单行
   endOfLine: "lf", // 换行符
   embeddedLanguageFormatting: "auto",
 };

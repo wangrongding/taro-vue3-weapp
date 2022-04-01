@@ -76,24 +76,24 @@ bus.on("closePop", () => {
     <view class="main">
       <view class="operation-bar">
         <!-- 我的 -->
-        <image :src="state.assets.icon" alt="" @tap="state.me" />
+        <image :src="state.assets.icon" alt @tap="state.me" />
         <!-- 统计 -->
-        <image :src="state.assets.icon" alt="" @tap="state.getIntimacy" />
+        <image :src="state.assets.icon" alt @tap="state.getIntimacy" />
       </view>
       <view class="operation-bar">
         <!-- 亲密度 -->
-        <image :src="state.assets.intimacy" alt="" @tap="state.getIntimacy" />
+        <image :src="state.assets.intimacy" alt @tap="state.getIntimacy" />
         <!-- 记录 -->
-        <image :src="state.assets.icon" alt="" @tap="state.record" />
+        <image :src="state.assets.icon" alt @tap="state.record" />
       </view>
       <!-- 熊与蜂蜜 -->
       <Bear class="main-area" />
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
       <view class="operation-bar bottom-bar">
         <!--- 日记 -->
-        <image :src="state.assets.icon" alt="" @tap="state.diary" />
+        <image :src="state.assets.icon" alt @tap="state.diary" />
         <!--- 环境音 -->
-        <image :src="state.assets.audio" alt="" @tap="state.audio" />
+        <image :src="state.assets.audio" alt @tap="state.audio" />
         <!--- 今日目标 -->
         <nut-badge
           :value="1"
@@ -101,12 +101,12 @@ bus.on("closePop", () => {
           right="20"
           @tap="state.getTodayTargetList"
         >
-          <image :src="state.assets.today" class="today-target" alt="" />
+          <image :src="state.assets.today" class="today-target" alt />
         </nut-badge>
         <!--- 测试 -->
-        <image :src="state.assets.icon" alt="" @tap="state.test" />
+        <image :src="state.assets.icon" alt @tap="state.test" />
         <!-- 目标 -->
-        <image :src="state.assets.icon" alt="" @tap="state.target" />
+        <image :src="state.assets.icon" alt @tap="state.target" />
       </view>
       <!-- 亲密度 -->
       <Intimacy :visible="state.popShow === 'intimacy'" />

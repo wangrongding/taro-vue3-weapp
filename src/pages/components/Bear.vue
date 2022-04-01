@@ -2,14 +2,19 @@
 import { reactive, computed, ComputedRef } from "vue";
 import Taro from "@tarojs/taro";
 import { useStore } from "@/stores/assets";
-import { getAnimalAndHoneyInfo } from "@/api/home";
-import { BearInfo, HoneyInfo } from "@/types/index";
+import {
+  getAnimalAndHoneyInfo,
+  beginAdventure,
+  updateUserAnimalStatus,
+  endAdventure,
+} from "@/api/home";
+import { BearAndHoney } from "@/types/index";
 const store = useStore();
 const state = reactive({
   file: "page",
   assets: store.assets.home, // 熊旅行
-  bearInfo: {} as BearInfo,
-  honeyInfo: {} as HoneyInfo,
+  bearInfo: {} as BearAndHoney["animal"],
+  honeyInfo: {} as BearAndHoney["honey"],
   travel() {
     Taro.showToast({
       title: "开发中",
@@ -17,8 +22,30 @@ const state = reactive({
       duration: 1000,
     });
   },
+  // 获取熊和蜜信息
   getAnimalAndHoneyInfo() {
-    getAnimalAndHoneyInfo();
+    getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
+      state.bearInfo = res.animal;
+      state.honeyInfo = res.honey;
+    });
+  },
+  // 开始冒险
+  beginAdventure() {
+    beginAdventure({}, { failToast: true, loading: true }).then((res: any) => {
+      Taro.showToast({
+        title: "操作成功",
+        icon: "success",
+        duration: 1000,
+      });
+    });
+  },
+  // 冒险结束获取奖励
+  endAdventure() {
+    endAdventure();
+  },
+  // 冒险结束 修改动物状态
+  updateUserAnimalStatus() {
+    updateUserAnimalStatus();
   },
 });
 // 一个计算属性 ref
@@ -38,12 +65,18 @@ state.getAnimalAndHoneyInfo();
     <!-- 熊 -->
     <view class="bear-area">
       <text class="countdown-text">00:50:34</text>
-      <image class="bear" :src="state.assets.bear" alt="" />
+      <image class="bear" :src="state.bearInfo.animalIcon" alt="" />
     </view>
     <!-- 蜂蜜 -->
-    <view class="honeypot">
+    <view
+      class="honeypot"
+      @click="state.beginAdventure"
+      :style="{
+        boxShadow: state.honeyInfo.honeyValue === '30' ? '0px 0px 5px 10px #e5bb3f99' : '',
+      }"
+    >
       <nut-circleprogress
-        :progress="(20 / 30) * 100"
+        :progress="(parseInt(state.honeyInfo.honeyValue) / 30) * 100"
         :is-auto="true"
         @tap="state.travel"
         stroke-inner-width="4"
@@ -55,7 +88,7 @@ state.getAnimalAndHoneyInfo();
         style="z-index: 2; position: absolute; top: 0; left: 0; bottom: 0; right: 0"
       />
       <image :src="state.assets.honey" class="honey-img" />
-      <view class="honey-text"> {{ 20 }}g </view>
+      <view class="honey-text"> {{ state.honeyInfo.honeyValue || 0 }}g </view>
     </view>
   </view>
 </template>

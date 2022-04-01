@@ -150,8 +150,6 @@ module.exports = {
         allow: [],
       },
     ],
-    //回调嵌套深度
-    "max-nested-callbacks": [2, { max: 2 }],
     //禁止在代码后使用内联注释
     "no-inline-comments": 0,
     //函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
@@ -170,8 +168,10 @@ module.exports = {
     "array-element-newline": [2, { multiline: true, minItems: 3 }],
     //数组括号换行
     "array-bracket-newline": [2, { multiline: true }],
+    //回调嵌套深度
+    "max-nested-callbacks": [2, { max: 2 }],
     //要求方法链中每个调用都有一个换行符
-    "newline-per-chained-call": ["error", { ignoreChainWithDepth: 1 }],
+    "newline-per-chained-call": ["error", { ignoreChainWithDepth: 2 }],
     // 强制在花括号内使用一致的换行符
     // "object-curly-newline": ["error", { minProperties: 1 }],
     //强制将对象的属性放在不同的行上

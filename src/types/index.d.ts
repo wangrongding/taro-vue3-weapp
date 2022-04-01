@@ -1,3 +1,26 @@
+export interface RequestHeader {
+  // 表示content-type类型必须声明
+  "content-type": string;
+}
+export interface RequestBase {
+  // 字符串
+  url?: string;
+  // 常规请求方式，根据项目要求添加
+  method?: "POST" | "GET" | "PUT" | "DELETE";
+  // 每次的参数都是不固定的，因此我们暂时不声明数据类型
+  data?: any;
+  // 下面的requestheader类型,
+  header?: RequestHeader;
+  // 请求是否开启loading层
+  loading?: boolean;
+  // 开启loading层的情况下是否不能点击，全屏遮罩
+  mask?: boolean;
+  // 开启loading层的提示内容
+  title?: string;
+  // 如果请求是否，我是否直接弹出我的提示
+  failToast?: boolean;
+}
+
 // 初始化获取的用户信息
 export interface UserInfo {
   id: number;
@@ -53,9 +76,9 @@ export interface Ambient {
   explain: string;
 }
 
-export interface Data {
-  BearInfo: BearInfo;
-  HoneyInfo: HoneyInfo;
+export interface BearAndHoney {
+  animal: BearInfo;
+  honey: HoneyInfo;
 }
 
 export interface BearInfo {
