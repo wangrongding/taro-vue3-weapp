@@ -58,10 +58,10 @@
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { getUserAnimalInfo, updateUserAnimalInfo } from "@/api/me/index";
 import { GetUserAnimalInfo } from "@/types/type";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   assets: store.assets.home,
   getUserAnimalInfoObj: {} as GetUserAnimalInfo,

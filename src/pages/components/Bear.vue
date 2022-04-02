@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, computed, ComputedRef } from "vue";
 import Taro from "@tarojs/taro";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import {
   getAnimalAndHoneyInfo,
   beginAdventure,
@@ -9,7 +9,7 @@ import {
   endAdventure,
 } from "@/api/home";
 import { BearAndHoney } from "@/types/index";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   file: "page",
   assets: store.assets.home, // 熊旅行
@@ -87,7 +87,7 @@ state.getAnimalAndHoneyInfo();
         }"
         style="z-index: 2; position: absolute; top: 0; left: 0; bottom: 0; right: 0"
       />
-      <image :src="state.assets.honey" class="honey-img" />
+      <image :src="state.assets.honeypot" class="honey-img" />
       <view class="honey-text"> {{ state.honeyInfo.honeyValue || 0 }}g </view>
     </view>
   </view>

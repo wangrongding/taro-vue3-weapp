@@ -2,10 +2,10 @@
 import { onMounted, onBeforeUnmount, reactive } from "vue";
 import NavBar from "@/components/NavBar.vue";
 import Taro, { InnerAudioContext } from "@tarojs/taro";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { Ambient } from "@/types/index";
 import { useGlobalStore } from "@/stores/global";
-const store = useStore();
+const store = useAssetsStore();
 const globalStore = useGlobalStore();
 
 let audioCtx: InnerAudioContext;
@@ -14,7 +14,7 @@ const routerParams: Ambient = Taro.getCurrentInstance().router?.params as any;
 const state = reactive({
   file: "play",
   tempAudioCtx: null as unknown as InnerAudioContext,
-  assets: store.assets.ambient,
+  assets: store.assets.common,
   playStatus: false,
   timeCheckList: [
     { text: "5  分钟", value: 5 },
@@ -91,19 +91,19 @@ const state = reactive({
 });
 onMounted(() => {
   // 创建音频
-  state.createAudio();
+  // state.createAudio();
 });
 </script>
 <template>
   <view class="play-container">
-    <NavBar>首页</NavBar>
+    <NavBar>--</NavBar>
     <view class="operation">
       <view
         @tap="state.redirectTo"
         :style="{
           width: '50px',
           height: '50px',
-          backgroundImage: `url(${state.assets.icon})`,
+          backgroundImage: `url(${state.assets.close})`,
           backgroundSize: '100% 100%',
           borderRadius: '50%',
           overflow: 'hidden',

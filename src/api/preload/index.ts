@@ -6,6 +6,6 @@ export function getUserInfo(data?: object, options?: object) {
 }
 
 // 获取静态资源
-export function getAssets(data?: object, options?: object) {
-  return request.get("", { data, ...options });
+export function resourceInfo(data?: object, options?: object) {
+  return request.get("/mini-program/resources/resourceInfo", { data, ...options });
 }

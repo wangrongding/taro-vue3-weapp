@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import bus from "@/utils/eventBus";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   file: "popup",
-  assets: store.assets.target,
+  assets: store.assets.common,
   closePop() {
     bus.emit("closePop");
   },

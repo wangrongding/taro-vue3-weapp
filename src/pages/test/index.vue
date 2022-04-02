@@ -23,21 +23,23 @@
             <span class="test-detail">{{ item.explain }}</span>
           </view>
           <span class="test-energy-val">{{ item.honeyCount }}</span>
-          <image class="test-energy-img" :src="state.assets.title" alt="" />
+          <image class="test-energy-img" :src="state.assets.home.popupTest.testPopupTest" alt="" />
         </view>
       </view>
     </template>
-    <template #title> <image class="logo-image" :src="state.assets.title" alt="" /> </template>
+    <template #title>
+      <image class="logo-image" :src="state.assets.home.popupTest.testPopupTest" alt="" />
+    </template>
   </D-Popup>
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { getSleepList } from "@/api/test/index";
 import { GetSleepGuide } from "@/types/type";
-const store = useStore();
+const store = useAssetsStore();
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -46,14 +48,13 @@ const props = defineProps({
   },
 });
 const state = reactive({
-  assets: store.assets.ambient,
+  assets: store.assets,
   getSleepList: [] as GetSleepGuide[],
   // 获取列表
   getSleepListData() {
-    getSleepList()
-      .then((res: GetSleepGuide[]) => {
-        state.getSleepList = res;
-      });
+    getSleepList().then((res: GetSleepGuide[]) => {
+      state.getSleepList = res;
+    });
   },
   getSleepBtn(item) {
     Taro.navigateTo({

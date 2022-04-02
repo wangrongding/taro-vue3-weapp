@@ -18,7 +18,7 @@ const requestAction = (url, method, options: RequestBase) => {
   const query = { ...{ url, method }, ...options };
   return new Promise((resolve, reject) => {
     if (query.loading) {
-      Taro.showLoading({ title: query.title ? query.title : "数据加载中..." });
+      Taro.showLoading({ title: query.title ? query.title : "加载中...", mask: query.mask });
     }
     Taro.request({
       url: baseUrl + query.url,

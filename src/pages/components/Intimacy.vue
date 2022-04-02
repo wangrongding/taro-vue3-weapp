@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
 import DPopup from "@/components/D-Popup.vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { getIntimacy } from "@/api/home/index";
 import { Intimate } from "@/types/index";
 import bus from "@/utils/eventBus";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   file: "intimacy",
   intimateInfo: {} as Intimate,
-  assets: store.assets.intimacy,
+  assets: store.assets.common,
   // 获取亲密度
   getIntimacy() {
-    getIntimacy({}, { failToast: true, loading: true })
-      .then((res: Intimate) => {
-        state.intimateInfo = res;
-      });
+    getIntimacy({}, { failToast: true, loading: true }).then((res: Intimate) => {
+      state.intimateInfo = res;
+    });
   },
   closePop() {
     bus.emit("closePop");
@@ -51,7 +50,7 @@ const intimateInfo = computed(() => {
         <view class="intimacy-content">
           <text style="color: white; font-size: 22px">LV4</text>
           <view class="" style="text-align: center; height: 200px">
-            <image class="heart" :src="state.assets.heart" alt="" />
+            <image class="heart" :src="state.assets.heartSquare" alt="" />
             <nut-progress
               stroke-color="#FFD97DFF"
               :text-inside="true"

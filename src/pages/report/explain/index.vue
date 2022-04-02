@@ -16,9 +16,9 @@ import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import { getDiaryLimit } from "@/api/report/index";
 import NavBar from "../../../components/NavBar.vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { GetPrivacyPolicy } from "@/types/type";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   getDiaryLimit: {} as GetPrivacyPolicy,
   assets: store.assets.home,

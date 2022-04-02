@@ -20,9 +20,9 @@ import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { getPrivacyPolicy } from "@/api/me/index";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { GetPrivacyPolicy } from "@/types/type";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   assets: store.assets.home,
   getPrivacyPolicy: [] as GetPrivacyPolicy[],

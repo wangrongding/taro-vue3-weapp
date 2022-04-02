@@ -19,7 +19,7 @@
             v-if="state.targetStatus === 2"
           >
             <template #image>
-              <img :src="state.assets.home.bear">
+              <img :src="state.assets.bear.placeholder">
             </template>
           </nut-empty>
           <!-- 完成所有目标 空状态 -->
@@ -29,7 +29,7 @@
             v-if="state.targetStatus === 1"
           >
             <template #image>
-              <img :src="state.assets.home.bear">
+              <img :src="state.assets.bear.placeholder">
             </template>
           </nut-empty>
           <!-- 有目标状态 -->
@@ -50,17 +50,19 @@
         <view class="add-target" @tap="state.addTarget"> 添加目标 </view>
       </view>
     </template>
-    <template #title> <image class="logo-image" :src="state.assets.ambient.title" alt="" /> </template>
+    <template #title>
+      <image class="logo-image" :src="state.assets.home.popupTarget.targetPopupTodayGoal" alt="" />
+    </template>
   </D-Popup>
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { getUserTarget, finishTarget } from "@/api/target/index";
 import { GetuserTarget } from "@/types/type";
-const store = useStore();
+const store = useAssetsStore();
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -90,11 +92,10 @@ const state = reactive({
   },
   // 获取列表
   getUserTargetData() {
-    getUserTarget()
-      .then((res: any) => {
-        state.targetStatus = res.targetStatus;
-        state.voList = res.voList;
-      });
+    getUserTarget().then((res: any) => {
+      state.targetStatus = res.targetStatus;
+      state.voList = res.voList;
+    });
   },
 });
 </script>
