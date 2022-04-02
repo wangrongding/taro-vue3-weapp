@@ -2,15 +2,14 @@
 import { reactive, onMounted } from "vue";
 import DPopup from "@/components/D-Popup.vue";
 import Taro from "@tarojs/taro";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import { getAmbientList } from "@/api/ambient";
 import { useGlobalStore } from "@/stores/global";
-const globalStore = useGlobalStore();
 import qs from "qs";
-const store = useStore();
+const globalStore = useGlobalStore();
+const store = useAssetsStore();
 const state = reactive({
   file: "ambient",
-  assets: store.assets.ambient,
   ambientList: [] as any,
   jumpTo(item: any) {
     Taro.navigateTo({
@@ -18,10 +17,9 @@ const state = reactive({
     });
   },
   getAmbientList() {
-    getAmbientList({})
-      .then((res) => {
-        state.ambientList = res;
-      });
+    getAmbientList({}).then((res) => {
+      state.ambientList = res;
+    });
   },
 });
 const props = defineProps({
@@ -62,27 +60,26 @@ const props = defineProps({
         </view>
       </view>
       <view class="empty">
-        <image class="bear" :src="state.assets.empty" alt="" />
+        <image class="bear" :src="store.assets.bear.placeholder" alt="" />
         <text class="empty-text">完成冒险,可获得环境音~</text>
       </view>
     </template>
     <template #title>
-      <image class="logo-image" :src="state.assets.title" alt="" />
+      <image class="logo-image" :src="store.assets.home.popupSound.soundPopupSound" alt="" />
     </template>
   </D-Popup>
   <view class="play-action-bar" v-if="globalStore.ambient.playStatus">
-    <image class="play-action-bar-image" :src="state.assets.item" alt="" />
+    <image class="play-action-bar-image" :src="globalStore.ambient.musicImg" alt="" />
     <text class="play-action-bar-text">{{ globalStore.ambient.musicName }}</text>
     <!-- 控制播放、暂停 -->
     <view
       class="play"
       :style="{
-        backgroundImage: state.assets.pause,
         borderRadius: '50%',
         overflow: 'hidden',
         backgroundImage: globalStore.ambient.playStatus
-          ? `url(${state.assets.pause})`
-          : `url(${state.assets.play})`,
+          ? `url(${store.assets.common.pause})`
+          : `url(${store.assets.common.play})`,
         backgroundSize: '100% 100%',
       }"
     />

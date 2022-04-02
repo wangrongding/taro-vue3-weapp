@@ -76,6 +76,7 @@ export interface Ambient {
   explain: string;
 }
 
+// 熊和蜂蜜的状态
 export interface BearAndHoney {
   animal: BearInfo;
   honey: HoneyInfo;
@@ -95,3 +96,76 @@ export interface HoneyInfo {
   honeyIsShow: number;
   honeyIsFull: number;
 }
+
+// 资源信息
+export interface Assets {
+  common: { [key: string]: string };
+  mood: Mood;
+  background: Background;
+  bear: Bear;
+  home: Home;
+}
+export interface Background {
+  guideBackground: string;
+  homeBackgroundDay: string;
+  homeBackgroundNight: string;
+}
+
+export interface Bear {
+  expressionless: string;
+  doubt: string;
+  happy: string;
+  hello: string;
+  walk: string;
+  love: string;
+  power: string;
+  sleep: string;
+  sleepDiary: string;
+  placeholder: string;
+}
+
+export interface Home {
+  ambientSound: string;
+  diary: string;
+  my: string;
+  record: string;
+  statistics: string;
+  target: string;
+  test: string;
+  intimacyValue: string;
+  honeypot: string;
+  clock: string;
+  todayGoal: string;
+  popupTarget: PopupTarget;
+  popupSound: PopupSound;
+  popupTest: PopupTest;
+  personCenter: PersonCenter;
+}
+
+export interface PersonCenter {
+  settingsPetName: string;
+  settingsSleepTime: string;
+  settingsPrivacySettings: string;
+  settingsCloudArchiving: string;
+}
+
+export interface PopupSound {
+  soundPopupSound: string;
+}
+
+export interface PopupTarget {
+  targetPopupTodayGoal: string;
+}
+
+export interface PopupTest {
+  testPopupTest: string;
+}
+
+export interface Mood {
+  veryBad: string;
+  bad: string;
+  commonly: string;
+  happy: string;
+  veryHappy: string;
+}
+

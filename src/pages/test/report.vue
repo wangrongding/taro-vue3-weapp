@@ -19,8 +19,8 @@ import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
 import { getResult } from "@/api/test/index";
 import Taro from "@tarojs/taro";
-import { useStore } from "@/stores/assets";
-const store = useStore();
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 interface GetResult {
   content: string,
   explain: string,

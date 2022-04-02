@@ -5,7 +5,7 @@ import { getUserInfo } from "@/api/preload/index";
 export const useStore = defineStore("user", {
   state: () => {
     return {
-      userInfo: { token: "" ,openId: "" },
+      userInfo: { token: "", openId: "" },
     };
   },
   getters: {
@@ -21,10 +21,11 @@ export const useStore = defineStore("user", {
       const { code } = await Taro.login();
       // console.log("🚀🚀🚀 / code", code);
       // 根据code获取openId等用户信息
-      const info = (await getUserInfo({ code }, { failToast: true, loading: true })) as any;
+      const info = (await getUserInfo(
+        { code },
+        { failToast: true, loading: true, mask: true },
+      )) as any;
       this.setUserInfo(info);
     },
-    // 获取静态资源
-    getAssets() {},
   },
 });

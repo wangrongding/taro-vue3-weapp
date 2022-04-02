@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
-import { useStore } from "@/stores/assets";
+import { useAssetsStore } from "@/stores/assets";
 import Ambient from "@/pages/components/Ambient.vue";
 import GetTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 import Test from "@/pages/test/index.vue";
 import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
 import Bear from "../components/Bear.vue";
-const store = useStore();
+const store = useAssetsStore();
 const state = reactive({
   text: "Hello i'am rongding...",
   assets: store.assets.home,
@@ -65,35 +65,49 @@ const state = reactive({
     });
   },
 });
+// 关闭弹窗
 bus.on("closePop", () => {
   state.closePop();
+});
+
+const background = computed(() => {
+  if (new Date().getHours() > 6 && new Date().getHours() < 18) {
+    return `url(${store.assets.background.homeBackgroundDay})`;
+  } else {
+    return `url(${store.assets.background.homeBackgroundNight})`;
+  }
 });
 </script>
 
 <template>
-  <view class="page-container">
+  <view
+    class="page-container"
+    :style="{
+      backgroundImage: background,
+    }"
+  >
     <NavBar>梦琦</NavBar>
     <view class="main">
       <view class="operation-bar">
         <!-- 我的 -->
-        <image :src="state.assets.icon" alt @tap="state.me" />
+        <image :src="state.assets.my" alt @tap="state.me" />
         <!-- 统计 -->
-        <image :src="state.assets.icon" alt @tap="state.getIntimacy" />
+        <image :src="state.assets.statistics" alt @tap="state.getIntimacy" />
       </view>
       <view class="operation-bar">
         <!-- 亲密度 -->
-        <image :src="state.assets.intimacy" alt @tap="state.getIntimacy" />
+        <image :src="state.assets.intimacyValue" alt @tap="state.getIntimacy" />
         <!-- 记录 -->
-        <image :src="state.assets.icon" alt @tap="state.record" />
+        <image :src="state.assets.record" alt @tap="state.record" />
       </view>
       <!-- 熊与蜂蜜 -->
       <Bear class="main-area" />
       <!-- 底部操作栏: 日记/环境音/今日目标/测试/目标 -->
       <view class="operation-bar bottom-bar">
         <!--- 日记 -->
-        <image :src="state.assets.icon" alt @tap="state.diary" />
+        <image :src="state.assets.diary" alt @tap="state.diary" />
         <!--- 环境音 -->
-        <image :src="state.assets.audio" alt @tap="state.audio" />
+        <image :src="state.assets.ambientSound" alt @tap="state.audio" />
         <!--- 今日目标 -->
         <nut-badge
           :value="1"
@@ -101,12 +115,12 @@ bus.on("closePop", () => {
           right="20"
           @tap="state.getTodayTargetList"
         >
-          <image :src="state.assets.today" class="today-target" alt />
+          <image :src="state.assets.todayGoal" class="today-target" alt />
         </nut-badge>
         <!--- 测试 -->
-        <image :src="state.assets.icon" alt @tap="state.test" />
+        <image :src="state.assets.test" alt @tap="state.test" />
         <!-- 目标 -->
-        <image :src="state.assets.icon" alt @tap="state.target" />
+        <image :src="state.assets.target" alt @tap="state.target" />
       </view>
       <!-- 亲密度 -->
       <Intimacy :visible="state.popShow === 'intimacy'" />
@@ -122,7 +136,6 @@ bus.on("closePop", () => {
 
 <style lang="scss">
 .page-container {
-  background-image: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202281552325.png");
   background-color: #48c77d;
   background-size: 100% auto;
   background-position: center top;
