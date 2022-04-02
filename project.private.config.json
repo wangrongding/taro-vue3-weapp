@@ -25,7 +25,7 @@
         {
           "name": "环境音播放页",
           "pathName": "pages/ambient/play",
-          "query": "",
+          "query": "id=5&tenantCode=000000&soundId=1&remark=&createUser=10&createTime=&updateUser=-1&updateTime=&status=-1&isDeleted=0&soundName=田野&icon=https://raw.githubusercontent.com/wangrongding/image-house/master/images202203161453639.png&music=https://storage.360buyimg.com/jdrd-blog/27.mp3&explain=感受乡村田野的声音&$taroTimestamp=1648710499308\"",
           "launchMode": "default",
           "scene": null
         },

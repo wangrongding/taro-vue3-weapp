@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, reactive } from "vue";
 import NavBar from "@/components/NavBar.vue";
-import Taro from "@tarojs/taro";
+import Taro, { InnerAudioContext } from "@tarojs/taro";
 import { useStore } from "@/stores/assets";
 import { Ambient } from "@/types/index";
 import { useGlobalStore } from "@/stores/global";
 const store = useStore();
 const globalStore = useGlobalStore();
 
-let audioCtx: any = null;
+let audioCtx: InnerAudioContext;
+
 const routerParams: Ambient = Taro.getCurrentInstance().router?.params as any;
 const state = reactive({
   file: "play",
+  tempAudioCtx: null as unknown as InnerAudioContext,
   assets: store.assets.ambient,
   playStatus: false,
   timeCheckList: [
@@ -24,14 +26,17 @@ const state = reactive({
     { text: "60  分钟", value: 30 },
   ],
   timeCheckShow: false,
+  // 返回
   goBack() {
     Taro.navigateBack({
       delta: 1,
     });
   },
+  // 重定向到首页
   redirectTo() {
     if (audioCtx) {
       state.handlePlay();
+      audioCtx.destroy();
     }
     Taro.redirectTo({
       url: "/pages/index/index",
@@ -39,25 +44,33 @@ const state = reactive({
   },
   // 创建音频上下文
   createAudio() {
-    audioCtx = Taro.createInnerAudioContext();
-    audioCtx.src = routerParams.music;
-    audioCtx.autoplay = false;
-    audioCtx.loop = true;
-    audioCtx.onPlay(() => {
-      state.onPlay();
-    });
-    audioCtx.onError(() => {});
+    if (globalStore.ambient.audioCtx) {
+      return;
+    }
+    globalStore.ambient.musicName = routerParams.soundName;
+    globalStore.ambient.musicImg = routerParams.icon;
+    // audioCtx = Taro.createInnerAudioContext();
+    // audioCtx.src = routerParams.music;
+    globalStore.ambient.audioCtx = Taro.createInnerAudioContext();
+    globalStore.ambient.audioCtx.src = routerParams.music;
+    // globalStore.ambient.audioCtx.autoplay = false;
+    // globalStore.ambient.audioCtx.loop = true;
+
+    // globalStore.ambient.audioCtx.onPlay(() => {
+    //   state.onPlay();
+    // });
+    // globalStore.ambient.audioCtx.onError(() => {});
+
+    globalStore.ambient.audioCtx = audioCtx;
   },
   // 控制音频播放/暂停
   handlePlay() {
-    if (audioCtx.paused) {
+    if (globalStore.ambient.audioCtx.paused) {
       globalStore.ambient.playStatus = true;
-      // console.log("播放", audioCtx, audioCtx.paused);
-      audioCtx.play();
+      globalStore.ambient.audioCtx.play();
     } else {
       globalStore.ambient.playStatus = false;
-      // console.log("暂停", audioCtx, audioCtx.paused);
-      audioCtx.pause();
+      globalStore.ambient.audioCtx.pause();
     }
   },
   // 暂停
@@ -76,9 +89,10 @@ const state = reactive({
     // state.playStatus = true;
   },
 });
-// 创建音频
-state.createAudio();
-globalStore.ambient.musicName = routerParams.soundName;
+onMounted(() => {
+  // 创建音频
+  state.createAudio();
+});
 </script>
 <template>
   <view class="play-container">

@@ -1,0 +1,150 @@
+<script setup lang="ts">
+import { reactive, computed, ComputedRef } from "vue";
+import Taro from "@tarojs/taro";
+import { useStore } from "@/stores/assets";
+import {
+  getAnimalAndHoneyInfo,
+  beginAdventure,
+  updateUserAnimalStatus,
+  endAdventure,
+} from "@/api/home";
+import { BearAndHoney } from "@/types/index";
+const store = useStore();
+const state = reactive({
+  file: "page",
+  assets: store.assets.home, // 熊旅行
+  bearInfo: {} as BearAndHoney["animal"],
+  honeyInfo: {} as BearAndHoney["honey"],
+  travel() {
+    Taro.showToast({
+      title: "开发中",
+      icon: "error",
+      duration: 1000,
+    });
+  },
+  // 获取熊和蜜信息
+  getAnimalAndHoneyInfo() {
+    getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
+      state.bearInfo = res.animal;
+      state.honeyInfo = res.honey;
+    });
+  },
+  // 开始冒险
+  beginAdventure() {
+    beginAdventure({}, { failToast: true, loading: true }).then((res: any) => {
+      Taro.showToast({
+        title: "操作成功",
+        icon: "success",
+        duration: 1000,
+      });
+    });
+  },
+  // 冒险结束获取奖励
+  endAdventure() {
+    endAdventure();
+  },
+  // 冒险结束 修改动物状态
+  updateUserAnimalStatus() {
+    updateUserAnimalStatus();
+  },
+});
+// 一个计算属性 ref
+const getSize: ComputedRef = computed(() => {
+  let systemInfo = {};
+  Taro.getSystemInfoAsync({
+    success(res) {
+      systemInfo = res;
+    },
+  });
+  return systemInfo;
+});
+state.getAnimalAndHoneyInfo();
+</script>
+<template>
+  <view class="main-area">
+    <!-- 熊 -->
+    <view class="bear-area">
+      <text class="countdown-text">00:50:34</text>
+      <image class="bear" :src="state.bearInfo.animalIcon" alt="" />
+    </view>
+    <!-- 蜂蜜 -->
+    <view
+      class="honeypot"
+      @click="state.beginAdventure"
+      :style="{
+        boxShadow: state.honeyInfo.honeyValue === '30' ? '0px 0px 5px 10px #e5bb3f99' : '',
+      }"
+    >
+      <nut-circleprogress
+        :progress="(parseInt(state.honeyInfo.honeyValue) / 30) * 100"
+        :is-auto="true"
+        @tap="state.travel"
+        stroke-inner-width="4"
+        :progress-option="{
+          radius: 18 * (getSize.screenWidth / 375),
+          backColor: '#FFF',
+          progressColor: '#FFD97DFF',
+        }"
+        style="z-index: 2; position: absolute; top: 0; left: 0; bottom: 0; right: 0"
+      />
+      <image :src="state.assets.honey" class="honey-img" />
+      <view class="honey-text"> {{ state.honeyInfo.honeyValue || 0 }}g </view>
+    </view>
+  </view>
+</template>
+<style lang="scss">
+// 熊区域
+.main-area {
+  width: 100%;
+  position: absolute;
+  bottom: 30%;
+  text-align: center;
+  .bear-area {
+    width: 140px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    .countdown-text {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bolder;
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #333333ff;
+    }
+    .bear {
+      width: 140px;
+      height: 160px;
+    }
+  }
+  .honeypot {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    .honey-img {
+      width: 52px;
+      height: 52px;
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .honey-text {
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      color: white;
+      z-index: 2;
+      position: absolute;
+      right: 50%;
+      bottom: -10px;
+      font-size: 26px;
+      font-weight: bolder;
+      transform: translateX(50%);
+      -webkit-text-fill-color: white;
+      -webkit-text-stroke-color: #804812ff;
+      -webkit-text-stroke-width: 2px;
+    }
+  }
+}
+</style>
