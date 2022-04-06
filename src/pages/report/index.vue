@@ -10,7 +10,7 @@
             <text>{{ item.time }}</text>
             <image
               class="detail"
-              src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
+              :src="state.assets.common.help"
               alt=""
               @tap="state.detail"
             />
@@ -40,7 +40,7 @@
         </view>
       </view>
       <view class="tips"> {{ state.tips }}</view>
-      <Bedtime :visible="state.show" @timeTable="timeTable" />
+      <Bedtime :visible="state.show" @timeTable="timeTable" @close="close" />
     </view>
     <view class="sleep-btn" @tap="state.sleepBtn"> 确认</view>
   </view>
@@ -54,11 +54,14 @@ import { getResult } from "@/api/report/index";
 import { saveRest } from "@/api/guide/index";
 import Bedtime from "../components/Bedtime.vue";
 import { GetResultList } from "@/types/type";
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 interface Report {
   name: string;
   time: string;
 }
 const state = reactive({
+  assets: store.assets,
   tips: "",
   getResultList: [],
   show: false,
@@ -112,6 +115,9 @@ const state = reactive({
 function timeTable(data: any) {
   if (state.settingTime.name === "上床时间") state.settingTime.time = data;
   if (state.settingTime.name === "起床时间") state.settingTime.time = data;
+  state.show = false;
+}
+function close(){
   state.show = false;
 }
 // 换算成number类型 进行判断  处理数据格式
@@ -169,7 +175,6 @@ state.jumpRoute = Taro.getCurrentInstance().router?.params.name as any;
           .detail {
             width: 20px;
             height: 20px;
-            background: #fff;
             vertical-align: bottom;
             margin-left: 10px;
           }

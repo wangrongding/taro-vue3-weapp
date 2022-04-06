@@ -6,7 +6,7 @@
       <view class="explain-text"> {{ state.getDiaryLimit.content }}</view>
     </view>
     <view class="close">
-      <image :src="state.assets.icon" alt="" @tap="state.close" />
+      <image :src="state.assets.close" alt="" @tap="state.close" />
     </view>
   </view>
 </template>
@@ -21,7 +21,7 @@ import { GetPrivacyPolicy } from "@/types/type";
 const store = useAssetsStore();
 const state = reactive({
   getDiaryLimit: {} as GetPrivacyPolicy,
-  assets: store.assets.home,
+  assets: store.assets.common,
   getDiaryLimittData() {
     getDiaryLimit()
       .then((res: GetPrivacyPolicy) => {
@@ -78,7 +78,7 @@ state.getDiaryLimittData();
     text-align: center;
     margin: 15px auto 30px auto;
     image {
-      width: 50px;
+      width: 58px;
       height: 58px;
     }
   }

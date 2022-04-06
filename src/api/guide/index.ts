@@ -35,8 +35,8 @@ export function sleepMood(data?: object) {
   return request.get("/mini-program/sleep-mood/list ", { data });
 }
 // 选择心情
-export function userMood(data?: object) {
-  return request.post("/mini-program/user-mood/save", { data });
+export function userMood(data?: object, options?: object) {
+  return request.post("/mini-program/user-mood/save", { data, ...options });
 }
 
 // 心情 详情

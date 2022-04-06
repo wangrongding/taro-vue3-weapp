@@ -24,7 +24,9 @@ const state = reactive({
   },
   // 统计
   statistical() {
-    // TODO by qianqian
+    Taro.navigateTo({
+      url: "/pages/dashboard/index",
+    });
   },
   // 获取亲密度
   getIntimacy() {
@@ -43,6 +45,11 @@ const state = reactive({
   // 今日目标列表
   getTodayTargetList() {
     state.popShow = "getTodayTarget";
+  },
+  // 点击其他弹框隐藏目标弹框
+  moreVisible(data: string) {
+    if (data === "") return (state.popShow = "");
+    state.getTodayTargetList();
   },
   // 环境音
   audio() {
@@ -92,7 +99,7 @@ const background = computed(() => {
         <!-- 我的 -->
         <image :src="state.assets.my" alt @tap="state.me" />
         <!-- 统计 -->
-        <image :src="state.assets.statistics" alt @tap="state.getIntimacy" />
+        <image :src="state.assets.statistics" alt="" @tap="state.statistical" />
       </view>
       <view class="operation-bar">
         <!-- 亲密度 -->
@@ -127,7 +134,10 @@ const background = computed(() => {
       <!-- 环境音 -->
       <Ambient :visible="state.popShow === 'ambient'" />
       <!-- 今日目标列表 -->
-      <GetTodayTarget :visible="state.popShow === 'getTodayTarget'" />
+      <GetTodayTarget
+        :visible="state.popShow === 'getTodayTarget'"
+        @moreVisible="state.moreVisible"
+      />
       <!-- 测试 -->
       <Test :visible="state.popShow === 'test'" />
     </view>

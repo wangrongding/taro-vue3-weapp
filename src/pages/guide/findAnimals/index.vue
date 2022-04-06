@@ -1,5 +1,10 @@
 <template>
-  <view class="page-container">
+  <view
+    class="page-container"
+    :style="{
+      backgroundImage: state.assets.guideBackground,
+    }"
+  >
     <NavBar>梦琦</NavBar>
     <view class="page-main">
       <view class="page-name">草丛里面有一些声音</view>
@@ -12,8 +17,10 @@
 import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../../components/NavBar.vue";
-
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 const state = reactive({
+  assets: store.assets.background,
   jumpTo() {
     Taro.redirectTo({
       url: "/pages/guide/guidingProcess/index?index=0",

@@ -59,7 +59,7 @@ const props = defineProps({
   <nut-popup
     :position="props.position"
     :closeable="props.closeable"
-    close-icon-position="top-left"
+    close-icon-position="top-right"
     close-icon="close-little"
     pop-class="pop"
     :destroy-on-close="true"
