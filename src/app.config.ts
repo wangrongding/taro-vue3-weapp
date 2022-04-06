@@ -30,6 +30,8 @@ export default {
     "pages/test/report",
     // 统计
     "pages/dashboard/index",
+    // 回归页面
+    "pages/goback/index",
   ],
   window: {
     backgroundTextStyle: "light",

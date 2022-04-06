@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, computed, ComputedRef } from "vue";
+import bus from "@/utils/eventBus";
 import Taro from "@tarojs/taro";
 import { useAssetsStore } from "@/stores/assets";
 import {
@@ -31,12 +32,9 @@ const state = reactive({
   },
   // 开始冒险
   beginAdventure() {
-    beginAdventure({}, { failToast: true, loading: true }).then((res: any) => {
-      Taro.showToast({
-        title: "操作成功",
-        icon: "success",
-        duration: 1000,
-      });
+    beginAdventure({}, { failToast: true, loading: true }).then(() => {
+      bus.emit("handlePopupShow", "goout");
+      state.getAnimalAndHoneyInfo();
     });
   },
   // 冒险结束获取奖励
@@ -59,6 +57,7 @@ const getSize: ComputedRef = computed(() => {
   return systemInfo;
 });
 state.getAnimalAndHoneyInfo();
+state.endAdventure();
 </script>
 <template>
   <view class="main-area">

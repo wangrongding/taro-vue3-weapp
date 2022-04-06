@@ -17,7 +17,7 @@ const state = reactive({
     });
   },
   getAmbientList() {
-    getAmbientList({}).then((res) => {
+    getAmbientList({}, { failToast: true, loading: true, mask: true }).then((res) => {
       state.ambientList = res;
     });
   },

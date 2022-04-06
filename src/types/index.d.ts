@@ -169,3 +169,17 @@ export interface Mood {
   veryHappy: string;
 }
 
+// 冒险结束收获
+export interface SpoilsInfo {
+  id: number;
+  outTimeId: number;
+  intimateValue: string;
+  soundId: number;
+  createUser: number;
+  createTime: string;
+  updateUser: number;
+  updateTime: string;
+  status: number;
+  isDeleted: number;
+  soundName: string;
+}

@@ -8,7 +8,8 @@ import { RequestBase } from "@/types/index";
 const localUrl = "http://192.168.1.114:60";
 
 // TODO (暂无)正式远程接口地址
-const remoteUrl = "http://192.168.1.71:60";
+// const remoteUrl = "http://192.168.1.71:60";
+const remoteUrl = "http://192.168.1.114:60";
 // 定义全局请求地址(baseUrl)
 const baseUrl = process.env.NODE_ENV === "production" ? remoteUrl : localUrl;
 
