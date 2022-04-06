@@ -39,11 +39,11 @@
                 <image class="title-logo" :src="item.icon" alt="" />
                 <view class="title-name"> {{ item.targetName }} </view>
                 <view class="today-data">
-                  {{ item.honeyCount }} <image :src="item.icon" alt="" />
+                  {{ item.honeyCount }} <image :src="state.assets.common.honey" alt="" />
                 </view>
               </view>
               <view class="operation-btn" @tap="state.operationBtn(item)"> 完成 </view>
-              <view class="more-operation"> ... </view>
+              <view class="more-operation" @tap="state.more(item)"> ... </view>
             </view>
           </view>
         </view>
@@ -54,6 +54,21 @@
       <image class="logo-image" :src="state.assets.home.popupTarget.targetPopupTodayGoal" alt="" />
     </template>
   </D-Popup>
+  <More
+    :visible="state.visible === 'more'"
+    @moreVisible="state.moreVisible"
+    :user-target-id="state.userTargetId"
+  />
+  <Inadventure
+    :visible="state.visible === 'inadventure'"
+    @moreVisible="state.moreVisible"
+    :honey-count="state.honeyCount"
+  />
+  <Norisk
+    :visible="state.visible === 'norisk'"
+    @moreVisible="state.moreVisible"
+    :honey-count="state.honeyCount"
+  />
 </template>
 <script setup lang="ts">
 import { reactive } from "vue";
@@ -61,8 +76,13 @@ import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
 import { useAssetsStore } from "@/stores/assets";
 import { getUserTarget, finishTarget } from "@/api/target/index";
+import bus from "@/utils/eventBus";
 import { GetuserTarget } from "@/types/type";
+import More from "./compontents/More.vue";
+import Inadventure from "./compontents/Inadventure.vue";
+import Norisk from "./compontents/Norisk.vue";
 const store = useAssetsStore();
+const emit = defineEmits(["moreVisible"]);
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -73,9 +93,13 @@ const props = defineProps({
 const state = reactive({
   assets: store.assets,
   targetStatus: 0,
+  animalStatus: 0,
+  visible: "",
   voList: [] as GetuserTarget[],
-  closePop() {},
-  open() {},
+  userTargetId: "",
+  honeyCount: "",
+  // closePop() {},
+  // open() {},
   // 添加目标跳转
   addTarget() {
     Taro.navigateTo({
@@ -84,25 +108,60 @@ const state = reactive({
   },
   // 完成目标
   operationBtn(data) {
+    // 1,3,4 都属于未冒险
+    state.animalStatus === 1 || state.animalStatus === 3 || state.animalStatus === 4
+      ? (state.visible = "inadventure")
+      : (state.visible = "norisk");
+    state.honeyCount = data.honeyCount;
     let params = {
       honeyCount: data.honeyCount,
-      userTargetId: data.targetTypeId,
+      userTargetId: data.userTargetId,
     };
     finishTarget(params);
+    emit("moreVisible", "");
   },
   // 获取列表
   getUserTargetData() {
-    getUserTarget().then((res: any) => {
-      state.targetStatus = res.targetStatus;
-      state.voList = res.voList;
-    });
+    getUserTarget().then(
+      (res: { targetStatus: number; animalStatus: number; voList: GetuserTarget[] }) => {
+        state.targetStatus = res.targetStatus;
+        state.animalStatus = res.animalStatus;
+        state.voList = res.voList;
+      },
+    );
   },
+  // 判断弹起更多并关闭今日弹框
+  more(data) {
+    state.userTargetId = data.userTargetId;
+    emit("moreVisible", "");
+    state.visible = "more";
+  },
+  // 判断关闭更多 弹起今日弹框
+  moreVisible() {
+    state.visible = "";
+    emit("moreVisible", "getTodayTarget");
+  },
+  // 关闭所有弹框
+  closePop() {
+    state.visible = "";
+  },
+});
+bus.on("closePop", () => {
+  state.closePop();
 });
 </script>
 <style lang="scss">
 // 今日目标列表
 .today-goal {
   height: 51vh;
+  // line-height: 51vh;
+  .nut-empty-description {
+    margin-top: 30px;
+  }
+  .nut-empty {
+    margin-top: 55px;
+  }
+
   .add-target {
     width: 142px;
     height: 58px;

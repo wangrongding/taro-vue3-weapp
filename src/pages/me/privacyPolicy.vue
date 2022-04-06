@@ -10,7 +10,7 @@
       </view>
     </view>
     <view class="close">
-      <image :src="state.assets.icon" alt="" @tap="state.close" />
+      <image :src="state.assets.close" alt="" @tap="state.close" />
     </view>
   </view>
 </template>
@@ -24,7 +24,7 @@ import { useAssetsStore } from "@/stores/assets";
 import { GetPrivacyPolicy } from "@/types/type";
 const store = useAssetsStore();
 const state = reactive({
-  assets: store.assets.home,
+  assets: store.assets.common,
   getPrivacyPolicy: [] as GetPrivacyPolicy[],
   close() {
     Taro.redirectTo({
@@ -55,6 +55,7 @@ state.getPrivacyPolicyData();
     flex: 1;
     overflow: auto;
     margin: 0 auto;
+    padding-bottom: 10px;
     .privacyPolicy-list {
       width: 335px;
       .privacyPolicy-title {
@@ -81,7 +82,7 @@ state.getPrivacyPolicyData();
     text-align: center;
     margin: 15px auto 30px auto;
     image {
-      width: 50px;
+      width: 58px;
       height: 58px;
     }
   }

@@ -43,7 +43,7 @@ const state = reactive({
     }
   },
 });
-const emit = defineEmits(["timeTable"]);
+const emit = defineEmits(["timeTable", "close"]);
 const multipleColumns = ref([
   // 第一列
   state.hours,
@@ -64,7 +64,7 @@ function confirm(selectedValue) {
 }
 // 点击蒙版关闭时间选择器
 function close() {
-  state.visible = false;
+  emit("close","");
 }
 // -------- 初始化 -------
 state.time();

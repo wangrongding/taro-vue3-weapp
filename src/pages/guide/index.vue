@@ -14,36 +14,37 @@ import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { getGuide } from "@/api/guide/index";
+// import { useAssetsStore } from "@/stores/assets";
 import { useStore } from "@/stores";
-const store = useStore();
+// const store = useAssetsStore();
+const usestore = useStore();
 interface Getguide {
   guideStatus: number;
 }
 const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  logo: "https://file.gkxymentpeak.mentpeak.com/sleep-mini-program/images/common/common-logo.png",
   Getguide: {} as Getguide,
   jumpTo() {
     // 判断登录接口是否完成
-    if (store.userInfo.token === "") return;
+    if (usestore.userInfo.token === "") return;
     let params = {
-      openId: store.userInfo.openId,
+      openId: usestore.userInfo.openId,
     };
     // 判断是否完成新手引导
-    getGuide(params, { failToast: true, loading: true })
-      .then((res: Getguide) => {
-        state.Getguide = res;
-        state.Getguide.guideStatus === 1
+    getGuide(params, { failToast: true, loading: true }).then((res: Getguide) => {
+      state.Getguide = res;
+      state.Getguide.guideStatus === 1
+        ? Taro.redirectTo({
+          url: "/pages/guide/findAnimals/index",
+        })
+        : state.Getguide.guideStatus === 2
           ? Taro.redirectTo({
-            url: "/pages/guide/findAnimals/index",
+            url: "/pages/index/index",
           })
-          : state.Getguide.guideStatus === 2
-            ? Taro.redirectTo({
-              url: "/pages/index/index",
-            })
-            : Taro.redirectTo({
-              url: "/pages/guide/guidingProcess/index?index=6",
-            });
-      });
+          : Taro.redirectTo({
+            url: "/pages/guide/guidingProcess/index?index=6",
+          });
+    });
   },
 });
 </script>

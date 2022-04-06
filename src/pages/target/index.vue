@@ -21,7 +21,7 @@
           </view>
           <image
             class="close"
-            src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
+            :src="state.assets.common.close"
             alt=""
             @tap="addTodayTarget('close')"
           />
@@ -34,10 +34,10 @@
               class="target-content"
               @tap="addTarget(item1)"
             >
-              <image class="target-image" :src="item1.active ? '' : item1.icon" alt="" />
+              <image class="target-image" :src="item1.active ? state.assets.common.checkSign : item1.icon" alt="" />
               <span class="target-title">{{ item1.targetName }}</span>
               <span class="target-energy-value">{{ item1.honeyCount }}</span>
-              <image class="target-energy-image" :src="item1.img" alt="" />
+              <image class="target-energy-image" :src="state.assets.common.honey" alt="" />
             </view>
           </nut-tabpane>
         </view>
@@ -58,12 +58,15 @@ import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import { targetList, userTarget } from "@/api/target/index";
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 interface DictList {
   dictKey: number,
   dictValue: string,
   icon: string,
 }
 const state = reactive({
+  assets: store.assets,
   tab1value: 0,
   dictList: [] as DictList[],
   targetList: [] as any,
@@ -170,7 +173,6 @@ targetListData();
         margin-top: 0;
       }
       .close {
-        background: red;
         position: absolute;
         width: 38px;
         right: 22px;
@@ -183,9 +185,8 @@ targetListData();
         padding: 20px 25px;
         border-radius: 15px;
         .target-image {
-          width: 50px;
+          width: 55px;
           height: 50px;
-          background: #000;
         }
         .target-title {
           font-size: 12px;
@@ -206,7 +207,6 @@ targetListData();
         .target-energy-image {
           width: 14px;
           height: 18px;
-          background: #000;
           margin: 20px 0 0 5px;
         }
       }

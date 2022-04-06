@@ -28,7 +28,8 @@ export default {
     "pages/me/privacyPolicy",
     // 测试报告
     "pages/test/report",
-    // "pages/dashboard/index",
+    // 统计
+    "pages/dashboard/index",
   ],
   window: {
     backgroundTextStyle: "light",

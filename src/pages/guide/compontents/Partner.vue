@@ -3,9 +3,9 @@
     <view class="partner-title"> 你的同伴 </view>
     <view class="partner-subtitle"> {{ props.animalName }}会一直在你身边 </view>
     <view class="intimacy-icon">
-      <image :src="state.logo" alt="" />
+      <image :src="props.assets.common.heartShaped" alt="" />
     </view>
-    <image class="partner-image" :src="state.logo" alt="" />
+    <image class="partner-image" :src="props.assets.bear.hello" alt="" />
     <view class="logo-name"> {{ state.nameContent }} </view>
   </view>
 </template>
@@ -20,9 +20,15 @@ const props = defineProps({
     },
     required: true,
   },
+  assets: {
+    type: Object,
+    default() {
+      return {};
+    },
+    required: true,
+  },
 });
 const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   nameContent: `通过一些日常活动
   可以增加你们的感情~ `,
 });

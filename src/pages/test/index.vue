@@ -19,11 +19,11 @@
         >
           <image class="test-logo" :src="item.icon" alt="" />
           <view class="test-name">
-            <span class="test-list-title">{{ item.title }}</span>
-            <span class="test-detail">{{ item.explain }}</span>
+            <span class="test-list-title">{{ item.remark }}</span>
+            <span class="test-detail">{{ item.title }}</span>
           </view>
           <span class="test-energy-val">{{ item.honeyCount }}</span>
-          <image class="test-energy-img" :src="state.assets.home.popupTest.testPopupTest" alt="" />
+          <image class="test-energy-img" :src="state.assets.common.honey" alt="" />
         </view>
       </view>
     </template>

@@ -6,8 +6,8 @@ export function getDiaryTest(data?: object) {
 }
 
 // 保存结果
-export function saveResult(data?: object) {
-  return request.post("/mini-program/sleet-diary/saveResult", { data });
+export function saveResult(data?: object, options?: object) {
+  return request.post("/mini-program/sleet-diary/saveResult", { data , ...options });
 }
 
 // 介绍
@@ -22,6 +22,6 @@ export function getSleepTest(data?: object) {
 }
 
 // 获取测试报告
-export function saveTestResult(data?: object) {
-  return request.post("/mini-program/sleet-test/saveResult", { data });
+export function saveTestResult(data?: object, options?: object) {
+  return request.post("/mini-program/sleet-test/saveResult", { data, ...options });
 }

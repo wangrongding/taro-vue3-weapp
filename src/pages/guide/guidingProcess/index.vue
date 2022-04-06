@@ -9,6 +9,7 @@
           :get-user-mood-list="state.getUserMoodList"
           :user-name="state.userName"
           :animal-name="state.animalName"
+          :assets="state.assets"
           @animalName="animalNameNum"
           @userName="userName"
           @timeTable="timeTable"
@@ -43,12 +44,15 @@ import DailyView from "../compontents/DailyView.vue";
 import DailyLife from "../compontents/DailyLife.vue";
 import Mood from "../compontents/Mood.vue";
 import { Sleepmood } from "@/types/type";
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 interface Guide {
-  title: string,
-  week: string,
-  days: string,
+  title: string;
+  week: string;
+  days: string;
 }
 const state = reactive({
+  assets: store.assets,
   index: 0,
   componentList: shallowRef([
     AnimalName,
@@ -65,6 +69,7 @@ const state = reactive({
   getUserMoodList: {} as Guide,
   time: [] as Guide[],
   serviceArr: [] as any,
+  templateId: [] as Array<string>[],
 });
 
 // 继续
@@ -109,12 +114,11 @@ function jumpTo() {
         sleepTime: state.time[0].title,
         weekTime: state.time[1].title,
       };
-      saveRest(params)
-        .then(() => {
-          sleepMoodListData();
-          getUserMoodData();
-          templateList();
-        });
+      saveRest(params, { failToast: true, loading: true }).then(() => {
+        sleepMoodListData();
+        getUserMoodData();
+        templateList();
+      });
 
       break;
     }
@@ -144,7 +148,7 @@ function userName(num: string) {
 }
 
 // 设置作息时间
-function timeTable(data: { title: string; week: string; days: string; }[]) {
+function timeTable(data: { title: string; week: string; days: string }[]) {
   state.time = data;
 }
 // 选择心情
@@ -154,37 +158,33 @@ function moodBtn(data: { id: string }) {
     week: state.getUserMoodList.week,
     days: state.getUserMoodList.days,
   };
-  userMood(params)
-    .then(() => {
-      Taro.redirectTo({
-        url: "/pages/index/index",
-      });
+  userMood(params, { failToast: true, loading: true }).then(() => {
+    Taro.redirectTo({
+      url: "/pages/index/index",
     });
+  });
 }
 
 // 获取心情列表
 function sleepMoodListData() {
-  sleepMood()
-    .then((res: Sleepmood[]) => {
-      state.sleepMoodList = res;
-    });
+  sleepMood().then((res: Sleepmood[]) => {
+    state.sleepMoodList = res;
+  });
 }
 // 心情详情
 function getUserMoodData() {
-  getUserMood()
-    .then((res: Guide) => {
-      state.getUserMoodList = res;
-    });
+  getUserMood().then((res: Guide) => {
+    state.getUserMoodList = res;
+  });
 }
 // 消息通知模板
 function templateList() {
-  template()
-    .then((res: any) => {
-      res.forEach((item: { templateId: string; }) => {
-        state.serviceArr.push(item.templateId);
-        messageNotification();
-      });
+  template().then((res: any) => {
+    res.forEach((item: { templateId: string }) => {
+      state.serviceArr.push(item.templateId);
     });
+    messageNotification();
+  });
 }
 function start() {
   state.index = Number(Taro.getCurrentInstance().router?.params.index as any);

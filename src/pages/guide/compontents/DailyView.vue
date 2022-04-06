@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="partner-title"> 每日查看 </view>
-    <image class="dailyview-image" :src="state.logo" alt="" />
+    <image class="dailyview-image" :src="props.assets.bear.happy" alt="" />
     <view class="logo-name">
       {{ props.animalName }}会去探险~
       <view class="name"> 晚上，{{ props.animalName }}陪你一起入睡，改善你的睡眠 </view>
@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
 const props = defineProps({
   animalName: {
     type: String,
@@ -19,9 +18,13 @@ const props = defineProps({
     },
     required: true,
   },
-});
-const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  assets: {
+    type: Object,
+    default() {
+      return {};
+    },
+    required: true,
+  },
 });
 </script>
 

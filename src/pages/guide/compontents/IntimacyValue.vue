@@ -1,16 +1,15 @@
 <template>
   <view>
-    <image class="logo-image" :src="state.logo" alt="" />
+    <image class="logo-image" :src="props.assets.bear.happy" alt="" />
     <view class="logo-name"> “哦~ {{ props.userName }}，你好呀~” </view>
     <view class="intimate-data">
-      <image class="intimate-icon" :src="state.logo" alt="" />
+      <image class="intimate-icon" :src="props.assets.common.heartShaped" alt="" />
       <view class="intimate-name"> +3 亲密值</view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
 const props = defineProps({
   userName: {
     type: String,
@@ -19,9 +18,13 @@ const props = defineProps({
     },
     required: true,
   },
-});
-const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  assets: {
+    type: Object,
+    default() {
+      return {};
+    },
+    required: true,
+  },
 });
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <view>
-    <image class="dailylife-image" :src="state.logo" alt="" />
+    <image class="dailylife-image" :src="props.assets.bear.expressionless" alt="" />
     <view class="logo-name">
       设置你的作息~
       <view class="name"> 让{{ props.animalName }}跟你一起日出而作，日落而息 </view>
@@ -13,7 +13,7 @@
         >
           {{ item.title }}
         </view>
-        <Bedtime :visible="state.show" @timeTable="timeTable" />
+        <Bedtime :visible="state.show" @timeTable="timeTable" @close="close" />
       </view>
     </view>
   </view>
@@ -30,9 +30,15 @@ const props = defineProps({
     },
     required: true,
   },
+  assets: {
+    type: Object,
+    default() {
+      return {};
+    },
+    required: true,
+  },
 });
 const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
   timeList: [
     {
       title: "上床时间",
@@ -62,6 +68,9 @@ function timeTable(selectedValue) {
 function openTime(data) {
   state.cancelId = data.id;
   state.show = true;
+}
+function close(){
+  state.show = false;
 }
 </script>
 

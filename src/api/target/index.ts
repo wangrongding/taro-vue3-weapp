@@ -19,3 +19,8 @@ export function userTarget(data?: object) {
 export function finishTarget(data?: object) {
   return request.post("/mini-program/user-target/finishTarget", { data });
 }
+
+// 跳过
+export function skipTarget(data?: object) {
+  return request.get("/mini-program/user-target/skipTarget", { data });
+}

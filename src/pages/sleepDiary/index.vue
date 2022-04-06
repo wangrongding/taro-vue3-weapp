@@ -5,23 +5,22 @@
       <view>
         <image
           class="close"
-          src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
+          :src="state.assets.common.close"
           alt=""
           @tap="state.close"
         />
       </view>
 
-      <image class="bear" :src="state.getSleepGuide.icon" alt="" />
+      <image class="bear" :src="state.assets.bear.expressionless" alt="" />
       <view class="titel"> {{ state.getSleepGuide.title }} </view>
       <view class="detail">
         {{ state.getSleepGuide.explain }}
       </view>
       <view class="energy-data">
-        20
         {{ state.getSleepGuide.honeyCount }}
         <image
           class="energy-value-img"
-          src="https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png"
+          :src="state.assets.common.honey"
           alt=""
         />
       </view>
@@ -36,7 +35,10 @@ import NavBar from "../../components/NavBar.vue";
 import { getSleepGuide } from "@/api/sleepDiary/index";
 import Taro from "@tarojs/taro";
 import { GetSleepGuide } from "@/types/type";
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 const state = reactive({
+  assets: store.assets,
   typeId: "",
   getSleepGuide: {} as GetSleepGuide,
   getSleepGuideData() {
@@ -82,13 +84,11 @@ state.getSleepGuideData();
     .close {
       width: 38px;
       height: 38px;
-      background: #fff;
       margin: 44px 0 0 20px;
     }
     .bear {
       width: 140px;
-      height: 180px;
-      background: #fff;
+      height: 160px;
       margin-left: 117.5px;
     }
     .titel {
@@ -121,7 +121,6 @@ state.getSleepGuideData();
       .energy-value-img {
         width: 12px;
         height: 16px;
-        background: #fff;
       }
     }
 

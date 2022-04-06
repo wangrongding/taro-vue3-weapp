@@ -10,7 +10,7 @@
     <view class="page-main">
       <view class="test-questions">
         <component
-          :is="state.componentList[Number(state.next.questionType) -1]"
+          :is="state.componentList[Number(state.next.questionType) - 1]"
           :single-choice-list="state.next"
           :default-value="state.defaultValue"
           @desc="descTime"
@@ -40,11 +40,11 @@ import singleChoice from "../compontents/singleChoice.vue";
 import multipleChoice from "../compontents/multipleChoice.vue";
 import { Gettest } from "@/types/type";
 interface Answer {
-    diaryQuestionId: string,
-    questionType: string,
-    answer: any,
-    sort: number,
-    diaryOptionId: any
+  diaryQuestionId: string;
+  questionType: string;
+  answer: any;
+  sort: number;
+  diaryOptionId: any;
 }
 const state = reactive({
   componentList: shallowRef([
@@ -81,24 +81,22 @@ function getSleepTestList() {
     let params = {
       diaryId: 1,
     };
-    getDiaryTest(params)
-      .then((res: Gettest[]) => {
-        state.sleepList = res;
-        // 给页面使用
-        state.next = state.sleepList[state.index];
-        addSort();
-      });
+    getDiaryTest(params).then((res: Gettest[]) => {
+      state.sleepList = res;
+      // 给页面使用
+      state.next = state.sleepList[state.index];
+      addSort();
+    });
   } else {
     let params = {
       diaryId: state.typeId,
     };
-    getSleepTest(params)
-      .then((res: Gettest[]) => {
-        state.sleepList = res;
-        // 给页面使用
-        state.next = state.sleepList[state.index];
-        addSort();
-      });
+    getSleepTest(params).then((res: Gettest[]) => {
+      state.sleepList = res;
+      // 给页面使用
+      state.next = state.sleepList[state.index];
+      addSort();
+    });
   }
 }
 // 继续下一题
@@ -158,24 +156,21 @@ function goStart() {
         answerList: state.answerList,
         diaryId: 1,
       };
-      saveResult(params)
-        .then(() => {
-          Taro.redirectTo({
-            url: "/pages/report/index?name=sleepTest",
-          });
+      saveResult(params, { failToast: true, loading: true }).then(() => {
+        Taro.redirectTo({
+          url: "/pages/report/index?name=sleepTest",
         });
+      });
     } else {
       let params = {
         answerList: state.answerList,
         diaryId: state.typeId,
       };
-      saveTestResult(params)
-        .then((res) => {
-          Taro.redirectTo({
-            url: "/pages/test/report?id=" + JSON.stringify(res),
-          });
-
+      saveTestResult(params, { failToast: true, loading: true }).then((res) => {
+        Taro.redirectTo({
+          url: "/pages/test/report?id=" + JSON.stringify(res),
         });
+      });
     }
     return;
   }
@@ -213,8 +208,8 @@ function multipleChoiceAnswer(data: never[]) {
 }
 // 转换 字母A，B,C
 function addSort() {
-  state.sleepList.forEach((item:any) => {
-    item.optionList.forEach((children: { sort: string | number; }) => {
+  state.sleepList.forEach((item: any) => {
+    item.optionList.forEach((children: { sort: string | number }) => {
       children.sort === 1
         ? (children.sort = "A")
         : children.sort === 2

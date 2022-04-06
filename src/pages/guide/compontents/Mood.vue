@@ -1,14 +1,14 @@
 <template>
   <view>
     <view class="mood-days"> 第 {{ props.getUserMoodList.days }} 天 </view>
-    <image class="mood-image" :src="state.logo" alt="" />
+    <image class="mood-image" :src="props.assets.bear.hello" alt="" />
     <view class="logo-name">
       {{ props.getUserMoodList.userName }}好!
       <view class="name"> 今天是星期{{ props.getUserMoodList.week }} </view>
     </view>
     <view class="mood-number">
       +20
-      <image class="mood-icon" :src="state.logo" alt="" />
+      <image class="mood-icon" :src="props.assets.common.honey" alt="" />
     </view>
     <view class="mood-data">
       <view class="mood-title"> 你现在心情怎么样?</view>
@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
 import { Sleepmood } from "@/types/type";
 const props = defineProps({
   sleepMoodList: {
@@ -42,9 +41,13 @@ const props = defineProps({
     },
     required: true,
   },
-});
-const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  assets: {
+    type: Object,
+    default() {
+      return {};
+    },
+    required: true,
+  },
 });
 const emit = defineEmits(["moodBtn"]);
 // 获取点击详情

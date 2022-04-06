@@ -16,7 +16,7 @@
           >
             <image class="me-icon" :src="item.img" alt="" />
             <span class="me-title">{{ item.title }}</span>
-            <image class="me-next" :src="item.icon" alt="" />
+            <text class="me-next" alt="">{{ item.icon }}</text>
             <span class="cloudArchiving">{{ item.cloudArchiving }}</span>
           </view>
           <!-- <button
@@ -30,7 +30,7 @@
       </view>
 
       <view class="close">
-        <image :src="state.assets.icon" alt="" @tap="state.close" />
+        <image :src="state.assets.close" alt="" @tap="state.close" />
       </view>
       <!-- 更改宠物名字弹框 -->
       <view class="change-name" v-if="state.show === true">
@@ -63,33 +63,37 @@ import { getUserAnimalInfo, updateUserAnimalInfo } from "@/api/me/index";
 import { GetUserAnimalInfo } from "@/types/type";
 const store = useAssetsStore();
 const state = reactive({
-  assets: store.assets.home,
+  assets: store.assets.common,
   getUserAnimalInfoObj: {} as GetUserAnimalInfo,
   name: "",
   show: false,
   list: [
     {
-      img: store.assets.home.icon,
+      img: store.assets.home.personCenter.settingsPetName,
       title: "宠物名字",
-      icon: store.assets.home.icon,
+      icon: ">",
     },
     {
-      img: store.assets.home.icon,
+      img: store.assets.home.personCenter.settingsSleepTime,
       title: "睡眠时间",
-      icon: store.assets.home.icon,
+      icon: ">",
     },
     {
-      img: store.assets.home.icon,
+      img: store.assets.home.personCenter.settingsPrivacySettings,
       title: "隐私政策",
-      icon: store.assets.home.icon,
+      icon: ">",
     },
     {
-      img: store.assets.home.icon,
+      img: store.assets.home.personCenter.settingsCloudArchiving,
       title: "云存档",
       cloudArchiving: "未存档",
     },
   ],
-  setting(data: { img: string; title: string; icon: string; cloudArchiving?: undefined; } | { img: string; title: string; cloudArchiving: string; icon?: undefined; }) {
+  setting(
+    data:
+      | { img: string; title: string; icon: string; cloudArchiving?: undefined }
+      | { img: string; title: string; cloudArchiving: string; icon?: undefined },
+  ) {
     if (data.title === "宠物名字") {
       state.show = true;
     } else if (data.title === "睡眠时间") {
@@ -104,10 +108,9 @@ const state = reactive({
   },
   // 用户动物信息
   getUserAnimalInfoData() {
-    getUserAnimalInfo()
-      .then((res: GetUserAnimalInfo) => {
-        state.getUserAnimalInfoObj = res;
-      });
+    getUserAnimalInfo().then((res: GetUserAnimalInfo) => {
+      state.getUserAnimalInfoObj = res;
+    });
   },
   // 修改名字
   updateUserAnimalInfoData(animalName: string) {
@@ -115,11 +118,10 @@ const state = reactive({
       animalName: animalName,
       id: state.getUserAnimalInfoObj.id,
     };
-    updateUserAnimalInfo(params)
-      .then(() => {
-        state.show = false;
-        state.getUserAnimalInfoData();
-      });
+    updateUserAnimalInfo(params).then(() => {
+      state.show = false;
+      state.getUserAnimalInfoData();
+    });
   },
   changeName() {
     if (state.name === "") return;
@@ -178,7 +180,6 @@ state.getUserAnimalInfoData();
       .me-logo {
         width: 105px;
         height: 120px;
-        background: red;
       }
       .me-name {
         font-size: 22px;
@@ -205,7 +206,6 @@ state.getUserAnimalInfoData();
           padding-bottom: 20px;
           display: flex;
           .me-icon {
-            background: red;
             width: 30px;
             height: 30px;
           }
@@ -218,9 +218,8 @@ state.getUserAnimalInfoData();
             margin: 6px 0 0 15px;
           }
           .me-next {
-            width: 6px;
-            height: 14px;
-            margin-top: 7px;
+            font-size: 20px;
+            color: #999999;
           }
           .cloudArchiving {
             font-size: 12px;
@@ -239,7 +238,7 @@ state.getUserAnimalInfoData();
       text-align: center;
       margin-bottom: 30px;
       image {
-        width: 50px;
+        width: 58px;
         height: 58px;
       }
     }
