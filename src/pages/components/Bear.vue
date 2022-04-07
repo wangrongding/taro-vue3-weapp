@@ -28,6 +28,11 @@ const state = reactive({
     getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
       state.bearInfo = res.animal;
       state.honeyInfo = res.honey;
+      if (res.animal.animalStatus === 3) {
+        Taro.redirectTo({
+          url: "/pages/goback/index",
+        });
+      }
     });
   },
   // 开始冒险
@@ -56,6 +61,18 @@ const getSize: ComputedRef = computed(() => {
   });
   return systemInfo;
 });
+// 倒计时
+const countdown: ComputedRef = computed(() => {
+  if (state.bearInfo.totalTime) {
+    // 结束时间
+    const endTime =
+      new Date(state.bearInfo.outStartTime).getTime() + state.bearInfo.totalTime * 1000;
+    return endTime;
+  } else {
+    return 0;
+  }
+});
+
 state.getAnimalAndHoneyInfo();
 state.endAdventure();
 </script>
@@ -63,8 +80,22 @@ state.endAdventure();
   <view class="main-area">
     <!-- 熊 -->
     <view class="bear-area">
-      <text class="countdown-text">00:50:34</text>
+      <!-- <text class="countdown-text">00:50:34</text> -->
+      <nut-countdown
+        v-if="countdown"
+        style="
+          justify-content: center;
+          font-family: Arial, Helvetica, sans-serif;
+          font-weight: bolder;
+          font-size: 22px;
+          margin-bottom: 20px;
+          color: #333333ff;
+        "
+        :end-time="countdown"
+        @on-end="state.getAnimalAndHoneyInfo"
+      />
       <image class="bear" :src="state.bearInfo.animalIcon" alt="" />
+      <view class="shadow" />
     </view>
     <!-- 蜂蜜 -->
     <view
@@ -103,6 +134,7 @@ state.endAdventure();
     margin: auto;
     display: flex;
     flex-direction: column;
+    position: relative;
     .countdown-text {
       font-family: Arial, Helvetica, sans-serif;
       font-weight: bolder;
@@ -113,6 +145,19 @@ state.endAdventure();
     .bear {
       width: 140px;
       height: 160px;
+      position: relative;
+      z-index: 2;
+    }
+    .shadow {
+      position: absolute;
+      right: 50%;
+      bottom: 0px;
+      transform: translateX(50%);
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      width: 100px;
+      height: 20px;
     }
   }
   .honeypot {

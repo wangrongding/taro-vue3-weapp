@@ -32,13 +32,6 @@ const App = createApp({
     // 微信登录
     await store.wxLogin();
     await assetsStore.getAssets();
-    // 调试用 👇 (不要删 ! )
-    // setTimeout(() => {
-    //   Taro.redirectTo({
-    //     // url: "/pages/goback/index",
-    //     url: "/pages/index/index",
-    //   });
-    // }, 200);
   },
   // 生命周期回调——监听小程序启动或切前台。
   onShow(options) {
