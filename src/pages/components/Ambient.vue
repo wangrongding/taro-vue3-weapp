@@ -13,7 +13,7 @@ const state = reactive({
   ambientList: [] as any,
   jumpTo(item: any) {
     Taro.navigateTo({
-      url: `/pages/ambient/play?${qs.stringify(item, { encode: false })}`,
+      url: `/pages/play/index?${qs.stringify(item, { encode: false })}`,
     });
   },
   getAmbientList() {

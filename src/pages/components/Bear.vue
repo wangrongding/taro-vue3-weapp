@@ -3,12 +3,7 @@ import { reactive, computed, ComputedRef } from "vue";
 import bus from "@/utils/eventBus";
 import Taro from "@tarojs/taro";
 import { useAssetsStore } from "@/stores/assets";
-import {
-  getAnimalAndHoneyInfo,
-  beginAdventure,
-  updateUserAnimalStatus,
-  endAdventure,
-} from "@/api/home";
+import { getAnimalAndHoneyInfo, beginAdventure, updateUserAnimalStatus } from "@/api/home";
 import { BearAndHoney } from "@/types/index";
 const store = useAssetsStore();
 const state = reactive({
@@ -42,10 +37,6 @@ const state = reactive({
       state.getAnimalAndHoneyInfo();
     });
   },
-  // 冒险结束获取奖励
-  endAdventure() {
-    endAdventure();
-  },
   // 冒险结束 修改动物状态
   updateUserAnimalStatus() {
     updateUserAnimalStatus();
@@ -74,7 +65,6 @@ const countdown: ComputedRef = computed(() => {
 });
 
 state.getAnimalAndHoneyInfo();
-state.endAdventure();
 </script>
 <template>
   <view class="main-area">
