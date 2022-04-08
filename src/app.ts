@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { useStore } from "@/stores/index";
 import { useAssetsStore } from "@/stores/assets";
+import Taro from "@tarojs/taro";
 import "./app.scss";
 
 import {

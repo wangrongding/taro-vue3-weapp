@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { reactive, computed, ComputedRef } from "vue";
+import bus from "@/utils/eventBus";
 import Taro from "@tarojs/taro";
 import { useAssetsStore } from "@/stores/assets";
-import {
-  getAnimalAndHoneyInfo,
-  beginAdventure,
-  updateUserAnimalStatus,
-  endAdventure,
-} from "@/api/home";
+import { getAnimalAndHoneyInfo, beginAdventure, updateUserAnimalStatus } from "@/api/home";
 import { BearAndHoney } from "@/types/index";
 const store = useAssetsStore();
 const state = reactive({
@@ -27,21 +23,19 @@ const state = reactive({
     getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
       state.bearInfo = res.animal;
       state.honeyInfo = res.honey;
+      if (res.animal.animalStatus === 3) {
+        Taro.redirectTo({
+          url: "/pages/goback/index",
+        });
+      }
     });
   },
   // 开始冒险
   beginAdventure() {
-    beginAdventure({}, { failToast: true, loading: true }).then((res: any) => {
-      Taro.showToast({
-        title: "操作成功",
-        icon: "success",
-        duration: 1000,
-      });
+    beginAdventure({}, { failToast: true, loading: true }).then(() => {
+      bus.emit("handlePopupShow", "goout");
+      state.getAnimalAndHoneyInfo();
     });
-  },
-  // 冒险结束获取奖励
-  endAdventure() {
-    endAdventure();
   },
   // 冒险结束 修改动物状态
   updateUserAnimalStatus() {
@@ -58,14 +52,40 @@ const getSize: ComputedRef = computed(() => {
   });
   return systemInfo;
 });
+// 倒计时
+const countdown: ComputedRef = computed(() => {
+  if (state.bearInfo.totalTime) {
+    // 结束时间
+    const endTime =
+      new Date(state.bearInfo.outStartTime).getTime() + state.bearInfo.totalTime * 1000;
+    return endTime;
+  } else {
+    return 0;
+  }
+});
+
 state.getAnimalAndHoneyInfo();
 </script>
 <template>
   <view class="main-area">
     <!-- 熊 -->
     <view class="bear-area">
-      <text class="countdown-text">00:50:34</text>
+      <!-- <text class="countdown-text">00:50:34</text> -->
+      <nut-countdown
+        v-if="countdown"
+        style="
+          justify-content: center;
+          font-family: Arial, Helvetica, sans-serif;
+          font-weight: bolder;
+          font-size: 22px;
+          margin-bottom: 20px;
+          color: #333333ff;
+        "
+        :end-time="countdown"
+        @on-end="state.getAnimalAndHoneyInfo"
+      />
       <image class="bear" :src="state.bearInfo.animalIcon" alt="" />
+      <view class="shadow" />
     </view>
     <!-- 蜂蜜 -->
     <view
@@ -104,6 +124,7 @@ state.getAnimalAndHoneyInfo();
     margin: auto;
     display: flex;
     flex-direction: column;
+    position: relative;
     .countdown-text {
       font-family: Arial, Helvetica, sans-serif;
       font-weight: bolder;
@@ -114,6 +135,19 @@ state.getAnimalAndHoneyInfo();
     .bear {
       width: 140px;
       height: 160px;
+      position: relative;
+      z-index: 2;
+    }
+    .shadow {
+      position: absolute;
+      right: 50%;
+      bottom: 0px;
+      transform: translateX(50%);
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      width: 100px;
+      height: 20px;
     }
   }
   .honeypot {

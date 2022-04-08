@@ -8,6 +8,7 @@ import GetTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 import Test from "@/pages/test/index.vue";
 import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
+import Goout from "../components/Goout.vue";
 import Bear from "../components/Bear.vue";
 const store = useAssetsStore();
 const state = reactive({
@@ -76,12 +77,22 @@ const state = reactive({
 bus.on("closePop", () => {
   state.closePop();
 });
+bus.on("handlePopupShow", (type: string) => {
+  state.popShow = type;
+});
 
+// 根据时间动态切换背景图片
 const background = computed(() => {
   if (new Date().getHours() > 6 && new Date().getHours() < 18) {
-    return `url(${store.assets.background.homeBackgroundDay})`;
+    return {
+      color: "#48c77d",
+      image: `url(${store.assets.background.homeBackgroundDay})`,
+    };
   } else {
-    return `url(${store.assets.background.homeBackgroundNight})`;
+    return {
+      color: "#32a5de",
+      image: `url(${store.assets.background.homeBackgroundNight})`,
+    };
   }
 });
 </script>
@@ -90,7 +101,8 @@ const background = computed(() => {
   <view
     class="page-container"
     :style="{
-      backgroundImage: background,
+      backgroundImage: background.image,
+      backgroundColor: background.color,
     }"
   >
     <NavBar>梦琦</NavBar>
@@ -140,13 +152,14 @@ const background = computed(() => {
       />
       <!-- 测试 -->
       <Test :visible="state.popShow === 'test'" />
+      <!-- 熊出去的提示 -->
+      <Goout :visible="state.popShow === 'goout'" />
     </view>
   </view>
 </template>
 
 <style lang="scss">
 .page-container {
-  background-color: #48c77d;
   background-size: 100% auto;
   background-position: center top;
   background-repeat: no-repeat;

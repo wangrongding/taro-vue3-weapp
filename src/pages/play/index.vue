@@ -12,7 +12,6 @@ let audioCtx: InnerAudioContext;
 
 const routerParams: Ambient = Taro.getCurrentInstance().router?.params as any;
 const state = reactive({
-  file: "play",
   tempAudioCtx: null as unknown as InnerAudioContext,
   assets: store.assets.common,
   playStatus: false,
@@ -43,35 +42,35 @@ const state = reactive({
     });
   },
   // 创建音频上下文
+  // createAudio() {
+  //   if (globalStore.ambient.audioCtx) {
+  //     return;
+  //   }
+  //   // audioCtx = Taro.createInnerAudioContext();
+  //   // audioCtx.src = routerParams.music;
+  //   // state.tempAudioCtx.src = routerParams.music;
+  //   // globalStore.ambient.audioCtx.autoplay = false;
+  //   // globalStore.ambient.audioCtx.loop = true;
+  // },
   createAudio() {
     if (globalStore.ambient.audioCtx) {
       return;
     }
-    globalStore.ambient.musicName = routerParams.soundName;
-    globalStore.ambient.musicImg = routerParams.icon;
-    // audioCtx = Taro.createInnerAudioContext();
-    // audioCtx.src = routerParams.music;
+    // state.tempAudioCtx = Taro.createInnerAudioContext();
     globalStore.ambient.audioCtx = Taro.createInnerAudioContext();
-    globalStore.ambient.audioCtx.src = routerParams.music;
-    // globalStore.ambient.audioCtx.autoplay = false;
-    // globalStore.ambient.audioCtx.loop = true;
-
-    // globalStore.ambient.audioCtx.onPlay(() => {
-    //   state.onPlay();
-    // });
-    // globalStore.ambient.audioCtx.onError(() => {});
-
-    globalStore.ambient.audioCtx = audioCtx;
+    // setTimeout(() => {
+    //   globalStore.ambient.audioCtx.src = routerParams.music;
+    // }, 3000);
   },
   // 控制音频播放/暂停
   handlePlay() {
-    if (globalStore.ambient.audioCtx.paused) {
-      globalStore.ambient.playStatus = true;
-      globalStore.ambient.audioCtx.play();
-    } else {
-      globalStore.ambient.playStatus = false;
-      globalStore.ambient.audioCtx.pause();
-    }
+    // if (globalStore.ambient.audioCtx.paused) {
+    //   globalStore.ambient.playStatus = true;
+    //   globalStore.ambient.audioCtx.play();
+    // } else {
+    //   globalStore.ambient.playStatus = false;
+    //   globalStore.ambient.audioCtx.pause();
+    // }
   },
   // 暂停
   stop() {
@@ -89,9 +88,24 @@ const state = reactive({
     // state.playStatus = true;
   },
 });
+function createAudio() {
+  if (globalStore.ambient.audioCtx) {
+    return;
+  }
+  audioCtx = Taro.createInnerAudioContext();
+  audioCtx.src = routerParams.music;
+
+  globalStore.ambient.musicName = routerParams.soundName;
+  globalStore.ambient.musicImg = routerParams.icon;
+  // audioCtx = Taro.createInnerAudioContext();
+  // audioCtx.src = routerParams.music;
+  // state.tempAudioCtx.src = routerParams.music;
+  // globalStore.ambient.audioCtx.autoplay = false;
+  // globalStore.ambient.audioCtx.loop = true;
+}
 onMounted(() => {
   // 创建音频
-  // state.createAudio();
+  createAudio();
 });
 </script>
 <template>

@@ -9,7 +9,7 @@ export default {
     // 首页
     "pages/index/index",
     // 环境音播放页
-    "pages/ambient/play",
+    "pages/play/index",
     // 目标
     "pages/target/index",
     // 睡眠日记首页
@@ -30,6 +30,8 @@ export default {
     "pages/test/report",
     // 统计
     "pages/dashboard/index",
+    // 回归页面
+    "pages/goback/index",
   ],
   window: {
     backgroundTextStyle: "light",
