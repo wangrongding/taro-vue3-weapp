@@ -15,6 +15,7 @@ const state = reactive({
   text: "Hello i'am rongding...",
   assets: store.assets.home,
   popShow: "",
+  badgeValue: "",
   todayGoalPopup: false,
   testGoalPopup: false,
   // 我的
@@ -72,6 +73,10 @@ const state = reactive({
       url: "/pages/sleepDiary/index?id=4",
     });
   },
+  // 徽标
+  badge(data:string){
+    state.badgeValue = data;
+  },
 });
 // 关闭弹窗
 bus.on("closePop", () => {
@@ -128,8 +133,9 @@ const background = computed(() => {
         <!--- 环境音 -->
         <image :src="state.assets.ambientSound" alt @tap="state.audio" />
         <!--- 今日目标 -->
+        <!--- 今日目标 -->
         <nut-badge
-          :value="1"
+          :value="state.badgeValue"
           top="1"
           right="20"
           @tap="state.getTodayTargetList"
@@ -149,6 +155,7 @@ const background = computed(() => {
       <GetTodayTarget
         :visible="state.popShow === 'getTodayTarget'"
         @moreVisible="state.moreVisible"
+        @badge="state.badge"
       />
       <!-- 测试 -->
       <Test :visible="state.popShow === 'test'" />

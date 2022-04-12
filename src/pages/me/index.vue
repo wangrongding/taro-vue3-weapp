@@ -17,15 +17,16 @@
             <image class="me-icon" :src="item.img" alt="" />
             <span class="me-title">{{ item.title }}</span>
             <text class="me-next" alt="">{{ item.icon }}</text>
-            <span class="cloudArchiving">{{ item.cloudArchiving }}</span>
+            <button
+              openType="getPhoneNumber"
+              class="cloudArchiving"
+              @getphonenumber="getPhoneNumber"
+              v-if="item.cloudArchiving === '未存档'"
+            >
+              {{ item.cloudArchiving }}
+            </button>
+            <span class="cloudArchiving cloudArchivingValue" v-else>{{ item.cloudArchiving }}</span>
           </view>
-          <!-- <button
-          type="primary"
-          openType="getPhoneNumber"
-          @getphonenumber="getPhoneNumber"
-        >
-          微信绑定手机号登录
-        </button> -->
         </view>
       </view>
 
@@ -59,8 +60,11 @@ import { reactive } from "vue";
 import Taro from "@tarojs/taro";
 import NavBar from "../../components/NavBar.vue";
 import { useAssetsStore } from "@/stores/assets";
-import { getUserAnimalInfo, updateUserAnimalInfo } from "@/api/me/index";
+import { getUserAnimalInfo, updateUserAnimalInfo, updateUserPhone } from "@/api/me/index";
+import { wxRegistry } from "@/api/guide/index";
 import { GetUserAnimalInfo } from "@/types/type";
+import { useStore } from "@/stores";
+const usestore = useStore();
 const store = useAssetsStore();
 const state = reactive({
   assets: store.assets.common,
@@ -110,6 +114,7 @@ const state = reactive({
   getUserAnimalInfoData() {
     getUserAnimalInfo().then((res: GetUserAnimalInfo) => {
       state.getUserAnimalInfoObj = res;
+      state.getUserAnimalInfoObj.phone === "" ? state.list[3].cloudArchiving = "未存档" : state.list[3].cloudArchiving = state.getUserAnimalInfoObj.phone;
     });
   },
   // 修改名字
@@ -147,14 +152,24 @@ const state = reactive({
   },
 });
 
-function getPhoneNumber() {
-  // console.log(JSON.stringify(e));
-  // console.log(`加密算法的初始向量:${e.detail.iv}`);
-  // console.log(`包括敏感数据在内的完整用户信息的加密数据:${e.detail.encryptedData}`);
-  Taro.checkSession({
-    success: function () {
-      // console.log(1)
-    },
+function getPhoneNumber(e) {
+  let params = {
+    encrypted: e.detail.encryptedData,
+    iv: e.detail.iv,
+    openId: usestore.userInfo.openId,
+  };
+  wxRegistry(params).then((res:{account:string}) => {
+    let param = {
+      phone: res.account,
+      id: usestore.userInfo.id,
+    };
+    Taro.checkSession({
+      success: function () {
+        updateUserPhone(param).then(()=>{
+          state.list[3].cloudArchiving = res.account;
+        });
+      },
+    });
   });
 }
 state.getUserAnimalInfoData();
@@ -205,6 +220,9 @@ state.getUserAnimalInfoData();
           margin-left: 20px;
           padding-bottom: 20px;
           display: flex;
+          button::after {
+            border: none;
+          }
           .me-icon {
             width: 30px;
             height: 30px;
@@ -226,7 +244,14 @@ state.getUserAnimalInfoData();
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             color: #999999;
-            margin: 7px 20px 0 0;
+            margin-right: 20px;
+            padding: 0px;
+            border: none;
+            outline: none;
+            background: transparent;
+          }
+          .cloudArchivingValue{
+            margin-top: 8px;
           }
         }
       }

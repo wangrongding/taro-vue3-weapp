@@ -14,3 +14,8 @@ export function updateUserAnimalInfo(data?: object) {
 export function getPrivacyPolicy(data?: object) {
   return request.get("/mini-program/privacy-policy/getPrivacyPolicy", { data });
 }
+
+// 云存档
+export function updateUserPhone(data?: object) {
+  return request.put("/mini-program/user/updateUserPhone", { data });
+}

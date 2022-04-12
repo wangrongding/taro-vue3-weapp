@@ -17,7 +17,15 @@
         />
       </view>
 
-      <view @tap="jumpTo" class="page-btn"> 继续 </view>
+      <view @tap="jumpTo" class="page-btn" v-if="state.go === false"> 继续 </view>
+      <button
+        openType="getPhoneNumber"
+        @getphonenumber="getPhoneNumber"
+        class="page-btn"
+        v-else
+      >
+        继续
+      </button>
     </view>
   </view>
 </template>
@@ -34,6 +42,7 @@ import {
   userMood,
   getUserMood,
   template,
+  wxRegistry,
 } from "@/api/guide/index";
 import NavBar from "../../../components/NavBar.vue";
 import AnimalName from "../compontents/AnimalName.vue";
@@ -45,6 +54,8 @@ import DailyLife from "../compontents/DailyLife.vue";
 import Mood from "../compontents/Mood.vue";
 import { Sleepmood } from "@/types/type";
 import { useAssetsStore } from "@/stores/assets";
+import { useStore } from "@/stores";
+const usestore = useStore();
 const store = useAssetsStore();
 interface Guide {
   title: string;
@@ -70,6 +81,7 @@ const state = reactive({
   time: [] as Guide[],
   serviceArr: [] as any,
   templateId: [] as Array<string>[],
+  go: false,
 });
 
 // 继续
@@ -80,7 +92,9 @@ function jumpTo() {
       let params = {
         animalName: state.animalName,
       };
-      saveName(params);
+      saveName(params).then(()=>{
+        state.index = state.index + 1;
+      });
       break;
     }
     case 1: {
@@ -88,14 +102,27 @@ function jumpTo() {
       let params = {
         name: state.userName,
       };
-      saveUserName(params);
+      saveUserName(params).then(()=>{
+        state.index = state.index + 1;
+      });;
       break;
     }
     case 2: {
       let params = {
         intimateValue: 3,
       };
-      updateByAnimalId(params);
+      updateByAnimalId(params).then(()=>{
+        state.index = state.index + 1;
+      });;
+      break;
+    }
+    case 3: {
+      state.index = state.index + 1;
+      break;
+    }
+    case 4: {
+      state.go = true;
+      state.index = state.index + 1;
       break;
     }
     case 5: {
@@ -118,13 +145,13 @@ function jumpTo() {
         sleepMoodListData();
         getUserMoodData();
         templateList();
+        state.index = state.index + 1;
       });
-
       break;
     }
   }
-  state.index = state.index + 1;
 }
+
 // 消息通知
 function messageNotification() {
   let serviceArrs: Array<string> = [];
@@ -136,6 +163,17 @@ function messageNotification() {
     success() {},
     fail() {},
   });
+}
+
+// 手机号获取
+function getPhoneNumber(e) {
+  let params = {
+    encrypted: e.detail.encryptedData,
+    iv: e.detail.iv,
+    openId: usestore.userInfo.openId,
+  };
+  wxRegistry(params);
+  state.go = false;
 }
 
 // 获取动物名字

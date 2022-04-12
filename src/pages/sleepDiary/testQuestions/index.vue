@@ -180,7 +180,7 @@ function preNext() {
   // 判断是否是第一题
   if (state.index === 0) {
     return Taro.redirectTo({
-      url: "/pages/sleepDiary/index",
+      url: "/pages/sleepDiary/index?id=" + state.typeId,
     });
   }
   state.index = state.index - 1;

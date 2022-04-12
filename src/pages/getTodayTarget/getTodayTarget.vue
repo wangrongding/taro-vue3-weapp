@@ -7,7 +7,6 @@
     padding="37px 20px 0"
     :background-color="'#F0F7F4FF'"
     :suffix-color="'#60D394FF'"
-    :opened-callback="state.getUserTargetData"
   >
     <template #content>
       <view class="today-goal">
@@ -82,7 +81,7 @@ import More from "./compontents/More.vue";
 import Inadventure from "./compontents/Inadventure.vue";
 import Norisk from "./compontents/Norisk.vue";
 const store = useAssetsStore();
-const emit = defineEmits(["moreVisible"]);
+const emit = defineEmits(["moreVisible","badge"]);
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -98,8 +97,6 @@ const state = reactive({
   voList: [] as GetuserTarget[],
   userTargetId: "",
   honeyCount: "",
-  // closePop() {},
-  // open() {},
   // 添加目标跳转
   addTarget() {
     Taro.navigateTo({
@@ -127,6 +124,7 @@ const state = reactive({
         state.targetStatus = res.targetStatus;
         state.animalStatus = res.animalStatus;
         state.voList = res.voList;
+        emit("badge", state.voList.length.toString());
       },
     );
   },
@@ -149,6 +147,7 @@ const state = reactive({
 bus.on("closePop", () => {
   state.closePop();
 });
+state.getUserTargetData();
 </script>
 <style lang="scss">
 // 今日目标列表

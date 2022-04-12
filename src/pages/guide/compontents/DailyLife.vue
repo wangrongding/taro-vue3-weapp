@@ -13,7 +13,12 @@
         >
           {{ item.title }}
         </view>
-        <Bedtime :visible="state.show" @timeTable="timeTable" @close="close" />
+        <Bedtime
+          :visible="state.show"
+          @timeTable="timeTable"
+          @close="close"
+          :cancel-id="state.cancelId"
+        />
       </view>
     </view>
   </view>

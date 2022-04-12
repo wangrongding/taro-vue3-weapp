@@ -2,14 +2,14 @@
   <nut-picker
     :visible="props.visible"
     :columns="multipleColumns"
+    v-model="state.asyncValue"
     @confirm="confirm"
     @close="close"
   />
-  <!-- :cancel-text="state.cancelText" -->
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref ,watchEffect } from "vue";
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -18,16 +18,24 @@ const props = defineProps({
     },
     required: true,
   },
+  cancelId: {
+    type: Number,
+    default() {
+      return 0;
+    },
+    required: true,
+  },
 });
+
 interface Time {
   text: any,
   value: any,
 }
 const state = reactive({
-  visible: props.visible,
+  cancelIdValue: 0,
   hours: [] as Time[],
   minutes: [] as Time[],
-  cancelId: "",
+  asyncValue: ref<string[]>([]),
   time() {
     for (let i = 0; i <= 23; i++) {
       state.hours.push({
@@ -42,6 +50,9 @@ const state = reactive({
       });
     }
   },
+});
+watchEffect(() => {
+  props.cancelId === 1 ? state.asyncValue = ["23"] : state.asyncValue = ["07"];
 });
 const emit = defineEmits(["timeTable", "close"]);
 const multipleColumns = ref([
