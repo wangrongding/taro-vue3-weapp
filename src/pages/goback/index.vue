@@ -27,7 +27,7 @@ state.endAdventure();
 </script>
 <template>
   <view class="back-container">
-    <NavBar style="color: black">梦琦</NavBar>
+    <NavBar style="color: black" />
     <view class="back-main">
       <view style="text-align: center; width: 100%">
         <image class="bear" :src="store.assets.bear.placeholder" alt="" />

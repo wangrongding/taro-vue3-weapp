@@ -105,7 +105,7 @@ const background = computed(() => {
       backgroundColor: background.color,
     }"
   >
-    <NavBar>梦琦</NavBar>
+    <NavBar />
     <view class="main">
       <view class="operation-bar">
         <!-- 我的 -->

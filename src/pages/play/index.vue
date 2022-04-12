@@ -7,12 +7,11 @@ import { Ambient } from "@/types/index";
 import { useGlobalStore } from "@/stores/global";
 const store = useAssetsStore();
 const globalStore = useGlobalStore();
-
-let audioCtx: InnerAudioContext;
+const globalAmbient = useGlobalStore().ambient;
 
 const routerParams: Ambient = Taro.getCurrentInstance().router?.params as any;
 const state = reactive({
-  tempAudioCtx: null as unknown as InnerAudioContext,
+  audioCtx: null as any,
   assets: store.assets.common,
   playStatus: false,
   timeCheckList: [
@@ -20,10 +19,11 @@ const state = reactive({
     { text: "10  分钟", value: 10 },
     { text: "20  分钟", value: 20 },
     { text: "30  分钟", value: 30 },
-    { text: "40  分钟", value: 30 },
-    { text: "50  分钟", value: 30 },
-    { text: "60  分钟", value: 30 },
+    { text: "40  分钟", value: 40 },
+    { text: "50  分钟", value: 50 },
+    { text: "60  分钟", value: 60 },
   ],
+  // 时间选择器弹窗
   timeCheckShow: false,
   // 返回
   goBack() {
@@ -33,75 +33,93 @@ const state = reactive({
   },
   // 重定向到首页
   redirectTo() {
-    if (audioCtx) {
-      state.handlePlay();
-      audioCtx.destroy();
+    if (state.audioCtx) {
+      clearPlayer();
     }
     Taro.redirectTo({
       url: "/pages/index/index",
     });
   },
-  // 创建音频上下文
-  // createAudio() {
-  //   if (globalStore.ambient.audioCtx) {
-  //     return;
-  //   }
-  //   // audioCtx = Taro.createInnerAudioContext();
-  //   // audioCtx.src = routerParams.music;
-  //   // state.tempAudioCtx.src = routerParams.music;
-  //   // globalStore.ambient.audioCtx.autoplay = false;
-  //   // globalStore.ambient.audioCtx.loop = true;
-  // },
-  createAudio() {
-    if (globalStore.ambient.audioCtx) {
-      return;
-    }
-    // state.tempAudioCtx = Taro.createInnerAudioContext();
-    globalStore.ambient.audioCtx = Taro.createInnerAudioContext();
-    // setTimeout(() => {
-    //   globalStore.ambient.audioCtx.src = routerParams.music;
-    // }, 3000);
-  },
   // 控制音频播放/暂停
   handlePlay() {
-    // if (globalStore.ambient.audioCtx.paused) {
-    //   globalStore.ambient.playStatus = true;
-    //   globalStore.ambient.audioCtx.play();
-    // } else {
-    //   globalStore.ambient.playStatus = false;
-    //   globalStore.ambient.audioCtx.pause();
-    // }
+    if (state.audioCtx.paused) {
+      globalAmbient.playStatus = true;
+      state.audioCtx.play();
+    } else {
+      globalAmbient.playStatus = false;
+      state.audioCtx.pause();
+    }
   },
   // 暂停
   stop() {
-    globalStore.ambient.musicTime = 0;
-    audioCtx && audioCtx.stop();
-    globalStore.ambient.playStatus = false;
+    globalAmbient.musicTime = 0;
+    globalAmbient.playStatus = false;
+    if (state.audioCtx) {
+      state.audioCtx.seek(0);
+      state.audioCtx.pause();
+    }
   },
-  // 播放回调
-  onPlay() {},
   // 设置倒计时
   setCountdown({ selectedValue }) {
-    globalStore.ambient.musicTime = Date.now() + parseInt(selectedValue) * 60 * 1000;
+    globalAmbient.musicTime = Date.now() + parseInt(selectedValue) * 2 * 1000;
+    // globalAmbient.musicTime = Date.now() + parseInt(selectedValue) * 60 * 1000;
     state.timeCheckShow = false;
-    // audioCtx && audioCtx.play();
-    // state.playStatus = true;
+    globalStore.musicCountDown();
   },
 });
-function createAudio() {
-  if (globalStore.ambient.audioCtx) {
-    return;
-  }
-  audioCtx = Taro.createInnerAudioContext();
-  audioCtx.src = routerParams.music;
 
-  globalStore.ambient.musicName = routerParams.soundName;
-  globalStore.ambient.musicImg = routerParams.icon;
-  // audioCtx = Taro.createInnerAudioContext();
-  // audioCtx.src = routerParams.music;
-  // state.tempAudioCtx.src = routerParams.music;
-  // globalStore.ambient.audioCtx.autoplay = false;
-  // globalStore.ambient.audioCtx.loop = true;
+// 音频实例属性设置
+function player() {
+  state.audioCtx.title = routerParams.soundName;
+  state.audioCtx.coverImgUrl = routerParams.icon;
+  // 设置了 src 之后会自动播放
+  state.audioCtx.src = routerParams.music;
+  // 设置全局变量,用于状态共享
+  globalAmbient.audioCtx = state.audioCtx;
+  globalAmbient.musicImg = routerParams.icon;
+  globalAmbient.musicName = routerParams.soundName;
+  globalAmbient.playStatus = true;
+  // 音乐播放结束后继续播放此音乐，循环不停的播放
+  state.audioCtx.onEnded(() => {
+    player();
+  });
+  state.audioCtx.onStop(() => {});
+  state.audioCtx.onPause(() => {
+    globalAmbient.playStatus = false;
+    // console.log(routerParams);
+  });
+  state.audioCtx.onPlay(() => {
+    globalAmbient.playStatus = true;
+  });
+}
+
+// 清除播放器
+function clearPlayer() {
+  state.audioCtx.stop();
+  globalAmbient.audioCtx = null;
+  globalAmbient.musicImg = "";
+  globalAmbient.musicName = "";
+  globalAmbient.musicTime = 0;
+  globalAmbient.playStatus = false;
+}
+
+// 创建音频
+function createAudio() {
+  if (globalAmbient.audioCtx) {
+    // 列表进来的音乐和已存在的音乐不一致,做切换
+    if (routerParams.music !== globalAmbient.audioCtx.src) {
+      state.audioCtx = globalAmbient.audioCtx;
+      state.audioCtx = Taro.getBackgroundAudioManager();
+    } else {
+      // 浮窗进来
+      state.audioCtx = globalAmbient.audioCtx;
+      player();
+    }
+  } else {
+    // 第一次进来
+    state.audioCtx = Taro.getBackgroundAudioManager();
+  }
+  player();
 }
 onMounted(() => {
   // 创建音频
@@ -110,7 +128,7 @@ onMounted(() => {
 </script>
 <template>
   <view class="play-container">
-    <NavBar>--</NavBar>
+    <NavBar />
     <view class="operation">
       <view
         @tap="state.redirectTo"
@@ -131,29 +149,39 @@ onMounted(() => {
         style="height: 50px; width: 50px; line-height: 50px; margin-top: 5px"
       />
     </view>
-    <!-- 音乐图片 -->
-    <view
-      class="music-img"
-      :style="{
-        backgroundImage: `url(${routerParams.icon})`,
-        width: '150px',
-        height: '150px',
-        'border-radius': '50%',
-        'background-color': 'white',
-        backgroundSize: '100% 100%',
-        margin: ' 0 auto',
-        'margin-top': '50px',
-        border: '10px solid #fff',
-      }"
-    />
+
+    <view>
+      <!-- 音乐图片 -->
+      <view
+        class="music-img"
+        :style="{
+          backgroundImage: `url(${routerParams.icon})`,
+          width: '150px',
+          height: '150px',
+          'border-radius': '50%',
+          'background-color': 'white',
+          backgroundSize: '100% 100%',
+          margin: ' 0 auto',
+          'margin-top': '50px',
+          border: '10px solid #fff',
+        }"
+      />
+      <!-- 音乐名称 -->
+      <view
+        class="music-name"
+        :style="{ color: 'white', textAlign: 'center', fontSize: '22px', marginTop: '20px' }"
+      >
+        {{ routerParams.soundName }}
+      </view>
+    </view>
     <view class="play-box">
       <!-- 倒计时 -->
       <nut-countdown
-        v-if="globalStore.ambient.musicTime"
+        v-if="globalAmbient.musicTime"
         style="justify-content: center; color: white"
-        :end-time="globalStore.ambient.musicTime"
-        @on-end="state.stop"
+        :end-time="globalAmbient.musicTime"
       />
+      <!-- @on-end="state.stop" -->
       <view class="operations-play">
         <!-- 设置倒计时 -->
         <view
@@ -176,9 +204,9 @@ onMounted(() => {
             height: '80px',
             borderRadius: '50%',
             overflow: 'hidden',
-            backgroundImage: globalStore.ambient.playStatus
-              ? `url(${state.assets.pause})`
-              : `url(${state.assets.play})`,
+            backgroundImage: globalAmbient.playStatus
+              ? `url(${state.assets.play})`
+              : `url(${state.assets.suspend})`,
             backgroundSize: '100% 100%',
           }"
         />
@@ -208,25 +236,29 @@ onMounted(() => {
   justify-content: flex-start;
   flex-direction: column;
   position: relative;
+  align-items: center;
 
   .operation {
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
     height: 100px;
   }
   .play-box {
-    width: 335px;
     position: absolute;
     bottom: 40px;
-    height: 100px;
+    width: 325px;
+    height: 150px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
     .operations-play {
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 100px;
-      // padding: 0 20px;
-      margin: 0 auto;
+      width: 100%;
       box-sizing: border-box;
     }
   }

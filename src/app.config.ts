@@ -33,6 +33,7 @@ export default {
     // 回归页面
     "pages/goback/index",
   ],
+  requiredBackgroundModes: ["audio"],
   window: {
     backgroundTextStyle: "light",
     // navigationBarBackgroundColor: "#fff",

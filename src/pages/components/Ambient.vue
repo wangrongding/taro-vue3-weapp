@@ -7,11 +7,13 @@ import { getAmbientList } from "@/api/ambient";
 import { useGlobalStore } from "@/stores/global";
 import qs from "qs";
 const globalStore = useGlobalStore();
+const globalAmbient = useGlobalStore().ambient;
 const store = useAssetsStore();
 const state = reactive({
   file: "ambient",
   ambientList: [] as any,
   jumpTo(item: any) {
+    globalStore.ambient.musicParams = qs.stringify(item, { encode: false });
     Taro.navigateTo({
       url: `/pages/play/index?${qs.stringify(item, { encode: false })}`,
     });
@@ -21,6 +23,25 @@ const state = reactive({
       state.ambientList = res;
     });
   },
+  // 控制音频播放/暂停
+  handlePlay() {
+    if (globalAmbient.audioCtx.paused) {
+      globalAmbient.playStatus = true;
+      globalAmbient.audioCtx.play();
+    } else {
+      globalAmbient.playStatus = false;
+      globalAmbient.audioCtx.pause();
+    }
+  },
+  // 暂停
+  stop() {
+    globalAmbient.musicTime = 0;
+    globalAmbient.playStatus = false;
+    if (globalAmbient.audioCtx) {
+      globalAmbient.audioCtx.seek(0);
+      globalAmbient.audioCtx.pause();
+    }
+  },
 });
 const props = defineProps({
   visible: {
@@ -29,6 +50,13 @@ const props = defineProps({
     required: true,
   },
 });
+
+// 跳转到播放页面
+const toPlay = () => {
+  Taro.navigateTo({
+    url: `/pages/play/index?${globalStore.ambient.musicParams}`,
+  });
+};
 </script>
 <template>
   <D-Popup
@@ -41,7 +69,7 @@ const props = defineProps({
     :opened-callback="state.getAmbientList"
   >
     <template #content>
-      <view class="list">
+      <view class="list" v-if="state.ambientList.length">
         <view
           class="item"
           v-for="(item, index) in state.ambientList"
@@ -59,7 +87,7 @@ const props = defineProps({
           </view> -->
         </view>
       </view>
-      <view class="empty">
+      <view class="empty" v-else>
         <image class="bear" :src="store.assets.bear.placeholder" alt="" />
         <text class="empty-text">完成冒险,可获得环境音~</text>
       </view>
@@ -68,18 +96,19 @@ const props = defineProps({
       <image class="logo-image" :src="store.assets.home.popupSound.soundPopupSound" alt="" />
     </template>
   </D-Popup>
-  <view class="play-action-bar" v-if="globalStore.ambient.playStatus">
+  <view class="play-action-bar" @tap="toPlay" v-if="globalStore.ambient.audioCtx">
     <image class="play-action-bar-image" :src="globalStore.ambient.musicImg" alt="" />
     <text class="play-action-bar-text">{{ globalStore.ambient.musicName }}</text>
     <!-- 控制播放、暂停 -->
     <view
       class="play"
+      @click.stop.prevent="state.handlePlay"
       :style="{
         borderRadius: '50%',
         overflow: 'hidden',
         backgroundImage: globalStore.ambient.playStatus
-          ? `url(${store.assets.common.pause})`
-          : `url(${store.assets.common.play})`,
+          ? `url(${store.assets.common.play})`
+          : `url(${store.assets.common.suspend})`,
         backgroundSize: '100% 100%',
       }"
     />

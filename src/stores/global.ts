@@ -1,6 +1,5 @@
 // https://pinia.esm.dev/introduction.html
 import { defineStore } from "pinia";
-import Taro, { InnerAudioContext } from "@tarojs/taro";
 export const useGlobalStore = defineStore("global", {
   state: () => {
     return {
@@ -9,14 +8,34 @@ export const useGlobalStore = defineStore("global", {
         musicName: "",
         musicImg: "",
         playStatus: false,
-        // audioCtx: null as unknown as InnerAudioContext,
         audioCtx: null as any,
-        // audioCtx: Taro.createInnerAudioContext() as InnerAudioContext,
+        musicParams: "",
+        timer: 0 as number,
       },
     };
   },
   getters: {},
   actions: {
-    getAssets() {},
+    // 设置用户信息
+    setUserInfo(data?: any) {
+      this.userInfo = data;
+    },
+    // 背景音乐倒计时
+    musicCountDown() {
+      clearInterval(this.ambient.timer);
+      this.ambient.timer = null;
+      // 倒计时暂停
+      this.ambient.timer = setInterval(() => {
+        let countDown = Math.round((this.ambient.musicTime - Date.now()) / 1000);
+        this.ambient.musicTime--;
+        if (countDown < 0) {
+          clearInterval(this.ambient.timer);
+          this.ambient.timer = null;
+          this.ambient.musicTime = 0;
+          this.ambient.playStatus = false;
+          this.ambient.audioCtx.pause();
+        }
+      }, 1000);
+    },
   },
 });

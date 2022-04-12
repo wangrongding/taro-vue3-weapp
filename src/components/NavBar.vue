@@ -28,10 +28,11 @@ try {
       lineHeight: state.navigatorInfo.menuButtonHeight + 'px',
       textAlign: 'center',
       boxSizing: 'content-box',
-      color:'#fff',
+      color: '#fff',
     }"
   >
-    <slot />
+    绘眠
+    <!-- <slot /> -->
   </view>
 </template>
 <style lang="scss" scoped>

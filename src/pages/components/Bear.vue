@@ -11,13 +11,6 @@ const state = reactive({
   assets: store.assets.home, // 熊旅行
   bearInfo: {} as BearAndHoney["animal"],
   honeyInfo: {} as BearAndHoney["honey"],
-  travel() {
-    Taro.showToast({
-      title: "开发中",
-      icon: "error",
-      duration: 1000,
-    });
-  },
   // 获取熊和蜜信息
   getAnimalAndHoneyInfo() {
     getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
@@ -32,9 +25,13 @@ const state = reactive({
   },
   // 开始冒险
   beginAdventure() {
-    beginAdventure({}, { failToast: true, loading: true }).then(() => {
-      bus.emit("handlePopupShow", "goout");
-      state.getAnimalAndHoneyInfo();
+    Taro.requestSubscribeMessage({
+      tmplIds: ["24VUt4TYR4VFzRYVukh7NUMoCCy9pXMV94EJLjj_Ur8"],
+    }).finally(() => {
+      beginAdventure({}, { failToast: true, loading: true }).then(() => {
+        bus.emit("handlePopupShow", "goout");
+        state.getAnimalAndHoneyInfo();
+      });
     });
   },
   // 冒险结束 修改动物状态
@@ -62,6 +59,11 @@ const countdown: ComputedRef = computed(() => {
   } else {
     return 0;
   }
+});
+
+// 暴露出去的获取动物和蜂蜜信息的方法
+bus.on("getAnimalAndHoneyInfo", () => {
+  state.getAnimalAndHoneyInfo();
 });
 
 state.getAnimalAndHoneyInfo();
@@ -98,7 +100,6 @@ state.getAnimalAndHoneyInfo();
       <nut-circleprogress
         :progress="(parseInt(state.honeyInfo.honeyValue) / 30) * 100"
         :is-auto="true"
-        @tap="state.travel"
         stroke-inner-width="4"
         :progress-option="{
           radius: 18 * (getSize.screenWidth / 375),
