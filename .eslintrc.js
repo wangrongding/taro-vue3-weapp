@@ -177,7 +177,7 @@ module.exports = {
     //强制将对象的属性放在不同的行上
     // "object-property-newline": "error",
   },
-  ignorePatterns: ["dist", "**/*.d.ts", "src/types"],
+  ignorePatterns: ["dist", "**/*.d.ts", "src/types","src/components/ec-canvas"],
 };
 
 //整个文件范围内禁止规则出现警告   将/* eslint-disable */放置于文件最顶部===============

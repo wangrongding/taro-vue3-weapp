@@ -9,7 +9,8 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import NavBar from "../../components/NavBar.vue";
+import NavBar from "@/components/NavBar.vue";
+// import LineEcharts from "./compontents/LineEcharts/index.vue";
 import LineEcharts from "./compontents/LineEcharts.vue";
 const state = reactive({
 });
