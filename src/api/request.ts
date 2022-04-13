@@ -6,12 +6,10 @@ import { RequestBase } from "@/types/index";
 // const localUrl = "http://192.168.1.71:60";
 // 正理本地接口地址
 const localUrl = "http://192.168.1.114:60";
-// TODO (暂无)正式远程接口地址
-// const remoteUrl = "http://192.168.1.71:60";
-const remoteUrl = "http://192.168.1.114:60";
+// 远程接口地址
+const remoteUrl = process.env.API_ENV ? localUrl : "http://39.105.104.8:60";
 // 定义全局请求地址(baseUrl)
 const baseUrl = process.env.NODE_ENV === "production" ? remoteUrl : localUrl;
-
 // 暂时考虑 req的属性都会传入
 const requestAction = (url, method, options: RequestBase) => {
   const store = useStore();

@@ -1,6 +1,7 @@
 module.exports = {
   env: {
     NODE_ENV: "\"production\"",
+    API_ENV: JSON.stringify(process.env.API_ENV),
   },
   defineConstants: {},
   mini: {},

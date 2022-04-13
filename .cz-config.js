@@ -10,7 +10,7 @@ module.exports = {
     },
     { value: "perf", name: "perf: 码优化,改善性能" },
     { value: "test", name: "test: 测试" },
-    { alue: "chore", name: "chore: 变更构建流程或辅助工具" },
+    { value: "chore", name: "chore: 变更构建流程或辅助工具" },
     { value: "revert", name: "revert: 代码回退" },
     { value: "init", name: "init: 项目初始化" },
     { value: "build", name: "build: 变更项目构建或外部依赖" },
