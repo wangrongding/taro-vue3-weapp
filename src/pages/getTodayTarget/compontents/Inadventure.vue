@@ -13,7 +13,7 @@
       <view class="in-adventure">
         <view class="in-adventure-content">
           <view class="in-adventure-title">真棒！</view>
-          <view class="in-adventure-text">小白获得了{{ props.honeyCount }}点能量</view>
+          <view class="in-adventure-text">{{ props.animalName }}获得了{{ props.honeyCount }}点能量</view>
           <view class="in-adventure-text">冒险加速了{{ Number(props.honeyCount) * 2 }}分钟</view>
           <image class="in-adventure-logo" :src="state.assets.clock" alt="" />
         </view>
@@ -41,6 +41,11 @@ const props = defineProps({
     required: true,
   },
   honeyCount: {
+    type: String,
+    default: "",
+    required: true,
+  },
+  animalName: {
     type: String,
     default: "",
     required: true,

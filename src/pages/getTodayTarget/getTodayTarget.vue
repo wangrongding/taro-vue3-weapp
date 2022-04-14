@@ -7,6 +7,7 @@
     padding="37px 20px 0"
     :background-color="'#F0F7F4FF'"
     :suffix-color="'#60D394FF'"
+    :opened-callback="state.getUserTargetData"
   >
     <template #content>
       <view class="today-goal">
@@ -62,10 +63,12 @@
     :visible="state.visible === 'inadventure'"
     @moreVisible="state.moreVisible"
     :honey-count="state.honeyCount"
+    :animal-name="state.animalName"
   />
   <Norisk
     :visible="state.visible === 'norisk'"
     @moreVisible="state.moreVisible"
+    :animal-name="state.animalName"
     :honey-count="state.honeyCount"
   />
 </template>
@@ -75,6 +78,7 @@ import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
 import { useAssetsStore } from "@/stores/assets";
 import { getUserTarget, finishTarget } from "@/api/target/index";
+import { getUserAnimalInfo } from "@/api/me/index";
 import bus from "@/utils/eventBus";
 import { GetuserTarget } from "@/types/type";
 import More from "./compontents/More.vue";
@@ -94,6 +98,7 @@ const state = reactive({
   targetStatus: 0,
   animalStatus: 0,
   visible: "",
+  animalName: "",
   voList: [] as GetuserTarget[],
   userTargetId: "",
   honeyCount: "",
@@ -107,14 +112,19 @@ const state = reactive({
   operationBtn(data) {
     // 1,3,4 都属于未冒险
     state.animalStatus === 1 || state.animalStatus === 3 || state.animalStatus === 4
-      ? (state.visible = "inadventure")
-      : (state.visible = "norisk");
+      ? (state.visible = "norisk")
+      : (state.visible = "inadventure");
     state.honeyCount = data.honeyCount;
     let params = {
       honeyCount: data.honeyCount,
       userTargetId: data.userTargetId,
     };
-    finishTarget(params);
+    finishTarget(params).then(()=>{
+      bus.emit("getAnimalAndHoneyInfo");
+    });
+    getUserAnimalInfo().then((res) => {
+      state.animalName = res.animalName;
+    });
     emit("moreVisible", "");
   },
   // 获取列表

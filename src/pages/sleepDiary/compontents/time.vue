@@ -9,6 +9,7 @@
       :max-date="state.maxDate"
       :is-show-chinese="true"
       @close="close"
+      v-model="state.time"
     />
   </view>
 </template>
@@ -28,6 +29,7 @@ const state = reactive({
   minDate: new Date(2000, 0, 1),
   maxDate: new Date(2023, 11, 31, 22, 60),
   desc: "",
+  time: new Date(),
 });
 function confirm(selectedValue) {
   state.desc =

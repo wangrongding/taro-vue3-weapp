@@ -14,7 +14,7 @@
       <view class="in-adventure">
         <view class="in-adventure-content">
           <view class="in-adventure-title">真棒！</view>
-          <view class="in-adventure-text">小白获得了{{ props.honeyCount }}点能量</view>
+          <view class="in-adventure-text">{{ props.animalName }}获得了{{ props.honeyCount }}点能量</view>
           <view class="energy">
             <nut-circleprogress
               :progress="(parseInt(state.honeyInfo.honeyValue) / 30) * 100"
@@ -25,7 +25,7 @@
                 progressColor: 'rgba(96, 211, 148, 1)',
               }"
             />
-            <image :src="state.logo" class="honey-img" />
+            <image :src="state.assets.honey" class="honey-img" />
           </view>
           <view class="in-adventure-value">{{ state.honeyInfo.honeyValue }}/30</view>
         </view>
@@ -39,9 +39,11 @@ import { reactive } from "vue";
 import DPopup from "@/components/D-Popup.vue";
 import { getAnimalAndHoneyInfo } from "@/api/home";
 import { BearAndHoney } from "@/types/index";
+import { useAssetsStore } from "@/stores/assets";
+const store = useAssetsStore();
 const emit = defineEmits(["moreVisible"]);
 const state = reactive({
-  logo: "https://gitee.com/Leagle/picture-bed/raw/master/20220302140457.png",
+  assets: store.assets.common,
   honeyInfo: {} as BearAndHoney["honey"],
   finish() {
     emit("moreVisible", "");
@@ -60,6 +62,11 @@ const props = defineProps({
     required: true,
   },
   honeyCount: {
+    type: String,
+    default: "",
+    required: true,
+  },
+  animalName: {
     type: String,
     default: "",
     required: true,
@@ -112,7 +119,7 @@ const props = defineProps({
         height: 48px;
         position: absolute;
         top: 33px;
-        left: 153px;
+        left: 150px;
       }
     }
   }

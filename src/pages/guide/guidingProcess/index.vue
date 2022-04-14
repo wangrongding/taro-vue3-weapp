@@ -16,7 +16,6 @@
           @moodBtn="moodBtn"
         />
       </view>
-
       <view @tap="jumpTo" class="page-btn" v-if="state.go === false"> 继续 </view>
       <button
         openType="getPhoneNumber"
@@ -44,6 +43,7 @@ import {
   template,
   wxRegistry,
 } from "@/api/guide/index";
+import { saveHoney } from "@/api/compontents/saveHoney";
 import NavBar from "../../../components/NavBar.vue";
 import AnimalName from "../compontents/AnimalName.vue";
 import UserName from "../compontents/UserName.vue";
@@ -92,7 +92,7 @@ function jumpTo() {
       let params = {
         animalName: state.animalName,
       };
-      saveName(params).then(()=>{
+      saveName(params).then(() => {
         state.index = state.index + 1;
       });
       break;
@@ -102,18 +102,18 @@ function jumpTo() {
       let params = {
         name: state.userName,
       };
-      saveUserName(params).then(()=>{
+      saveUserName(params).then(() => {
         state.index = state.index + 1;
-      });;
+      });
       break;
     }
     case 2: {
       let params = {
         intimateValue: 3,
       };
-      updateByAnimalId(params).then(()=>{
+      updateByAnimalId(params).then(() => {
         state.index = state.index + 1;
-      });;
+      });
       break;
     }
     case 3: {
@@ -121,7 +121,6 @@ function jumpTo() {
       break;
     }
     case 4: {
-      state.go = true;
       state.index = state.index + 1;
       break;
     }
@@ -144,9 +143,9 @@ function jumpTo() {
       saveRest(params, { failToast: true, loading: true }).then(() => {
         sleepMoodListData();
         getUserMoodData();
-        templateList();
-        state.index = state.index + 1;
+        state.go = true;
       });
+      getPhoneNumber();
       break;
     }
   }
@@ -167,13 +166,17 @@ function messageNotification() {
 
 // 手机号获取
 function getPhoneNumber(e) {
-  let params = {
-    encrypted: e.detail.encryptedData,
-    iv: e.detail.iv,
-    openId: usestore.userInfo.openId,
-  };
-  wxRegistry(params);
-  state.go = false;
+  if (e.detail.errMsg === "getPhoneNumber:ok") {
+    let param = {
+      encrypted: e.detail.encryptedData,
+      iv: e.detail.iv,
+      openId: usestore.userInfo.openId,
+    };
+    wxRegistry(param);
+    state.go = false;
+    state.index = state.index + 1;
+    templateList();
+  }
 }
 
 // 获取动物名字
@@ -196,7 +199,11 @@ function moodBtn(data: { id: string }) {
     week: state.getUserMoodList.week,
     days: state.getUserMoodList.days,
   };
-  userMood(params, { failToast: true, loading: true }).then(() => {
+  userMood(params);
+  let param = {
+    honeyValue: 10,
+  };
+  saveHoney(param, { failToast: true, loading: true }).then(() => {
     Taro.redirectTo({
       url: "/pages/index/index",
     });

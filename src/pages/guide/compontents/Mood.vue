@@ -4,10 +4,10 @@
     <image class="mood-image" :src="props.assets.bear.hello" alt="" />
     <view class="logo-name">
       {{ props.getUserMoodList.userName }}好!
-      <view class="name"> 今天是星期{{ props.getUserMoodList.week }} </view>
+      <view class="name"> 今天是{{ props.getUserMoodList.week }} </view>
     </view>
     <view class="mood-number">
-      +20
+      +10
       <image class="mood-icon" :src="props.assets.common.honey" alt="" />
     </view>
     <view class="mood-data">

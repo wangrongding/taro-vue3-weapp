@@ -18,11 +18,7 @@
       </view>
       <view class="energy-data">
         {{ state.getSleepGuide.honeyCount }}
-        <image
-          class="energy-value-img"
-          :src="state.assets.common.honey"
-          alt=""
-        />
+        <image class="energy-value-img" :src="state.assets.common.honey" alt="" />
       </view>
       <view class="start-btn" @tap="state.startBtn"> 开始 </view>
     </view>
@@ -46,10 +42,9 @@ const state = reactive({
     let params = {
       typeId: state.typeId,
     };
-    getSleepGuide(params)
-      .then((res: GetSleepGuide) => {
-        state.getSleepGuide = res;
-      });
+    getSleepGuide(params).then((res: GetSleepGuide) => {
+      state.getSleepGuide = res;
+    });
   },
   close() {
     Taro.redirectTo({
@@ -58,7 +53,11 @@ const state = reactive({
   },
   startBtn() {
     Taro.navigateTo({
-      url: "/pages/sleepDiary/testQuestions/index?id=" + state.typeId,
+      url:
+        "/pages/sleepDiary/testQuestions/index?id=" +
+        state.typeId +
+        "&honeyCount=" +
+        state.getSleepGuide.honeyCount,
     });
   },
 });

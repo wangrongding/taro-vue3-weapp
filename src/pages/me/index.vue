@@ -3,7 +3,7 @@
     <NavBar style="color: #000">梦琦</NavBar>
     <view class="page-main">
       <view class="meInformation">
-        <image class="me-logo" :src="state.getUserAnimalInfoObj.animalPortrait" alt="" />
+        <image class="me-logo" :src="state.getUserAnimalInfoObj.icon" alt="" />
         <span class="me-name">{{ state.getUserAnimalInfoObj.animalName }}</span>
       </view>
       <view class="elastic-box">

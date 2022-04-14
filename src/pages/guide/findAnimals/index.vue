@@ -30,8 +30,8 @@ const state = reactive({
 </script>
 <style lang="scss">
 .page-container {
-  background: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png");
-  background-size: 100% auto;
+  background: url("https://file.gkxymentpeak.mentpeak.com/sleep-mini-program/images/background/guide-page-background.png");
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;

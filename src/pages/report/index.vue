@@ -2,7 +2,11 @@
   <view class="page-container">
     <NavBar>梦琦</NavBar>
     <view class="page-main">
-      <view class="sleep-list" v-for="(item, index) in (state.getResultList as GetResultList[])" :key="index">
+      <view
+        class="sleep-list"
+        v-for="(item, index) in (state.getResultList as GetResultList[])"
+        :key="index"
+      >
         <view class="sleep-list-title">
           {{ item.title }}
           <!-- 判断时间显示 title -->
@@ -40,7 +44,12 @@
         </view>
       </view>
       <view class="tips"> {{ state.tips }}</view>
-      <Bedtime :visible="state.show" @timeTable="timeTable" @close="close" />
+      <Bedtime
+        :visible="state.show"
+        @timeTable="timeTable"
+        @close="close"
+        :cancel-id="state.cancelId"
+      />
     </view>
     <view class="sleep-btn" @tap="state.sleepBtn"> 确认</view>
   </view>
@@ -68,6 +77,7 @@ const state = reactive({
   settingTime: {} as Report,
   time: "",
   jumpRoute: "",
+  cancelId: 0,
   name: {
     list: [] as Report[],
   },
@@ -79,16 +89,16 @@ const state = reactive({
   },
   // 获取初始化数据
   getResultData() {
-    getResult()
-      .then((res: any) => {
-        state.getResultList = res.list;
-        processingData();
-        state.tips = res.title;
-      });
+    getResult().then((res: any) => {
+      state.getResultList = res.list;
+      processingData();
+      state.tips = res.title;
+    });
   },
   // 修改时间
   updateTime(item: { title: string }, children: { name: string; time: string }) {
     state.settingTime = children;
+    state.settingTime.name === "上床时间" ? (state.cancelId = 1) : (state.cancelId = 2);
     // 判断 是在床时间
     if (item.title === "建议在床时间：") state.show = true;
   },
@@ -98,17 +108,16 @@ const state = reactive({
       sleepTime: state.name.list[0].time,
       weekTime: state.name.list[1].time,
     };
-    saveRest(params)
-      .then(() => {
+    saveRest(params).then(() => {
       // setting 跳转回设置
-        state.jumpRoute === "setting"
-          ? Taro.redirectTo({
-            url: "/pages/me/index",
-          })
-          : Taro.redirectTo({
-            url: "/pages/index/index",
-          });
-      });
+      state.jumpRoute === "setting"
+        ? Taro.redirectTo({
+          url: "/pages/me/index",
+        })
+        : Taro.redirectTo({
+          url: "/pages/index/index",
+        });
+    });
   },
 });
 // 设置时间
@@ -117,7 +126,7 @@ function timeTable(data: any) {
   if (state.settingTime.name === "起床时间") state.settingTime.time = data;
   state.show = false;
 }
-function close(){
+function close() {
   state.show = false;
 }
 // 换算成number类型 进行判断  处理数据格式
@@ -126,8 +135,7 @@ function processingData() {
     state.name = item;
     item.list.forEach((children: { name: string; time: string }) => {
       if (children.name === "睡眠效率" || children.name === "平均睡眠效率") {
-        children.time = Number(children.time)
-          .toFixed(1);
+        children.time = Number(children.time).toFixed(1);
       }
     });
     if (item.title === "建议在床时间：" && item.time === "") item.time = "--";

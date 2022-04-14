@@ -2,7 +2,7 @@
   <view class="page-container">
     <NavBar>梦琦</NavBar>
     <view class="page-main">
-      <image class="test-logo" :src="state.assets.icon" alt="" />
+      <image class="test-logo" :src="state.getResult.icon" alt="" />
       <view class="test-report-title">{{ state.getResult.title }}</view>
       <view class="test-report-content">
         <span>{{ state.text }}</span>
@@ -19,8 +19,6 @@ import { reactive } from "vue";
 import NavBar from "../../components/NavBar.vue";
 import { getResult } from "@/api/test/index";
 import Taro from "@tarojs/taro";
-import { useAssetsStore } from "@/stores/assets";
-const store = useAssetsStore();
 interface GetResult {
   content: string,
   explain: string,
@@ -35,7 +33,6 @@ const state = reactive({
   interfaceId: {} as InterfaceId,
   getResult: {} as GetResult,
   socre: "",
-  assets: store.assets.home,
   text: "",
   // 获取报告
   getResultData() {

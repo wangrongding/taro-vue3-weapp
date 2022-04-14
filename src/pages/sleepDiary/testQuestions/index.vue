@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { reactive, shallowRef } from "vue";
 import { getDiaryTest, saveResult, getSleepTest, saveTestResult } from "@/api/sleepDiary/index";
+import { saveHoney } from "@/api/compontents/saveHoney";
 import NavBar from "../../../components/NavBar.vue";
 import Taro from "@tarojs/taro";
 import time from "../compontents/time.vue";
@@ -172,6 +173,10 @@ function goStart() {
         });
       });
     }
+    let param = {
+      honeyValue: state.honeyCount,
+    };
+    saveHoney(param);
     return;
   }
 }
@@ -240,6 +245,7 @@ function showToast(data: string) {
 }
 // -----------  初始化 -----------
 getSleepTestList();
+state.honeyCount = Taro.getCurrentInstance().router?.params.honeyCount;
 </script>
 
 <style lang="scss">
