@@ -48,7 +48,7 @@ const intimateInfo = computed(() => {
     >
       <template #content>
         <view class="intimacy-content">
-          <text style="color: white; font-size: 22px">LV4</text>
+          <text style="color: white; font-size: 22px">{{ state.intimateInfo.levelName }}</text>
           <view class="" style="text-align: center; height: 200px">
             <image class="heart" :src="state.assets.heartSquare" alt="" />
             <nut-progress

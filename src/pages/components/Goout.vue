@@ -2,13 +2,18 @@
 import { reactive, computed } from "vue";
 import { useAssetsStore } from "@/stores/assets";
 import bus from "@/utils/eventBus";
+import Taro from "@tarojs/taro";
 import DPopup from "@/components/D-Popup.vue";
 const store = useAssetsStore();
 const state = reactive({
   file: "intimacy",
   assets: store.assets,
   closePop() {
-    bus.emit("closePop");
+    Taro.requestSubscribeMessage({
+      tmplIds: ["24VUt4TYR4VFzRYVukh7NUMoCCy9pXMV94EJLjj_Ur8"],
+    }).finally(() => {
+      bus.emit("closePop");
+    });
   },
 });
 const props = defineProps({

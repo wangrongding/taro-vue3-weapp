@@ -25,13 +25,9 @@ const state = reactive({
   },
   // 开始冒险
   beginAdventure() {
-    Taro.requestSubscribeMessage({
-      tmplIds: ["24VUt4TYR4VFzRYVukh7NUMoCCy9pXMV94EJLjj_Ur8"],
-    }).finally(() => {
-      beginAdventure({}, { failToast: true, loading: true }).then(() => {
-        bus.emit("handlePopupShow", "goout");
-        state.getAnimalAndHoneyInfo();
-      });
+    beginAdventure({}, { failToast: true, loading: true }).then(() => {
+      bus.emit("handlePopupShow", "goout");
+      state.getAnimalAndHoneyInfo();
     });
   },
   // 冒险结束 修改动物状态
