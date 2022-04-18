@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar>梦琦</NavBar>
+    <NavBar style="color: #000" />
     <view class="page-main">
       <view class="elastic-box">
         <component
@@ -143,6 +143,7 @@ function jumpTo() {
       saveRest(params, { failToast: true, loading: true }).then(() => {
         sleepMoodListData();
         getUserMoodData();
+        templateList();
         state.go = true;
       });
       getPhoneNumber();
@@ -175,7 +176,9 @@ function getPhoneNumber(e) {
     wxRegistry(param);
     state.go = false;
     state.index = state.index + 1;
-    templateList();
+  } else {
+    state.go = false;
+    state.index = state.index + 1;
   }
 }
 

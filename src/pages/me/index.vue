@@ -1,9 +1,9 @@
 <template>
   <view class="page-container">
-    <NavBar style="color: #000">梦琦</NavBar>
+    <NavBar style="color: #000" />
     <view class="page-main">
       <view class="meInformation">
-        <image class="me-logo" :src="state.getUserAnimalInfoObj.icon" alt="" />
+        <image class="me-logo" :src="state.assets.bear.hello" alt="" />
         <span class="me-name">{{ state.getUserAnimalInfoObj.animalName }}</span>
       </view>
       <view class="elastic-box">
@@ -31,7 +31,7 @@
       </view>
 
       <view class="close">
-        <image :src="state.assets.close" alt="" @tap="state.close" />
+        <image :src="state.assets.common.close" alt="" @tap="state.close" />
       </view>
       <!-- 更改宠物名字弹框 -->
       <view class="change-name" v-if="state.show === true">
@@ -67,7 +67,7 @@ import { useStore } from "@/stores";
 const usestore = useStore();
 const store = useAssetsStore();
 const state = reactive({
-  assets: store.assets.common,
+  assets: store.assets,
   getUserAnimalInfoObj: {} as GetUserAnimalInfo,
   name: "",
   show: false,

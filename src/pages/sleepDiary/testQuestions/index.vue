@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar>梦琦</NavBar>
+    <NavBar />
     <nut-progress
       :percentage="100 / (state.sleepList.length / state.next.sort)"
       :show-text="false"
@@ -250,10 +250,7 @@ state.honeyCount = Taro.getCurrentInstance().router?.params.honeyCount;
 
 <style lang="scss">
 .page-container {
-  background: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png");
   background: rgba(137, 144, 254, 1);
-  background-size: 100% auto;
-  background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
   display: flex;

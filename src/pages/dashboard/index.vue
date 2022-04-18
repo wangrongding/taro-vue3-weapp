@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar style="color: #000">梦琦</NavBar>
+    <NavBar style="color: #000" />
     <view class="page-main">
       <MoodLineEcharts :mood-statistics="state.moodStatistics" v-if="state.flag === true" />
       <SleepLineEcharts
@@ -117,16 +117,17 @@ onMounted(() => {
 <style lang="scss">
 .page-container {
   background: rgba(243, 245, 249, 1);
-  height: 100vh;
+  // height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  // overflow: auto;
   .page-main {
     position: relative;
-    height: 100%;
+    // height: 100%;
     flex: 1;
-    overflow: auto;
+    // overflow: auto;
     margin: 27px auto;
   }
   // 关闭按钮

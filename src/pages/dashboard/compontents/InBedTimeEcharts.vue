@@ -75,8 +75,8 @@ function initChart(canvas, width, height) {
     },
     yAxis: {
       type: "value",
-      min: 6, // 最小
-      max: 10,
+      min: 0, // 最小
+      max: 24,
       splitNumber: 5,
       axisLabel: {
         formatter: function (val) {

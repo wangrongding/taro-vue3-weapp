@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar style="color: #000">梦琦</NavBar>
+    <NavBar style="color: #000" />
     <view class="record-title">
       <image
         class="pre"

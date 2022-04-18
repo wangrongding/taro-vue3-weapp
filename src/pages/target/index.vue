@@ -1,7 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar style="color: #000">梦琦</NavBar>
-    -------------------------
+    <NavBar style="color: #000" />
     <view class="target-main">
       <nut-tabs v-model="state.tab1value" class="target-tab">
         <template #titles>
@@ -34,7 +33,11 @@
               class="target-content"
               @tap="addTarget(item1)"
             >
-              <image class="target-image" :src="item1.active ? state.assets.common.checkSign : item1.icon" alt="" />
+              <image
+                class="target-image"
+                :src="item1.active ? state.assets.common.checkSign : item1.icon"
+                alt=""
+              />
               <span class="target-title">{{ item1.targetName }}</span>
               <span class="target-energy-value">{{ item1.honeyCount }}</span>
               <image class="target-energy-image" :src="state.assets.common.honey" alt="" />
@@ -61,9 +64,9 @@ import { targetList, userTarget } from "@/api/target/index";
 import { useAssetsStore } from "@/stores/assets";
 const store = useAssetsStore();
 interface DictList {
-  dictKey: number,
-  dictValue: string,
-  icon: string,
+  dictKey: number;
+  dictValue: string;
+  icon: string;
 }
 const state = reactive({
   assets: store.assets,
@@ -74,7 +77,7 @@ const state = reactive({
   active: false,
 });
 // 选择目标
-function addTarget(data: { active: boolean; id: string; }) {
+function addTarget(data: { active: boolean; id: string }) {
   data.active = !data.active;
   if (data.active === true) {
     state.addTargetCheckd.push(data.id);
@@ -99,11 +102,10 @@ function addTodayTarget(data: string) {
 }
 // 获取列表
 function targetListData() {
-  targetList()
-    .then((res:{dictList: DictList[] , targetList: any }) => {
-      state.dictList = res.dictList;
-      state.targetList = res.targetList;
-    });
+  targetList().then((res: { dictList: DictList[]; targetList: any }) => {
+    state.dictList = res.dictList;
+    state.targetList = res.targetList;
+  });
 }
 //    ------初始化 -------
 targetListData();
@@ -120,7 +122,7 @@ targetListData();
   flex-direction: column;
   justify-content: flex-start;
   .target-main {
-    margin: 5px;
+    margin: 21px 5px 5px 5px;
     margin-left: 20px;
     width: 335px;
     // tab表格
@@ -177,6 +179,7 @@ targetListData();
         width: 38px;
         right: 22px;
         height: 38px;
+        margin-top: -3px;
       }
       .target-content {
         display: flex;

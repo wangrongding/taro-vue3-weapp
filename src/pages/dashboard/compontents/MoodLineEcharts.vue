@@ -75,10 +75,19 @@ function initChart(canvas, width, height) {
     },
     yAxis: {
       type: "value",
-      min: "dataMin", // 最小
+      min: 1, // 最小
+      max: 5,
+      splitNumber: 5,
       axisLabel: {
         formatter: function (val) {
-          return val + props.moodStatistics.symbol;
+          // return val + props.moodStatistics.symbol;
+          let texts = [];
+          if (val === 1) {
+            texts.push(
+              "https://file.gkxymentpeak.mentpeak.com/sleep-mini-program/images/common/common-arrow-left.png",
+            );
+          }
+          return texts;
         },
       },
     },
@@ -109,7 +118,6 @@ function initChart(canvas, width, height) {
 const ec = reactive({
   onInit: initChart,
 });
-
 </script>
 <style lang="scss">
 .echarts {
@@ -120,7 +128,7 @@ const ec = reactive({
   border-radius: 15px;
   position: reactive;
   padding-bottom: 10px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   .title {
     font-size: 12px;
     font-family: PingFang-SC-Bold, PingFang-SC;

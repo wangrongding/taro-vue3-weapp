@@ -23,6 +23,10 @@ const props = defineProps({
     required: true,
   },
 });
+
+props.sleepEfficiencyStatistics.yaxis.forEach(item => {
+  item.value = item.value * 100;
+});
 function initChart(canvas, width, height) {
   const chart = echarts.init(canvas, null, {
     width: width,
@@ -75,7 +79,7 @@ function initChart(canvas, width, height) {
     },
     yAxis: {
       type: "value",
-      min: 60, // 最小
+      min: 0, // 最小
       max: 100,
       splitNumber: 5,
       axisLabel: {

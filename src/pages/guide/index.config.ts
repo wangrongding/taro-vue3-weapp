@@ -1,4 +1,4 @@
 export default {
-  navigationBarTitleText: "梦琦",
+  navigationBarTitleText: "引导页",
   navigationStyle: "custom",
 };

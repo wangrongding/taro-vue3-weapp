@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar style="color: #000">梦琦</NavBar>
+    <NavBar style="color: #000" />
     <view class="page-main">
       <view class="privacyPolicy-list" v-for="(item, index) in state.getPrivacyPolicy" :key="index">
         <view class="privacyPolicy-title"> {{ item.title }} </view>

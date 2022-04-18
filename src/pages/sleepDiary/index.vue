@@ -1,6 +1,6 @@
 <template>
   <view class="page-container">
-    <NavBar>梦琦</NavBar>
+    <NavBar />
     <view class="page-main">
       <view>
         <image
@@ -10,18 +10,22 @@
           @tap="state.close"
         />
       </view>
-
-      <image class="bear" :src="state.assets.bear.expressionless" alt="" />
+      <image
+        :class="state.typeId === '4' ? 'bear' : 'logo'"
+        :src="state.typeId === '4' ? state.assets.bear.expressionless : state.getSleepGuide.icon"
+        alt=""
+      />
       <view class="titel"> {{ state.getSleepGuide.title }} </view>
       <view class="detail">
         {{ state.getSleepGuide.explain }}
       </view>
-      <view class="energy-data">
-        {{ state.getSleepGuide.honeyCount }}
-        <image class="energy-value-img" :src="state.assets.common.honey" alt="" />
-      </view>
-      <view class="start-btn" @tap="state.startBtn"> 开始 </view>
     </view>
+
+    <view class="energy-data">
+      {{ state.getSleepGuide.honeyCount }}
+      <image class="energy-value-img" :src="state.assets.common.honey" alt="" />
+    </view>
+    <view class="start-btn" @tap="state.startBtn"> 开始 </view>
   </view>
 </template>
 
@@ -66,10 +70,7 @@ state.getSleepGuideData();
 
 <style lang="scss">
 .page-container {
-  background: url("https://raw.githubusercontent.com/wangrongding/image-house/master/images202202251452455.png");
   background: rgba(137, 144, 254, 1);
-  background-size: 100% auto;
-  background-repeat: no-repeat;
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -78,8 +79,8 @@ state.getSleepGuideData();
   .page-main {
     position: relative;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    flex: 1;
+    overflow: auto;
     .close {
       width: 38px;
       height: 38px;
@@ -89,6 +90,11 @@ state.getSleepGuideData();
       width: 140px;
       height: 160px;
       margin-left: 117.5px;
+    }
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin-left: 140px;
     }
     .titel {
       font-size: 22px;
@@ -108,36 +114,31 @@ state.getSleepGuideData();
       text-indent: 25px;
       flex: 1;
     }
+  }
+  .energy-data {
+    font-size: 22px;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
 
-    .energy-data {
-      margin-bottom: 100px;
-      font-size: 22px;
-      font-family: PingFang-SC-Bold, PingFang-SC;
-      font-weight: bold;
-      color: #ffffff;
-      text-align: center;
-
-      .energy-value-img {
-        width: 12px;
-        height: 16px;
-      }
+    .energy-value-img {
+      width: 12px;
+      height: 16px;
     }
-
-    .start-btn {
-      width: 142px;
-      height: 58px;
-      line-height: 58px;
-      background: #ffffff;
-      border-radius: 15px;
-      font-size: 15px;
-      font-family: PingFang-SC-Bold, PingFang-SC;
-      font-weight: bold;
-      color: #60d394;
-      position: absolute;
-      bottom: 30px;
-      left: 117px;
-      text-align: center;
-    }
+  }
+  .start-btn {
+    width: 142px;
+    height: 58px;
+    line-height: 58px;
+    background: #ffffff;
+    border-radius: 15px;
+    font-size: 15px;
+    font-family: PingFang-SC-Bold, PingFang-SC;
+    font-weight: bold;
+    color: #60d394;
+    margin: 15px auto 30px auto;
+    text-align: center;
   }
 }
 </style>

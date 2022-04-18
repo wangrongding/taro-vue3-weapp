@@ -1,9 +1,9 @@
 <template>
   <view class="page-container">
-    <NavBar style="color: #000">梦琦</NavBar>
+    <NavBar style="color: #000" />
     <view class="page-logo">
       <image :src="state.logo" alt="" />
-      <view class="logo-name">梦琦</view>
+      <view class="logo-name">绘眠</view>
       <view @tap="state.jumpTo" class="page-btn"> 开始旅程 </view>
     </view>
   </view>
