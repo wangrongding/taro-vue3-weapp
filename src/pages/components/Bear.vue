@@ -48,13 +48,18 @@ const getSize: ComputedRef = computed(() => {
 // 倒计时
 const countdown: ComputedRef = computed(() => {
   if (state.bearInfo.totalTime) {
-    // 结束时间
-    const endTime =
-      new Date(state.bearInfo.outStartTime).getTime() + state.bearInfo.totalTime * 1000;
-    return endTime;
+    return state.bearInfo.reduceTime * 1000;
   } else {
     return 0;
   }
+  // if (state.bearInfo.totalTime) {
+  //   // 结束时间
+  //   const endTime =
+  //     new Date(state.bearInfo.outStartTime).getTime() + state.bearInfo.totalTime * 1000;
+  //   return endTime;
+  // } else {
+  //   return 0;
+  // }
 });
 
 // 暴露出去的获取动物和蜂蜜信息的方法
