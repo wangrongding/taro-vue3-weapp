@@ -32,7 +32,7 @@ const intimateInfo = computed(() => {
   return (
     (parseInt(state.intimateInfo.intimateValue) / parseInt(state.intimateInfo.maxIntimateValue)) *
     100
-  );
+  ).toFixed(2);
 });
 </script>
 <template>

@@ -88,6 +88,7 @@ state.getAnimalAndHoneyInfo();
     <!-- 蜂蜜 -->
     <view
       class="honeypot"
+      v-if="state.bearInfo.animalStatus !== 2"
       @click="state.beginAdventure"
       :style="{
         boxShadow: state.honeyInfo.honeyValue === '30' ? '0px 0px 5px 10px #e5bb3f99' : '',
