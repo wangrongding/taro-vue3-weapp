@@ -61,6 +61,14 @@ const countdown: ComputedRef = computed(() => {
   //   return 0;
   // }
 });
+// 熊的状态弹窗
+const showStatus = () => {
+  Taro.showToast({
+    title: state.bearInfo.animalRemark,
+    icon: "none",
+    duration: 1000,
+  });
+};
 
 // 暴露出去的获取动物和蜂蜜信息的方法
 bus.on("getAnimalAndHoneyInfo", () => {
@@ -87,7 +95,12 @@ state.getAnimalAndHoneyInfo();
         :end-time="countdown"
         @on-end="state.getAnimalAndHoneyInfo"
       />
-      <image class="bear" :src="state.bearInfo.animalIcon" alt="" />
+      <image
+        @tap="showStatus"
+        class="bear"
+        :src="state.bearInfo.animalIcon"
+        alt=""
+      />
       <view class="shadow" />
     </view>
     <!-- 蜂蜜 -->

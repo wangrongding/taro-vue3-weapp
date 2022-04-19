@@ -32,13 +32,13 @@ state.endAdventure();
       <view style="text-align: center; width: 100%">
         <image class="bear" :src="store.assets.bear.placeholder" alt="" />
         <view style="color: #666666ff; font-size: 14px; margin-top: 10px">
-          "哦~{{ userStore.userInfo.user_name || "--" }} , 你好呀~"
+          "{{ userStore.userInfo.user_name || "--" }} , 你好呀~"
         </view>
         <view class="spoils">
           <image class="" :src="store.assets.common.heartShaped" alt="" />
           <text>+{{ state.spoilsInfo.intimateValue || "0" }} 亲密度</text>
         </view>
-        <view class="spoils">
+        <view class="spoils" v-if="state.spoilsInfo.soundName">
           <image class="" :src="store.assets.common.heartShaped" alt="" />
           <text>+1 {{ state.spoilsInfo.soundName || "--" }}的声音</text>
         </view>

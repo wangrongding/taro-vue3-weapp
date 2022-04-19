@@ -89,8 +89,8 @@ export interface BearInfo {
   outStartTime: string;
   totalTime: number;
   reduceTime: number;
+  animalRemark: string;
 }
-
 export interface HoneyInfo {
   honeyValue: string;
   honeyIsShow: number;
