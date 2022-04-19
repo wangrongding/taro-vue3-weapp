@@ -11,7 +11,7 @@
             :key="item.dictKey"
             v-for="item in state.dictList"
           >
-            <nut-icon v-if="item.icon" :name="item.icon" />
+            <nut-icon v-if="item.justIcon" :name="state.tab1value === item.dictKey - 1 ? item.oppositeIcon :item.justIcon" />
             <span
               class="nut-tabs__titles-item__text"
               :class="{ actives: state.tab1value === item.dictKey - 1 }"

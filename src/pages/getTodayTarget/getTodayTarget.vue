@@ -14,7 +14,7 @@
         <view class="today-goal-main">
           <!-- 暂无今日目标 空状态 -->
           <nut-empty
-            description="今天想做点什么呢？"
+            description="今天想做些什么呢？"
             class="today-goal-empty"
             v-if="state.targetStatus === 2"
           >
@@ -24,7 +24,7 @@
           </nut-empty>
           <!-- 完成所有目标 空状态 -->
           <nut-empty
-            description="哇哦~你完成了今天所有的目标"
+            description="哇哦~你完成了今天所有的目标！"
             class="today-goal-empty"
             v-if="state.targetStatus === 1"
           >
@@ -108,7 +108,7 @@ const state = reactive({
   honeyInfo: {} as BearAndHoney["honey"],
   // 添加目标跳转
   addTarget() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "../target/index",
     });
   },

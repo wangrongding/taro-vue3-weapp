@@ -20,13 +20,13 @@ const state = reactive({
   testGoalPopup: false,
   // 我的
   me() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/me/index",
     });
   },
   // 统计
   statistical() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/dashboard/index",
     });
   },
@@ -36,7 +36,7 @@ const state = reactive({
   },
   // 记录
   record() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/record/index",
     });
   },
@@ -63,13 +63,13 @@ const state = reactive({
   },
   // 目标模块
   target() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/target/index",
     });
   },
   // 日记模块
   diary() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/sleepDiary/index?id=4",
     });
   },

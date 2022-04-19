@@ -56,7 +56,7 @@ const state = reactive({
     });
   },
   startBtn() {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url:
         "/pages/sleepDiary/testQuestions/index?id=" +
         state.typeId +

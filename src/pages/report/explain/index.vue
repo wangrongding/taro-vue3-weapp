@@ -29,7 +29,7 @@ const state = reactive({
       });
   },
   close(){
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/report/index",
     });
   },

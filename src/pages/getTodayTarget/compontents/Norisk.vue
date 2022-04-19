@@ -27,7 +27,7 @@
             />
             <image :src="state.assets.honey" class="honey-img" />
           </view>
-          <view class="in-adventure-value">{{ props.honeyInfo.honeyValue }}/30</view>
+          <view class="in-adventure-value">{{ props.honeyInfo.honeyValue === "30" ? "能量池已满" : props.honeyInfo.honeyValue + "/30" }}</view>
         </view>
         <view class="in-adventure-btn" @tap="state.finish">完成</view>
       </view>
