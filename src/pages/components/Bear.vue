@@ -47,7 +47,7 @@ const getSize: ComputedRef = computed(() => {
 });
 // 倒计时
 const countdown: ComputedRef = computed(() => {
-  if (state.bearInfo.totalTime) {
+  if (state.bearInfo.totalTime > 0) {
     return state.bearInfo.reduceTime * 1000 + new Date().getTime();
   } else {
     return 0;

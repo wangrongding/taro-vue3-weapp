@@ -17,7 +17,7 @@
           <view class="in-adventure-text">{{ props.animalName }}获得了{{ props.honeyCount }}点能量</view>
           <view class="energy">
             <nut-circleprogress
-              :progress="(parseInt(state.honeyInfo.honeyValue) / 30) * 100"
+              :progress="(parseInt(props.honeyInfo.honeyValue) / 30) * 100"
               :is-auto="true"
               class="energy-value"
               :progress-option="{
@@ -27,7 +27,7 @@
             />
             <image :src="state.assets.honey" class="honey-img" />
           </view>
-          <view class="in-adventure-value">{{ state.honeyInfo.honeyValue }}/30</view>
+          <view class="in-adventure-value">{{ props.honeyInfo.honeyValue }}/30</view>
         </view>
         <view class="in-adventure-btn" @tap="state.finish">完成</view>
       </view>
@@ -37,22 +37,13 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import DPopup from "@/components/D-Popup.vue";
-import { getAnimalAndHoneyInfo } from "@/api/home";
-import { BearAndHoney } from "@/types/index";
 import { useAssetsStore } from "@/stores/assets";
 const store = useAssetsStore();
 const emit = defineEmits(["moreVisible"]);
 const state = reactive({
   assets: store.assets.common,
-  honeyInfo: {} as BearAndHoney["honey"],
   finish() {
     emit("moreVisible", "");
-  },
-  // 获取熊和蜜信息
-  getAnimalAndHoneyInfo() {
-    getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
-      state.honeyInfo = res.honey;
-    });
   },
 });
 const props = defineProps({
@@ -69,6 +60,15 @@ const props = defineProps({
   animalName: {
     type: String,
     default: "",
+    required: true,
+  },
+  honeyInfo: {
+    type: Object,
+    default() {
+      return {
+        honeyValue: 0,
+      };
+    },
     required: true,
   },
 });

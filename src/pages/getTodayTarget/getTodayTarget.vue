@@ -70,6 +70,7 @@
     @moreVisible="state.moreVisible"
     :animal-name="state.animalName"
     :honey-count="state.honeyCount"
+    :honey-info="state.honeyInfo"
   />
 </template>
 <script setup lang="ts">
@@ -79,13 +80,15 @@ import DPopup from "@/components/D-Popup.vue";
 import { useAssetsStore } from "@/stores/assets";
 import { getUserTarget, finishTarget } from "@/api/target/index";
 import { getUserAnimalInfo } from "@/api/me/index";
+import { getAnimalAndHoneyInfo } from "@/api/home/index";
 import bus from "@/utils/eventBus";
 import { GetuserTarget } from "@/types/type";
+import { BearAndHoney } from "@/types/index";
 import More from "./compontents/More.vue";
 import Inadventure from "./compontents/Inadventure.vue";
 import Norisk from "./compontents/Norisk.vue";
 const store = useAssetsStore();
-const emit = defineEmits(["moreVisible","badge"]);
+const emit = defineEmits(["moreVisible", "badge"]);
 const props = defineProps({
   visible: {
     type: Boolean,
@@ -102,6 +105,7 @@ const state = reactive({
   voList: [] as GetuserTarget[],
   userTargetId: "",
   honeyCount: "",
+  honeyInfo: {} as BearAndHoney["honey"],
   // 添加目标跳转
   addTarget() {
     Taro.navigateTo({
@@ -111,19 +115,32 @@ const state = reactive({
   // 完成目标
   operationBtn(data) {
     // 1,3,4 都属于未冒险
-    state.animalStatus === 1 || state.animalStatus === 3 || state.animalStatus === 4
+    state.animalStatus === 1 || state.animalStatus === 3
       ? (state.visible = "norisk")
       : (state.visible = "inadventure");
+    if (state.animalStatus === 4) {
+      return Taro.showToast({
+        title: "睡眠中，不可以做任务哦~",
+        icon: "none",
+        duration: 2000,
+      });
+    }
     state.honeyCount = data.honeyCount;
     let params = {
       honeyCount: data.honeyCount,
       userTargetId: data.userTargetId,
     };
-    finishTarget(params).then(()=>{
-      bus.emit("getAnimalAndHoneyInfo");
-    });
-    getUserAnimalInfo().then((res) => {
-      state.animalName = res.animalName;
+    // 点击完成
+    finishTarget(params).then(() => {
+      // 获取熊的信息
+      getUserAnimalInfo().then((res) => {
+        state.animalName = res.animalName;
+        bus.emit("getAnimalAndHoneyInfo");
+      });
+      // 获取熊和蜜信息
+      getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
+        state.honeyInfo = res.honey;
+      });
     });
     emit("moreVisible", "");
   },

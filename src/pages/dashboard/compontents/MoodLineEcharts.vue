@@ -79,15 +79,37 @@ function initChart(canvas, width, height) {
       max: 5,
       splitNumber: 5,
       axisLabel: {
-        formatter: function (val) {
-          // return val + props.moodStatistics.symbol;
-          let texts = [];
-          if (val === 1) {
-            texts.push(
-              "https://file.gkxymentpeak.mentpeak.com/sleep-mini-program/images/common/common-arrow-left.png",
-            );
+        formatter: function (value) {
+          let newParamsName = "";
+          let title = "";
+          value === 1
+            ? (title = "很开心")
+            : value === 2
+              ? (title = "开心")
+              : value === 3
+                ? (title = "一般")
+                : value === 4
+                  ? (title = "有点不开心")
+                  : (title = "很不开心");
+          let paramsNameNumber = title.length;
+          let provideNumber = 3; // 一行显示几个字
+          let rowNumber = 2;
+          if (paramsNameNumber > provideNumber) {
+            for (let p = 0; p < rowNumber; p++) {
+              let tempStr = "";
+              let start = p * provideNumber;
+              let end = start + provideNumber;
+              if (p === rowNumber - 1) {
+                tempStr = title.substring(start, paramsNameNumber);;
+              } else {
+                tempStr = title.substring(start, end) + "\n";
+              }
+              newParamsName += tempStr;
+            }
+          } else {
+            newParamsName = title;
           }
-          return texts;
+          return newParamsName;
         },
       },
     },
