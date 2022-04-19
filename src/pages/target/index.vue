@@ -94,6 +94,7 @@ function addTodayTarget(data: string) {
   let params = {
     targetIds: state.addTargetCheckd,
   };
+  if (state.addTargetCheckd.length === 0) if(data === "") return;
   // 判断是点击关闭还是添加目标
   data !== "close" ? userTarget(params) : "";
   Taro.redirectTo({
@@ -129,7 +130,7 @@ targetListData();
     .target-tab {
       .nut-tabs__titles {
         width: 265px;
-        margin-left: -20px;
+        margin-left: -15px;
       }
       .nut-tabs__titles-item {
         width: 83px;

@@ -132,7 +132,7 @@ function initChart(canvas, width, height) {
       width: "84%", // 宽度
       height: "65%", // 高度
       top: "18%",
-      left: "13%",
+      left: "15%",
     },
   });
   return chart;
