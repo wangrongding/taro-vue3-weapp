@@ -70,7 +70,7 @@
     @moreVisible="state.moreVisible"
     :animal-name="state.animalName"
     :honey-count="state.honeyCount"
-    :honey-info="state.honeyInfo"
+    :honey-value="state.honeyValue"
   />
 </template>
 <script setup lang="ts">
@@ -105,7 +105,7 @@ const state = reactive({
   voList: [] as GetuserTarget[],
   userTargetId: "",
   honeyCount: "",
-  honeyInfo: {} as BearAndHoney["honey"],
+  honeyValue: "",
   // 添加目标跳转
   addTarget() {
     Taro.redirectTo({
@@ -131,15 +131,12 @@ const state = reactive({
       userTargetId: data.userTargetId,
     };
     // 点击完成
-    finishTarget(params).then(() => {
+    finishTarget(params).then((res) => {
+      state.honeyValue = res.honeyValue;
       // 获取熊的信息
       getUserAnimalInfo().then((res) => {
         state.animalName = res.animalName;
         bus.emit("getAnimalAndHoneyInfo");
-      });
-      // 获取熊和蜜信息
-      getAnimalAndHoneyInfo().then((res: BearAndHoney) => {
-        state.honeyInfo = res.honey;
       });
     });
     emit("moreVisible", "");

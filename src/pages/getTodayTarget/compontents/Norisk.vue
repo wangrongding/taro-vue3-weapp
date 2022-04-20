@@ -17,7 +17,7 @@
           <view class="in-adventure-text">{{ props.animalName }}获得了{{ props.honeyCount }}点能量</view>
           <view class="energy">
             <nut-circleprogress
-              :progress="(parseInt(props.honeyInfo.honeyValue) / 30) * 100"
+              :progress="(parseInt(props.honeyValue) / 30) * 100"
               :is-auto="true"
               class="energy-value"
               :progress-option="{
@@ -27,7 +27,7 @@
             />
             <image :src="state.assets.honey" class="honey-img" />
           </view>
-          <view class="in-adventure-value">{{ props.honeyInfo.honeyValue === "30" ? "能量池已满" : props.honeyInfo.honeyValue + "/30" }}</view>
+          <view class="in-adventure-value">{{ props.honeyValue === "30" ? "能量池已满" : props.honeyValue + "/30" }}</view>
         </view>
         <view class="in-adventure-btn" @tap="state.finish">完成</view>
       </view>
@@ -62,13 +62,9 @@ const props = defineProps({
     default: "",
     required: true,
   },
-  honeyInfo: {
-    type: Object,
-    default() {
-      return {
-        honeyValue: 0,
-      };
-    },
+  honeyValue: {
+    type: String,
+    default: "",
     required: true,
   },
 });
