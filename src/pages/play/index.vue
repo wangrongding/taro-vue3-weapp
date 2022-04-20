@@ -61,10 +61,9 @@ const state = reactive({
   },
   // 设置倒计时
   setCountdown({ selectedValue }) {
-    globalAmbient.musicTime = Date.now() + parseInt(selectedValue) * 2 * 1000;
-    // globalAmbient.musicTime = Date.now() + parseInt(selectedValue) * 60 * 1000;
-    state.timeCheckShow = false;
+    globalAmbient.musicTime = Date.now() + parseInt(selectedValue) * 60 * 1000;
     globalStore.musicCountDown();
+    state.timeCheckShow = false;
   },
 });
 

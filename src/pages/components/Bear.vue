@@ -25,7 +25,7 @@ const state = reactive({
   },
   // 开始冒险
   beginAdventure() {
-    beginAdventure({}, { failToast: true, loading: true }).then(() => {
+    beginAdventure({}, { failToast: true, loading: false }).then(() => {
       bus.emit("handlePopupShow", "goout");
       state.getAnimalAndHoneyInfo();
     });
