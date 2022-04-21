@@ -114,10 +114,6 @@ const state = reactive({
   },
   // 完成目标
   operationBtn(data) {
-    // 1,3,4 都属于未冒险
-    state.animalStatus === 1 || state.animalStatus === 3
-      ? (state.visible = "norisk")
-      : (state.visible = "inadventure");
     if (state.animalStatus === 4) {
       return Taro.showToast({
         title: "睡眠中，不可以做任务哦~",
@@ -125,6 +121,10 @@ const state = reactive({
         duration: 2000,
       });
     }
+    // 1,3,4 都属于未冒险
+    state.animalStatus === 1 || state.animalStatus === 3
+      ? (state.visible = "norisk")
+      : (state.visible = "inadventure");
     state.honeyCount = data.honeyCount;
     let params = {
       honeyCount: data.honeyCount,

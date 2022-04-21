@@ -86,69 +86,47 @@ const state = reactive({
 
 // 继续
 function jumpTo() {
-  switch (state.index) {
-    case 0: {
-      if (state.animalName === "") return;
-      let params = {
-        animalName: state.animalName,
-      };
-      saveName(params).then(() => {
-        state.index = state.index + 1;
-      });
-      break;
-    }
-    case 1: {
-      if (state.userName === "") return;
-      let params = {
-        name: state.userName,
-      };
-      saveUserName(params).then(() => {
-        state.index = state.index + 1;
-      });
-      break;
-    }
-    case 2: {
-      let params = {
-        intimateValue: 3,
-      };
-      updateByAnimalId(params).then(() => {
-        state.index = state.index + 1;
-      });
-      break;
-    }
-    case 3: {
+  if (state.index === 0) {
+    if (state.animalName === "") return;
+    let params = {
+      animalName: state.animalName,
+    };
+    saveName(params).then(() => {
       state.index = state.index + 1;
-      break;
-    }
-    case 4: {
+    });
+  } else if (state.index === 1) {
+    if (state.userName === "") return;
+    let params = {
+      name: state.userName,
+    };
+    saveUserName(params).then(() => {
       state.index = state.index + 1;
-      break;
-    }
-    case 5: {
-      if (
-        state.time.length === 0 ||
-        state.time[0].title === "上床时间" ||
-        state.time[1].title === "起床时间"
-      ) {
-        return Taro.showToast({
-          title: "请设置作息时间哦",
-          icon: "none",
-          duration: 1000,
-        });
-      }
-      let params = {
-        sleepTime: state.time[0].title,
-        weekTime: state.time[1].title,
-      };
-      saveRest(params, { failToast: true, loading: true }).then(() => {
-        sleepMoodListData();
-        getUserMoodData();
-        templateList();
-        state.go = true;
+    });
+  } else if (state.index === 5) {
+    if (
+      state.time.length === 0 ||
+      state.time[0].title === "上床时间" ||
+      state.time[1].title === "起床时间"
+    ) {
+      return Taro.showToast({
+        title: "请设置作息时间哦",
+        icon: "none",
+        duration: 1000,
       });
-      getPhoneNumber();
-      break;
     }
+    let params = {
+      sleepTime: state.time[0].title,
+      weekTime: state.time[1].title,
+    };
+    saveRest(params, { failToast: true, loading: true }).then(() => {
+      sleepMoodListData();
+      getUserMoodData();
+      templateList();
+      state.go = true;
+    });
+    getPhoneNumber();
+  } else {
+    state.index = state.index + 1;
   }
 }
 
