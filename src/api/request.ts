@@ -47,7 +47,7 @@ const requestAction = (url, method, options: RequestBase) => {
             Taro.showToast({
               title: res.data.msg,
               icon: "none",
-              duration: 1000,
+              duration: 2000,
             });
           }
           reject(res.data);
@@ -58,7 +58,7 @@ const requestAction = (url, method, options: RequestBase) => {
         Taro.showToast({
           title: error.errMsg,
           icon: "error",
-          duration: 1000,
+          duration: 2000,
         });
         reject(error);
       })

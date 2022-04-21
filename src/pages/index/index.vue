@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
-import Taro from "@tarojs/taro";
+import { reactive, computed, onMounted } from "vue";
+import Taro, { eventCenter, getCurrentInstance } from "@tarojs/taro";
 import NavBar from "@/components/NavBar.vue";
 import { useAssetsStore } from "@/stores/assets";
+import { useStore } from "@/stores/index";
 import Ambient from "@/pages/components/Ambient.vue";
 import GetTodayTarget from "@/pages/getTodayTarget/getTodayTarget.vue";
 import Test from "@/pages/test/index.vue";
@@ -10,7 +11,9 @@ import bus from "@/utils/eventBus";
 import Intimacy from "../components/Intimacy.vue";
 import Goout from "../components/Goout.vue";
 import Bear from "../components/Bear.vue";
+import { getUserAnimalInfo } from "@/api/me/index";
 const store = useAssetsStore();
+const userInfoStore = useStore();
 const state = reactive({
   text: "Hello i'am rongding...",
   assets: store.assets.home,
@@ -74,8 +77,15 @@ const state = reactive({
     });
   },
   // 徽标
-  badge(data:string){
+  badge(data: string) {
     state.badgeValue = data;
+  },
+  // 获取用户名，后端的设计。。。。。
+  getUserAnimalInfo() {
+    getUserAnimalInfo().then((res: any) => {
+      // eslint-disable-next-line
+      userInfoStore.userInfo.user_name = res.name;
+    });
   },
 });
 // 关闭弹窗
@@ -99,6 +109,15 @@ const background = computed(() => {
       image: `url(${store.assets.background.homeBackgroundNight})`,
     };
   }
+});
+onMounted(() => {
+  state.getUserAnimalInfo();
+  // eventCenter.once(getCurrentInstance().router!.onShow, () => {
+  //   Taro.showToast({
+  //     title: "onShow",
+  //     icon: "none",
+  //   });
+  // });
 });
 </script>
 
