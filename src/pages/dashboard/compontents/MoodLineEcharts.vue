@@ -82,13 +82,13 @@ function initChart(canvas, width, height) {
         formatter: function (value) {
           let newParamsName = "";
           let title = "";
-          value === 1
+          value === 5
             ? (title = "很开心")
-            : value === 2
+            : value === 4
               ? (title = "开心")
               : value === 3
                 ? (title = "一般")
-                : value === 4
+                : value === 2
                   ? (title = "有点不开心")
                   : (title = "很不开心");
           let paramsNameNumber = title.length;
