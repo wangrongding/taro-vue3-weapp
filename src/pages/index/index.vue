@@ -85,6 +85,7 @@ const state = reactive({
     getUserAnimalInfo().then((res: any) => {
       // eslint-disable-next-line
       userInfoStore.userInfo.user_name = res.name;
+      userInfoStore.userInfo.animalName = res.animalName;
     });
   },
 });

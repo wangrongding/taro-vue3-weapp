@@ -33,6 +33,7 @@ export interface UserInfo {
   roleId: string;
   headUrl: string;
   openId: string;
+  animalName: string;
 }
 // 获取的亲密度
 export interface Intimate {

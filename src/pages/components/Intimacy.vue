@@ -2,10 +2,12 @@
 import { reactive, computed } from "vue";
 import DPopup from "@/components/D-Popup.vue";
 import { useAssetsStore } from "@/stores/assets";
+import { useStore } from "@/stores/index";
 import { getIntimacy } from "@/api/home/index";
 import { Intimate } from "@/types/index";
 import bus from "@/utils/eventBus";
 const store = useAssetsStore();
+const userInfoStore = useStore();
 const state = reactive({
   file: "intimacy",
   intimateInfo: {} as Intimate,
@@ -60,7 +62,9 @@ const intimateInfo = computed(() => {
               style="margin-top: 40px"
               :percentage="intimateInfo || 0"
             />
-            <view style="color: white; margin-top: 20px">亲密值等级越高，小白回来得就越快哦！</view>
+            <view style="color: white; margin-top: 20px">
+              亲密值等级越高，{{ userInfoStore.userInfo.animalName }}回来得就越快哦！
+            </view>
           </view>
           <view
             @click="state.closePop"

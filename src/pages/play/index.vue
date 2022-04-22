@@ -82,7 +82,10 @@ function player() {
   state.audioCtx.onEnded(() => {
     player();
   });
-  state.audioCtx.onStop(() => {});
+  state.audioCtx.onStop(() => {
+    state.redirectTo();
+    // clearPlayer();
+  });
   state.audioCtx.onPause(() => {
     globalAmbient.playStatus = false;
     // console.log(routerParams);
