@@ -8,6 +8,7 @@ import { BearAndHoney } from "@/types/index";
 const store = useAssetsStore();
 const state = reactive({
   file: "page",
+  timer: null as any,
   assets: store.assets.home, // 熊旅行
   bearInfo: {} as BearAndHoney["animal"],
   honeyInfo: {} as BearAndHoney["honey"],
@@ -17,6 +18,7 @@ const state = reactive({
       state.bearInfo = res.animal;
       state.honeyInfo = res.honey;
       if (res.animal.animalStatus === 3) {
+        clearInterval(state.timer);
         Taro.redirectTo({
           url: "/pages/goback/index",
         });
@@ -76,6 +78,17 @@ bus.on("getAnimalAndHoneyInfo", () => {
 });
 
 state.getAnimalAndHoneyInfo();
+// 轮询获取熊的信息
+async function pollingGetAnimalAndHoneyInfo() {
+  let i = 0;
+  state.timer = setInterval(() => {
+    i++;
+    if (i > 5) {
+      clearInterval(state.timer);
+    }
+    state.getAnimalAndHoneyInfo();
+  }, 1000);
+}
 </script>
 <template>
   <view class="main-area">
@@ -93,7 +106,7 @@ state.getAnimalAndHoneyInfo();
           color: #333333ff;
         "
         :end-time="countdown"
-        @on-end="state.getAnimalAndHoneyInfo"
+        @on-end="pollingGetAnimalAndHoneyInfo"
       />
       <image
         @tap="showStatus"
