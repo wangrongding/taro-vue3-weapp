@@ -171,6 +171,7 @@ const state = reactive({
 bus.on("closePop", () => {
   state.closePop();
 });
+
 state.getUserTargetData();
 </script>
 <style lang="scss">

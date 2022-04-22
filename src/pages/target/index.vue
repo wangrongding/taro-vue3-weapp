@@ -96,10 +96,18 @@ function addTodayTarget(data: string) {
   };
   if (state.addTargetCheckd.length === 0) if(data === "") return;
   // 判断是点击关闭还是添加目标
-  data !== "close" ? userTarget(params) : "";
-  Taro.redirectTo({
-    url: "/pages/index/index",
-  });
+  if(data !== "close") {
+    userTarget(params).then(()=>{
+      Taro.redirectTo({
+        url: "/pages/index/index",
+      });
+    });
+  } else {
+    Taro.redirectTo({
+      url: "/pages/index/index",
+    });
+  }
+
 }
 // 获取列表
 function targetListData() {

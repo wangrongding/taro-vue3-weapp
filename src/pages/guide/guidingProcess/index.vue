@@ -181,13 +181,8 @@ function moodBtn(data: { id: string }) {
     days: state.getUserMoodList.days,
   };
   userMood(params);
-  let param = {
-    honeyValue: 10,
-  };
-  saveHoney(param, { failToast: true, loading: true }).then(() => {
-    Taro.redirectTo({
-      url: "/pages/index/index",
-    });
+  Taro.redirectTo({
+    url: "/pages/index/index",
   });
 }
 
