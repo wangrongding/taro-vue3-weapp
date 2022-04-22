@@ -86,11 +86,11 @@ async function pollingGetAnimalAndHoneyInfo() {
   let i = 0;
   state.timer = setInterval(() => {
     i++;
-    if (i > 2) {
+    if (i > 4) {
       clearInterval(state.timer);
     }
     state.getAnimalAndHoneyInfo();
-  }, 3000);
+  }, 1000);
 }
 </script>
 <template>
