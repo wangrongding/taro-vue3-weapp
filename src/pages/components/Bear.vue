@@ -74,20 +74,23 @@ const showStatus = () => {
 
 // 暴露出去的获取动物和蜂蜜信息的方法
 bus.on("getAnimalAndHoneyInfo", () => {
-  state.getAnimalAndHoneyInfo();
+  // state.getAnimalAndHoneyInfo();
+  pollingGetAnimalAndHoneyInfo();
 });
 
 state.getAnimalAndHoneyInfo();
 // 轮询获取熊的信息
 async function pollingGetAnimalAndHoneyInfo() {
+  clearInterval(state.timer);
+  state.timer = null;
   let i = 0;
   state.timer = setInterval(() => {
     i++;
-    if (i > 5) {
+    if (i > 2) {
       clearInterval(state.timer);
     }
     state.getAnimalAndHoneyInfo();
-  }, 1000);
+  }, 3000);
 }
 </script>
 <template>
