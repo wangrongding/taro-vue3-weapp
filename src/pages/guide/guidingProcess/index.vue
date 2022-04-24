@@ -180,9 +180,10 @@ function moodBtn(data: { id: string }) {
     week: state.getUserMoodList.week,
     days: state.getUserMoodList.days,
   };
-  userMood(params);
-  Taro.redirectTo({
-    url: "/pages/index/index",
+  userMood(params).then(()=>{
+    Taro.redirectTo({
+      url: "/pages/index/index",
+    });
   });
 }
 
