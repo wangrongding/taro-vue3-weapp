@@ -2,18 +2,18 @@
   <view class="page-container">
     <NavBar style="color: #000" />
     <view class="page-main">
-      <MoodLineEcharts :mood-statistics="state.moodStatistics" v-if="state.flag === true" />
+      <MoodLineEcharts :mood-statistics="state.moodStatistics" v-if="state.chart.moodStatisticsFlag === true" />
       <SleepLineEcharts
         :sleep-efficiency-statistics="state.sleepEfficiencyStatistics"
-        v-if="state.flag === true"
+        v-if="state.chart.sleepEfficiencyStatisticsFlag === true"
       />
       <SleepTimeEcharts
         :sleep-time-statistics="state.sleepTimeStatistics"
-        v-if="state.flag === true"
+        v-if="state.chart.sleepTimeStatisticsFlag === true"
       />
-      <InBedTimeEcharts :bed-time-statistics="state.bedTimeStatistics" v-if="state.flag === true" />
-      <BedTimeEcharts :on-time-statistics="state.onTimeStatistics" v-if="state.flag === true" />
-      <UpTimeEcharts :up-time-statistics="state.upTimeStatistics" v-if="state.flag === true" />
+      <InBedTimeEcharts :bed-time-statistics="state.bedTimeStatistics" v-if="state.chart.bedTimeStatisticsFlag === true" />
+      <BedTimeEcharts :on-time-statistics="state.onTimeStatistics" v-if="state.chart.onTimeStatisticsFlag === true" />
+      <UpTimeEcharts :up-time-statistics="state.upTimeStatistics" v-if="state.chart.upTimeStatisticsFlag === true" />
     </view>
     <view class="close">
       <image :src="state.assets.close" alt="" @tap="state.close" />
@@ -50,13 +50,21 @@ const state = reactive({
   bedTimeStatistics: {},
   onTimeStatistics: {},
   upTimeStatistics: {},
-  flag: false,
+  chart: {
+    moodStatisticsFlag: false,
+    sleepEfficiencyStatisticsFlag: false,
+    sleepTimeStatisticsFlag: false,
+    bedTimeStatisticsFlag: false,
+    onTimeStatisticsFlag: false,
+    upTimeStatisticsFlag: false,
+  },
   // 心情
   moodStatisticsData() {
     moodStatistics({}, { failToast: true, loading: true }).then((res: any) => {
       state.moodStatistics = res;
       state.moodStatistics.title = "心情";
       state.moodStatistics.symbol = "";
+      state.chart.moodStatisticsFlag = true;
     });
   },
   // 睡眠效率
@@ -65,6 +73,7 @@ const state = reactive({
       state.sleepEfficiencyStatistics = res;
       state.sleepEfficiencyStatistics.title = "睡眠效率";
       state.sleepEfficiencyStatistics.symbol = "%";
+      state.chart.sleepEfficiencyStatisticsFlag = true;
     });
   },
   // 睡眠时长
@@ -72,6 +81,7 @@ const state = reactive({
     sleepTimeStatistics({}, { failToast: true, loading: true }).then((res: any) => {
       state.sleepTimeStatistics = res;
       state.sleepTimeStatistics.title = "睡眠时长";
+      state.chart.sleepTimeStatisticsFlag = true;
     });
   },
   // 在床时间
@@ -79,6 +89,7 @@ const state = reactive({
     bedTimeStatistics({}, { failToast: true, loading: true }).then((res: any) => {
       state.bedTimeStatistics = res;
       state.bedTimeStatistics.title = "在床时间";
+      state.chart.bedTimeStatisticsFlag = true;
     });
   },
   // 上床时间
@@ -86,6 +97,7 @@ const state = reactive({
     onTimeStatistics({}, { failToast: true, loading: true }).then((res: any) => {
       state.onTimeStatistics = res;
       state.onTimeStatistics.title = "上床时间";
+      state.chart.onTimeStatisticsFlag = true;
     });
   },
   // 起床时间
@@ -94,7 +106,7 @@ const state = reactive({
       state.upTimeStatistics = res;
       state.upTimeStatistics.title = "起床时间";
       // 判断是否加载完数据
-      state.flag = true;
+      state.chart.upTimeStatisticsFlag = true;
     });
   },
   close() {

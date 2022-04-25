@@ -5,7 +5,8 @@ import { RequestBase } from "@/types/index";
 // 明伟本地接口地址
 // const localUrl = "http://192.168.1.71:60";
 // 正理本地接口地址
-const localUrl = "http://39.105.104.8:60";
+const localUrl = "http://192.168.1.114:60";
+// const localUrl = "http://39.105.104.8:60";
 // 远程接口地址
 const remoteUrl = process.env.API_ENV ? localUrl : "http://39.105.104.8:60";
 // 定义全局请求地址(baseUrl)
