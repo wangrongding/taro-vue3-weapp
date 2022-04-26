@@ -153,24 +153,26 @@ const state = reactive({
 });
 
 function getPhoneNumber(e) {
-  let params = {
-    encrypted: e.detail.encryptedData,
-    iv: e.detail.iv,
-    openId: usestore.userInfo.openId,
-  };
-  wxRegistry(params).then((res:{account:string}) => {
-    let param = {
-      phone: res.account,
-      id: usestore.userInfo.id,
+  if (e.detail.errMsg === "getPhoneNumber:ok") {
+    let params = {
+      encrypted: e.detail.encryptedData,
+      iv: e.detail.iv,
+      openId: usestore.userInfo.openId,
     };
-    Taro.checkSession({
-      success: function () {
-        updateUserPhone(param).then(()=>{
-          state.list[3].cloudArchiving = res.account;
-        });
-      },
+    wxRegistry(params).then((res:{account:string}) => {
+      let param = {
+        phone: res.account,
+        id: usestore.userInfo.id,
+      };
+      Taro.checkSession({
+        success: function () {
+          updateUserPhone(param).then(()=>{
+            state.list[3].cloudArchiving = res.account;
+          });
+        },
+      });
     });
-  });
+  }
 }
 state.getUserAnimalInfoData();
 </script>

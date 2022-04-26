@@ -5,7 +5,7 @@
       <view class="privacyPolicy-list" v-for="(item, index) in state.getPrivacyPolicy" :key="index">
         <view class="privacyPolicy-title"> {{ item.title }} </view>
         <view class="privacyPolicy-title-aa">
-          <text class="privacyPolicy-content"> {{ item.content }} </text>
+          <view v-html="item.content" />
         </view>
       </view>
     </view>
@@ -32,10 +32,9 @@ const state = reactive({
     });
   },
   getPrivacyPolicyData() {
-    getPrivacyPolicy()
-      .then((res:GetPrivacyPolicy[]) => {
-        state.getPrivacyPolicy = res;
-      });
+    getPrivacyPolicy().then((res: GetPrivacyPolicy[]) => {
+      state.getPrivacyPolicy = res;
+    });
   },
 });
 state.getPrivacyPolicyData();
@@ -73,6 +72,14 @@ state.getPrivacyPolicyData();
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: #333333;
+        }
+        .textRed {
+          color: red;
+          text-decoration:underline;
+        }
+        .textBlue {
+          color: blue;
+          text-decoration:underline;
         }
       }
     }
